@@ -6,10 +6,7 @@ import { PagesRoutingModule } from './pages.routing';
 @NgModule({
   declarations: [],
 
-  imports: [
-    LoginPageModule,
-    PagesRoutingModule
-  ],
+  imports: [LoginPageModule, PagesRoutingModule],
 
   providers: [],
   bootstrap: [],

@@ -1,13 +1,9 @@
-import { NgModule } from "@angular/core";
-import { LoginFormComponent } from "./components/login-form/login-form.component";
-
+import { NgModule } from '@angular/core';
+import { LoginFormComponent } from './components/login-form/login-form.component';
 
 @NgModule({
-    declarations: [
-        LoginFormComponent
-    ],
+  declarations: [LoginFormComponent],
 
-    imports: [
-        
-    ]
-}) export class LoginPageModule {}
+  imports: [],
+})
+export class LoginPageModule {}
