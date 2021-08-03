@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { SharedModule } from './shared/shared.module';
 import { PagesModule } from './pages/pages.module';
 
 @NgModule({
@@ -16,6 +17,7 @@ import { PagesModule } from './pages/pages.module';
     AppRoutingModule,
     NoopAnimationsModule,
 
+    SharedModule,
     PagesModule,
   ],
   providers: [],
