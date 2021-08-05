@@ -1,3 +1,39 @@
-<h2>
-    Login Page
-</h2>
+<div fxLayout="column" fxLayoutAlign="center center" class="h-100 w-100">
+  <form fxLayout="column" fxLayoutAlign="center center" fxFlex="100" class="w-75 p-3">
+
+    <mat-form-field appearance="outline" class="form-field">
+
+      <mat-label>Email</mat-label>
+
+      <input
+        matInput
+        name="email"
+        placeholder="Email"
+        type="email"
+        [(ngModel)]="email">
+
+    </mat-form-field>
+
+
+    <mat-form-field appearance="outline" class="form-field">
+
+      <mat-label>Password</mat-label>
+      <input matInput name="password" type="password">
+
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutAlign="end center" class="form-field">
+      <button
+        mat-raised-button
+        type="submit"
+        (click)="attemptUserLogin($event)"
+        color="primary"
+        >
+        Login
+      </button>
+    </div>
+
+    <a routerLink="/sign-up" class="m-5">Create New Account</a>
+
+  </form>
+</div>

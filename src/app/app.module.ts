@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
+
 import { BrowserModule } from '@angular/platform-browser';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 
 import { SharedModule } from './shared/shared.module';
 import { PagesModule } from './pages/pages.module';
@@ -13,10 +14,8 @@ import { PagesModule } from './pages/pages.module';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    FlexLayoutModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
-    NoopAnimationsModule,
-
     SharedModule,
     PagesModule,
   ],
