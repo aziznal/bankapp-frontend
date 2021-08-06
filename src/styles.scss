@@ -9,9 +9,10 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-
+// Destyling Anchors
 a, a:link, a:hover, a:active, a:visited {
-  color: black;
+  color: darkblue;
+  font-weight: bold;
   text-decoration: none;
   cursor: pointer;
 }
@@ -64,4 +65,53 @@ a, a:link, a:hover, a:active, a:visited {
 }
 .m-5 {
   margin: 28px !important;
+}
+
+.my-1 {
+  margin-block: 12px !important;
+}
+.my-2 {
+  margin-block: 16px !important;
+}
+.my-3 {
+  margin-block: 20px !important;
+}
+.my-4 {
+  margin-block: 24px !important;
+}
+.my-5 {
+  margin-block: 28px !important;
+}
+
+
+.mt-1 {
+  margin-top: 12px !important;
+}
+.mt-2 {
+  margin-top: 16px !important;
+}
+.mt-3 {
+  margin-top: 20px !important;
+}
+.mt-4 {
+  margin-top: 24px !important;
+}
+.mt-5 {
+  margin-top: 28px !important;
+}
+
+.mb-1 {
+  margin-bottom: 12px !important;
+}
+.mb-2 {
+  margin-bottom: 16px !important;
+}
+.mb-3 {
+  margin-bottom: 20px !important;
+}
+.mb-4 {
+  margin-bottom: 24px !important;
+}
+.mb-5 {
+  margin-bottom: 28px !important;
 }

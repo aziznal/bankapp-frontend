@@ -1,0 +1,130 @@
+<div fxLayout="column" fxLayoutAlign="center center" class="h-100 w-100">
+
+
+  <form fxLayout="column" fxLayoutAlign="center center" class="w-75 p-3" [formGroup]="formGroup">
+
+    <h2 class="mb-5">Create an account</h2>
+
+    <mat-form-field class="form-field">
+
+      <mat-label>
+        Full Name
+      </mat-label>
+
+      <input matInput name="name" id="name" type="text" formControlName="fullName">
+
+      <mat-error>Must Provide Full Name</mat-error>
+
+    </mat-form-field>
+
+
+    <div class="mt-5" fxLayout="column" fxLayoutAlign="center center" formGroupName="emailGroup">
+      <mat-form-field class="form-field">
+
+        <mat-label>
+          Email
+        </mat-label>
+
+        <input matInput type="email" formControlName="email">
+
+        <mat-hint>
+          your@email.domain
+        </mat-hint>
+
+        <mat-error>Must Provide Valid Email</mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field class="mt-2 form-field">
+
+        <mat-label>
+          Confirm Email
+        </mat-label>
+
+        <input matInput type="email" formControlName="emailConfirm" [errorStateMatcher]="errorMatcher">
+
+        <mat-error *ngIf="formGroup.controls.emailGroup.hasError('notSame')">Must Provide Matching Emails</mat-error>
+
+      </mat-form-field>
+
+    </div>
+
+
+    <div class="my-5" fxLayout="column" fxLayoutAlign="center center" formGroupName="passwordGroup">
+      <mat-form-field class="form-field">
+
+        <mat-label>
+          Password
+        </mat-label>
+
+        <input matInput [type]="hidePasswordField ? 'password' : 'text'" formControlName="password">
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hidePasswordField = !hidePasswordField"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePasswordField">
+          <mat-icon>{{hidePasswordField ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+
+        <mat-hint>
+          8+ chars. Use both upper and lower case chars, at least one special char, and one number.
+        </mat-hint>
+
+        <mat-error>Must Provide Valid Password. Provide 8+ chars, including lower and upper case, one special char, and
+          one number.)</mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field class="mt-2 form-field">
+
+        <mat-label>
+          Confirm Password
+        </mat-label>
+
+        <input matInput [type]="hidePasswordField ? 'password' : 'text'" formControlName="passwordConfirm"
+          [errorStateMatcher]="errorMatcher">
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hidePasswordField = !hidePasswordField"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePasswordField">
+          <mat-icon>{{hidePasswordField ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+
+        <mat-error>Passwords Must Match</mat-error>
+
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="form-field">
+
+      <mat-label>Date of Birth</mat-label>
+
+      <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+
+      <mat-label>Phone Number</mat-label>
+      <input matInput formControlName="phoneNumber">
+
+    </mat-form-field>
+
+    <div class="mt-3 form-field" fxLayout="row" fxLayoutAlign="end center">
+      <button mat-raised-button color="primary" (click)="createNewUser()">
+        Sign Up
+      </button>
+    </div>
+
+  </form>
+
+  <a routerLink="/login">
+    Back to Login
+  </a>
+
+</div>
