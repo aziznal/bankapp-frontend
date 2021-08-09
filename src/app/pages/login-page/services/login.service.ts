@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +14,13 @@ export class LoginService {
 
   userIsLoggedIn: boolean = false;
 
-  constructor() {
+  /**
+   *
+   * Sets default values for username and password. Checks if user is logged in.
+   *
+   * @param  {HttpClient} privatehttp
+   */
+  constructor(private http: HttpClient) {
     this.userIsLoggedIn = this.checkIfUserIsLoggedIn();
 
     this.username = "";
@@ -39,6 +49,9 @@ export class LoginService {
     // TODO: store session cookie after user logs in.
     this.userIsLoggedIn = true;
     console.log("User has been logged in!")
+
+    
+
   }
 
   /**
