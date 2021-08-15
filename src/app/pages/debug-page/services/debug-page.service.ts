@@ -1,67 +1,33 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { User } from 'src/app/models/user.model';
 
 const BACKEND_URL = 'http://localhost:8080';
 
-@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
 export class DebugPageService {
   constructor(private http: HttpClient) {}
 
-  sendGetRequest() {
+  sendGetRequest(): Observable<any> {
     console.log('Sending Get Request');
-
-    this.http
-      .get(BACKEND_URL)
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        (res) => {
-          console.log(res);
-        },
-
-        (err) => {
-          console.error(err);
-        }
-      );
+    return this.http.get(BACKEND_URL);
   }
 
-  sendPostRequest() {
+  sendPostRequest(): Observable<any> {
     console.log('Sending Post Request');
-
-    this.http
-      .post(BACKEND_URL, { body: 'hello backend!' })
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        (res) => {
-          console.log(res);
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+    return this.http.post(BACKEND_URL, { body: 'hello backend!' });
   }
 
-  sendNewAccountRequest(user: User) {
+  sendNewAccountRequest(user: User): Observable<any> {
     console.log('Sending new account request');
 
     console.log('Including user');
     console.log(user);
 
-    this.http
-      .post<any>(`${BACKEND_URL}/new-user`, user)
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        (res) => {
-          console.log(res);
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+    return this.http.post<any>(`${BACKEND_URL}/new-user`, user);
   }
 }

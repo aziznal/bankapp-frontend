@@ -11,7 +11,12 @@ import {
   FormGroupDirective,
   NgForm,
 } from '@angular/forms';
+
 import { ErrorStateMatcher } from '@angular/material/core';
+import { Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+import { ToastrService } from 'ngx-toastr';
 
 import { User } from 'src/app/models/user.model';
 import { SignUpService } from '../services/sign-up.service';
@@ -42,6 +47,13 @@ class CustomErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 
+/**
+ * Page with form that allows user to create a new account
+ *
+ * @export
+ * @class SignUpFormComponent
+ */
+@UntilDestroy()
 @Component({
   templateUrl: './sign-up-form.component.html',
   styleUrls: ['./sign-up-form.component.scss'],
@@ -80,15 +92,17 @@ export class SignUpFormComponent {
   hidePasswordField: boolean = true;
 
   /**
+   * Creates an instance of SignUpFormComponent.
    *
-   * Initializes Services
-   *
-   * @param  {SignUpService} privatesignUpService
-   * @param  {FormBuilder} privateformBuilder
+   * @param {SignUpService} signUpService
+   * @param {FormBuilder} formBuilder
+   * @memberof SignUpFormComponent
    */
   constructor(
+    private toastrService: ToastrService,
     private signUpService: SignUpService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
     this.user = new User('', '', '');
 
@@ -174,7 +188,26 @@ export class SignUpFormComponent {
 
   /**
    *
-   * Assigns values to user object and creates a new user using SignUpService
+   * Assigns all user properties from form-group
+   *
+   * @memberof SignUpFormComponent
+   */
+  assignUserData(): void {
+    this.user.name = this.formGroup.controls.fullName.value;
+    this.user.email = this.formGroup.get(['emailGroup', 'email'])!.value;
+
+    this.user.password = this.formGroup.get([
+      'passwordGroup',
+      'password',
+    ])!.value;
+
+    this.user.birthdate = this.formGroup.controls.dateOfBirth.value;
+    this.user.phoneNumber = this.formGroup.controls.phoneNumber.value;
+  }
+
+  /**
+   *
+   * Sends request to create a new user
    *
    */
   createNewUser(): void {
@@ -182,16 +215,30 @@ export class SignUpFormComponent {
     this.user.email = this.formGroup.get(['emailGroup', 'email'])!.value;
 
     if (this.formGroup.valid) {
-      this.user.name = this.formGroup.controls.fullName.value;
-      this.user.email = this.formGroup.get(['emailGroup', 'email'])!.value;
-      this.user.password = this.formGroup.get([
-        'passwordGroup',
-        'password',
-      ])!.value;
-      this.user.birthdate = this.formGroup.controls.dateOfBirth.value;
-      this.user.phoneNumber = this.formGroup.controls.phoneNumber.value;
+      this.assignUserData();
 
-      this.signUpService.createNewUser(this.user);
+      this.signUpService
+        .createNewUser(this.user)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: (_response) => {
+            this.toastrService.success(
+              'Successfully created new account. Redirecting to Login Page',
+              'Success'
+            );
+
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 1000);
+          },
+
+          error: (error) => {
+            this.toastrService.error(
+              error.error.body,
+              `${error.status} ${error.statusText}`
+            );
+          },
+        });
     }
   }
 }
