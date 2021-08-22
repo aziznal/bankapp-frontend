@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -12,6 +12,8 @@ import { LoginService } from '../../services/login.service';
   styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
+  @ViewChild('loginButton') loginButton!: HTMLButtonElement;
+
   formGroup: FormGroup;
 
   /**
@@ -45,6 +47,8 @@ export class LoginFormComponent {
     let password = this.formGroup.controls.password.value;
 
     if (this.formGroup.valid) {
+      this.loginButton.disabled = true;
+
       this.loginService.login(email, password).subscribe({
         next: (_response) => {
           this.toastrService.success(
@@ -52,9 +56,9 @@ export class LoginFormComponent {
             'Login Successful'
           );
 
-          // setTimeout(() => {
-          //   this.router.navigate(['/login']);
-          // }, 1000);
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 1000);
         },
 
         error: (error) => {
@@ -62,6 +66,12 @@ export class LoginFormComponent {
             error.error.body,
             `${error.status} ${error.statusText}`
           );
+          setTimeout(() => (this.loginButton.disabled = false), 1000);
+        },
+
+        complete: () => {
+          console.log('Completed!');
+          setTimeout(() => (this.loginButton.disabled = false), 1000);
         },
       });
     }

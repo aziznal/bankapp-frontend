@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import {
   AbstractControl,
@@ -59,6 +59,8 @@ class CustomErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./sign-up-form.component.scss'],
 })
 export class SignUpFormComponent {
+  @ViewChild('signupButton') signupButton!: HTMLButtonElement;
+
   /**
    *
    * Used to store user properties
@@ -215,6 +217,8 @@ export class SignUpFormComponent {
     this.user.email = this.formGroup.get(['emailGroup', 'email'])!.value;
 
     if (this.formGroup.valid) {
+      this.signupButton.disabled = true;
+
       this.assignUserData();
 
       this.signUpService
@@ -237,6 +241,8 @@ export class SignUpFormComponent {
               error.error.body,
               `${error.status} ${error.statusText}`
             );
+
+            setTimeout(() => (this.signupButton.disabled = false), 1000);
           },
         });
     }
