@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 
+import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
+
 import { DebugPageService } from '../../services/debug-page.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { environment } from 'src/environments/environment';
 
 @UntilDestroy()
 @Component({
@@ -15,7 +18,8 @@ export class DebugSetupComponent {
 
   constructor(
     private toastrService: ToastrService,
-    private debugService: DebugPageService
+    private debugService: DebugPageService,
+    private cookieService: CookieService
   ) {
     this.mockUser = new User(
       'Aziz',
@@ -33,12 +37,12 @@ export class DebugSetupComponent {
       .subscribe(
         (res) => {
           console.log(res);
-          this.toastrService.success(`${ res.status } ${res.body}`);
+          this.toastrService.success(`${res.status} ${res.body}`);
         },
 
         (err) => {
           console.error(err);
-          this.toastrService.error(`${ err.status } ${err.error.body}`)
+          this.toastrService.error(`${err.status} ${err.error.body}`);
         }
       );
   }
@@ -50,11 +54,11 @@ export class DebugSetupComponent {
       .subscribe(
         (res) => {
           console.log(res);
-          this.toastrService.success(`${ res.status } ${res.body}`);
+          this.toastrService.success(`${res.status} ${res.body}`);
         },
         (err) => {
           console.error(err);
-          this.toastrService.error(`${ err.status } ${err.error.body}`)
+          this.toastrService.error(`${err.status} ${err.error.body}`);
         }
       );
   }
@@ -66,12 +70,41 @@ export class DebugSetupComponent {
       .subscribe(
         (res) => {
           console.log(res);
-          this.toastrService.success(`${ res.status } ${res.body}`);
+          this.toastrService.success(`${res.status} ${res.body}`);
         },
         (err) => {
           console.error(err);
-          this.toastrService.error(`${ err.status } ${err.error.body}`)
+          this.toastrService.error(`${err.status} ${err.error.body}`);
         }
       );
+  }
+
+  checkAvailableCookies() {
+    let cookieNames = Object.keys(this.cookieService.getAll());
+
+    if (cookieNames.length > 0) {
+      cookieNames.forEach((name) => {
+        console.log(`${name}: ${this.cookieService.get(name)}\n\n`);
+      });
+    } else {
+      console.log('Looks like you have no cookies :(');
+    }
+  }
+
+  deleteAllAvailableCookies() {
+    this.cookieService.deleteAll();
+    console.log('All your cookies have been deleted >:D ');
+  }
+
+  getAuthenticatedCookie() {
+    this.debugService.sendLoginRequest(this.mockUser).subscribe(() => {
+      let authCookie = this.cookieService.get(environment.AUTH_COOKIE_NAME);
+
+      if (authCookie !== '' && authCookie !== undefined) {
+        console.log(`Got the following cookie: \n${authCookie}`);
+      } else {
+        console.log('No authed cookies for you :(');
+      }
+    });
   }
 }

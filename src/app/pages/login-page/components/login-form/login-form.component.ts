@@ -70,7 +70,6 @@ export class LoginFormComponent {
         },
 
         complete: () => {
-          console.log('Completed!');
           setTimeout(() => (this.loginButton.disabled = false), 1000);
         },
       });

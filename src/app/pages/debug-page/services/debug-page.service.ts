@@ -14,7 +14,9 @@ export class DebugPageService {
 
   sendGetRequest(): Observable<any> {
     console.log('Sending Get Request');
-    return this.http.get(BACKEND_URL);
+    return this.http.get(BACKEND_URL, {
+      withCredentials: true,
+    });
   }
 
   sendPostRequest(): Observable<any> {
@@ -29,5 +31,18 @@ export class DebugPageService {
     console.log(user);
 
     return this.http.post<any>(`${BACKEND_URL}/new-user`, user);
+  }
+
+  sendLoginRequest(mockUser: User): Observable<any> {
+    return this.http.post(
+      `${BACKEND_URL}/login`,
+      {
+        email: mockUser.email,
+        password: mockUser.password,
+      },
+      {
+        withCredentials: true,
+      }
+    );
   }
 }

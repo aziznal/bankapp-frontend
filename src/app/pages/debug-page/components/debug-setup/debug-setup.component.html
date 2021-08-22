@@ -39,4 +39,24 @@
   </div>
 
 
+  <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1em" class="mb-6">
+    <h2>
+      Cookie Management
+    </h2>
+
+    <button mat-raised-button color="primary" (click)="checkAvailableCookies()">
+      Get All Cookies
+    </button>
+
+    <button mat-raised-button color="primary" (click)="getAuthenticatedCookie()">
+      Get Authenticated Cookie
+    </button>
+
+    <button mat-raised-button color="warn" (click)="deleteAllAvailableCookies()">
+      Delete All Cookies
+    </button>
+
+  </div>
+
+
 </div>

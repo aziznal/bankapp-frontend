@@ -7,10 +7,12 @@ export const environment = {
 
   API: {
     API_URL: 'http://localhost:8080',
-    
+
     NEW_USER_URL: 'http://localhost:8080/new-user',
-    LOGIN_URL: 'http://localhost:8080/login'
+    LOGIN_URL: 'http://localhost:8080/login',
   },
+
+  AUTH_COOKIE_NAME: 'auth',
 };
 
 /*

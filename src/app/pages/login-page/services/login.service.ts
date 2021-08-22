@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { CookieService } from 'ngx-cookie-service';
 
 import { environment } from 'src/environments/environment';
 
@@ -13,7 +15,9 @@ export class LoginService {
   username: string;
   userPassword: string;
 
-  userIsLoggedIn: boolean = false;
+  userIsLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject(
+    this.checkIfUserIsLoggedIn()
+  );
 
   /**
    * Creates an instance of LoginService. Sets default values for username and password. Checks if user is logged in.
@@ -22,9 +26,7 @@ export class LoginService {
    * @param {ToastrService} toastrService
    * @memberof LoginService
    */
-  constructor(private http: HttpClient) {
-    this.userIsLoggedIn = this.checkIfUserIsLoggedIn();
-
+  constructor(private http: HttpClient, private cookieService: CookieService) {
     this.username = '';
     this.userPassword = '';
   }
@@ -36,8 +38,7 @@ export class LoginService {
    * @returns boolean
    */
   checkIfUserIsLoggedIn(): boolean {
-    // TODO: check for user session cookies.
-    return false;
+    return this.cookieService.check(environment.AUTH_COOKIE_NAME);
   }
 
   /**
@@ -47,11 +48,17 @@ export class LoginService {
    * @returns void
    */
   login(email: string, password: string): Observable<any> {
-    return this.http.post(environment.API.LOGIN_URL, { email, password }).pipe(
-      map((response) => {
-        // TODO: store session cookie after user logs in.
-      })
-    );
+    return this.http
+      .post(
+        environment.API.LOGIN_URL,
+        { email, password },
+        { withCredentials: true }
+      )
+      .pipe(
+        map((response) => {
+          this.userIsLoggedIn.next(true);
+        })
+      );
   }
 
   /**
@@ -61,7 +68,8 @@ export class LoginService {
    * @returns void
    */
   logout(): void {
-    // TODO: delete session cookie after user logs out.
-    this.userIsLoggedIn = false;
+    this.cookieService.delete(environment.AUTH_COOKIE_NAME);
+    this.userIsLoggedIn.next(false);
+    console.log('User has been logged out');
   }
 }
