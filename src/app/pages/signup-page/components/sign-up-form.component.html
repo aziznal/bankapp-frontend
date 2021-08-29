@@ -58,14 +58,14 @@
         </mat-label>
 
         <input matInput [type]="hidePasswordField ? 'password' : 'text'" formControlName="password">
-        <button
+        <mat-icon
           mat-icon-button
           matSuffix
           (click)="hidePasswordField = !hidePasswordField"
           [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hidePasswordField">
-          <mat-icon>{{hidePasswordField ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
+          {{hidePasswordField ? 'visibility_off' : 'visibility'}}
+        </mat-icon>
 
         <mat-hint>
           8+ chars. Use both upper and lower case chars, at least one special char, and one number.
@@ -84,14 +84,14 @@
 
         <input matInput [type]="hidePasswordField ? 'password' : 'text'" formControlName="passwordConfirm"
           [errorStateMatcher]="errorMatcher">
-        <button
+        <mat-icon
           mat-icon-button
           matSuffix
           (click)="hidePasswordField = !hidePasswordField"
           [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hidePasswordField">
-          <mat-icon>{{hidePasswordField ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
+          {{hidePasswordField ? 'visibility_off' : 'visibility'}}
+        </mat-icon>
 
         <mat-error>Passwords Must Match</mat-error>
 

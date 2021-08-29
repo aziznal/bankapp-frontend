@@ -16,6 +16,8 @@ export class LoginFormComponent {
 
   formGroup: FormGroup;
 
+  hidePasswordField: boolean = true;
+
   /**
    *
    * Sets default values and initializes Login Service
