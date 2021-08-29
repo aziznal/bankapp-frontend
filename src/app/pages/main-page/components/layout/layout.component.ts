@@ -8,10 +8,5 @@ import { LoginService } from 'src/app/pages/login-page/services/login.service';
   styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent {
-  constructor(private loginService: LoginService, private router: Router) {}
-
-  logout() {
-    this.loginService.logout();
-    this.router.navigate(['/login']);
-  }
+  constructor() {}
 }
