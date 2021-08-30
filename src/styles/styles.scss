@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ngx-toastr/toastr.css";
+@import "reset.scss";
 
 html,
 body {
@@ -10,17 +11,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-// Destyling Anchors
-a,
-a:link,
-a:hover,
-a:active,
-a:visited {
-  color: darkblue;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-}
 
 .bordered {
   border: 1px solid black;

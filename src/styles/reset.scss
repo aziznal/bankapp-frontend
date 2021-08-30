@@ -1,0 +1,16 @@
+ul {
+  margin: 0;
+  list-style: none;
+}
+
+// Destyling Anchors
+a,
+a:link,
+a:hover,
+a:active,
+a:visited {
+  color: inherit;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
