@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ngx-toastr/toastr.css";
 
-
 html,
 body {
   height: 100%;
@@ -12,7 +11,11 @@ body {
 }
 
 // Destyling Anchors
-a, a:link, a:hover, a:active, a:visited {
+a,
+a:link,
+a:hover,
+a:active,
+a:visited {
   color: darkblue;
   font-weight: bold;
   text-decoration: none;
@@ -84,7 +87,6 @@ a, a:link, a:hover, a:active, a:visited {
 .my-5 {
   margin-block: 28px !important;
 }
-
 
 .mt-1 {
   margin-top: 12px !important;

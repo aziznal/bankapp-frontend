@@ -7,10 +7,5 @@ import { LoginService } from 'src/app/pages/login-page/services/login.service';
   styleUrls: ['./main-page-content.component.scss'],
 })
 export class MainPageContentComponent {
-  constructor(private loginService: LoginService, private router: Router) {}
-
-  logout() {
-    this.loginService.logout();
-    this.router.navigate(['/login']);
-  }
+  constructor() {}
 }

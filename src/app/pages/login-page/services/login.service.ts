@@ -70,6 +70,5 @@ export class LoginService {
   logout(): void {
     this.cookieService.delete(environment.AUTH_COOKIE_NAME);
     this.userIsLoggedIn.next(false);
-    console.log('User has been logged out');
   }
 }

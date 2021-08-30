@@ -7,7 +7,6 @@ export class LoginPageGuard implements CanActivate {
   constructor(private loginService: LoginService, private router: Router) {}
 
   canActivate() {
-    console.log(this.loginService.checkIfUserIsLoggedIn())
     if (this.loginService.checkIfUserIsLoggedIn()) {
       this.router.navigate(['/debug']);
       return false;
