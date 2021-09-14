@@ -1,5 +1,200 @@
-<div fxLayout="column" fxLayoutAlign="center center" class="fill-page">
-  <h3>
-    Layout Component
-  </h3>
+<div
+  class="fill-page-height"
+  fxLayout="column"
+  fxLayoutAlign="start center"
+>
+  <div
+    fxLayout="row"
+    fxFlexOffset="1.625rem"
+  >
+    <h3>Welcome, User</h3>
+  </div>
+
+  <!-- Info Blocks -->
+  <div
+    class="w-75"
+    fxLayout="row wrap"
+    fxLayoutAlign="center start"
+    fxLayoutGap="1rem"
+    fxFlexOffset="1rem"
+  >
+    <!-- Assets and Accounts -->
+    <div
+      fxLayout="column"
+      fxLayoutGap="1rem"
+      fxFlex="60"
+    >
+      <section
+        class="info-block horizontal-info-block"
+        fxLayout="column"
+        fxLayoutAlign="start center"
+      >
+        <span
+          class="info-block-title w-100"
+          fxLayout="row"
+          fxLayoutAlign="start start"
+        >Your Assets</span>
+
+        <div
+          class="w-100 h-100"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+        >
+          <div
+            class="assets-barchart"
+            fxFlexOffset="1.125rem"
+            fxFlex="60"
+          >
+            BARCHART
+          </div>
+
+          <div
+            class="net-balance"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            fxFlex
+          >
+            <h2>Net Balance</h2>
+            <h3 style="text-align: center;">
+              0,00<br>TL
+            </h3>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="info-block horizontal-info-block"
+        fxLayout="column"
+        fxLayoutAlign="start center"
+      >
+        <span
+          class="info-block-title w-100"
+          fxLayout="row"
+          fxLayoutAlign="start start"
+        >Your Accounts</span>
+
+        <div
+          class="w-100 h-100"
+          fxLayout="row"
+          fxLayoutAlign="center center"
+        >
+
+          <mat-icon
+            class="account-list-arrow"
+            (click)="scrollAccountsListToLeft()"
+          >
+            chevron_left
+          </mat-icon>
+
+          <div
+            class="banking-accounts-list w-100 h-100"
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            fxLayoutGap="1rem"
+            #accountsList
+          >
+
+            <div
+              class="banking-accounts-item"
+              fxLayout="column"
+              fxLayoutAlign="space-around"
+              *ngFor="let account of bankingAccounts"
+            >
+              <div>
+                <h3>Account No.</h3>
+                <p>{{ account.accountNo }}</p>
+              </div>
+
+              <div>
+                <h3>Balance</h3>
+                <p>{{ account.balance }} TL</p>
+              </div>
+            </div>
+
+          </div>
+
+          <mat-icon
+            class="account-list-arrow"
+            (click)="scrollAccountsListToRight()"
+          > chevron_right
+          </mat-icon>
+        </div>
+      </section>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div
+      class="info-block"
+      fxLayout="column"
+      fxFlex
+    >
+      <span
+        class="info-block-title w-100"
+        fxLayout="row"
+        fxLayoutAlign="start start"
+      >Recent Transactions</span>
+
+      <mat-form-field
+        class="order-by-form"
+        appearance="outline"
+        color="primary"
+      >
+        <mat-label>Order by</mat-label>
+        <mat-select>
+          <mat-option>
+            Date
+          </mat-option>
+
+          <mat-option>
+            Amount
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <ul
+        class="transaction-list w-100 h-100"
+        fxLayout="column"
+        fxLayoutAlign="start center"
+      >
+        <li
+          class="transaction-item"
+          fxLayout="column"
+          fxLayoutAlign="start start"
+          fxLayoutGap=".3rem"
+          *ngFor="let transaction of transactions"
+        >
+          <div
+            class="w-100 transaction-item-title"
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+          >
+            <span>
+              <strong>Transaction No.</strong> {{ transaction.transactionNo }}
+            </span>
+
+            <span
+              matTooltip="When this transaction took place"
+              matTooltipShowDelay="450"
+            >
+              {{ transaction.date | date }}
+            </span>
+          </div>
+
+          <div
+            class="transaction-item-account-no"
+            fxLayout="row"
+            matTooltip="Which of your accounts is related to this transaction"
+            matTooltipShowDelay="450"
+          >
+            <strong>Account No.</strong> 123456789
+          </div>
+
+          <div fxLayout="row">
+            {{ transaction.action }} {{ transaction.amount }} from {{ transaction.from }} to {{ transaction.to }}
+          </div>
+
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

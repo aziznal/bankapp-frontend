@@ -1,5 +1,133 @@
 @import "src/styles/_variables.scss";
 
-.fill-page {
+$infoBlockHeight: calc(48vh - #{$footer-height} - #{$navbar-height});
+
+.fill-page-height {
   height: calc(100vh - #{$footer-height} - #{$navbar-height}) !important;
+}
+
+.info-block {
+  height: calc(#{$infoBlockHeight} * 2 + 1rem);
+
+  border: 1px solid black;
+  border-radius: 8px;
+
+  padding-bottom: 1rem;
+}
+
+.horizontal-info-block {
+  height: $infoBlockHeight;
+  width: 100%;
+}
+
+.info-block-title {
+  padding: 1rem;
+
+  font-size: 1.625rem;
+  font-weight: bold;
+}
+
+.banking-accounts-list {
+  overflow-x: auto;
+  padding-inline: 1rem;
+
+  md-content {
+    scrollbar-width: none;
+  }
+
+  // hide scrollbar for firefox
+  scrollbar-width: none;
+
+  // hide scrollbar for chrome
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .banking-accounts-item {
+    min-width: 33%;
+    height: 80%;
+
+    border: 1px solid black;
+    border-radius: 4px;
+
+    padding: 0.425rem;
+
+    h3 {
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+
+      // margin-top: 0.325rem;
+      font-size: 1.425rem;
+    }
+  }
+}
+
+.account-list-arrow {
+  width: fit-content;
+  height: fit-content;
+
+  font-size: 3rem;
+
+  cursor: pointer;
+
+  // To make icon un-selectable (i.e like text)
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(1);
+  }
+}
+
+.order-by-form {
+  width: 50%;
+
+  margin-left: 1rem;
+}
+
+.transaction-list {
+  box-sizing: border-box;
+
+  overflow-y: auto;
+
+  // hide scrollbar for firefox
+  scrollbar-width: none;
+
+  // hide scrollbar for chrome
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  margin: 0;
+  padding: 1rem;
+
+  .transaction-item {
+    box-sizing: border-box;
+
+    margin: 0;
+    padding: 0.725rem;
+
+    min-height: 25%;
+    max-height: 25%;
+    width: 100%;
+
+    border: 1px solid black;
+  }
+
+  .transaction-item-account-no {
+    margin-top: 0.35rem;
+
+    font-size: 1.125rem;
+  }
 }
