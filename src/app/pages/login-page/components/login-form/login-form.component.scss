@@ -1,7 +1,31 @@
+@import "src/styles/_variables.scss";
+
+
 .form-field {
   width: 360px;
 }
 
-mat-icon {
-  cursor: pointer;
+
+.piggy-logo {
+  & > mat-icon {
+    width: fit-content;
+    height: fit-content;
+
+    font-size: 20rem;
+  }
+
+  .quotes {
+    mat-icon {
+      color: $primary;
+
+      margin-inline: .425rem;
+
+      transform: rotate(180deg);
+
+      // End quote has normal rotation
+      & + mat-icon {
+        transform: rotate(0deg);
+      }
+    }
+  }
 }

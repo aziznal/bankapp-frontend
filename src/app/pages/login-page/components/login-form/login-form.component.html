@@ -1,56 +1,102 @@
-<div fxLayout="column" fxLayoutAlign="center center" class="h-100 w-100">
-  <form fxLayout="column" fxLayoutAlign="center center" fxFlex="100" class="w-75 p-3" [formGroup]="formGroup">
-    <h2 class="mb-5">Sign-in to your account</h2>
+<div
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="1rem"
+>
+  <section
+    class="piggy-logo"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+  >
+    <mat-icon color="primary">
+      savings
+    </mat-icon>
 
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Email</mat-label>
+    <h3>Verpara Bank UnLtd.</h3>
+    <i style="font-size: .35rem;">No Copyrights because we're not a real bank.</i>
+  </section>
 
-      <input
-        matInput
-        name="email"
-        placeholder="Email"
-        type="email"
-        formControlName="email">
+  <section
+    fxLayout="column"
+    fxLayoutAlign="center center"
+  >
+    <form
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      fxFlex="100"
+      class="w-100 p-3"
+      [formGroup]="formGroup"
+    >
+      <h2 class="mb-5">Sign-in to your account</h2>
 
-      <mat-error>
-        Must provide valid email
-      </mat-error>
-    </mat-form-field>
+      <mat-form-field
+        appearance="outline"
+        class="form-field"
+      >
+        <mat-label>Email</mat-label>
 
-    <mat-form-field appearance="outline" class="form-field mt-1">
-      <mat-label>Password</mat-label>
+        <input
+          matInput
+          name="email"
+          placeholder="Email"
+          type="email"
+          formControlName="email"
+        >
 
-      <input
-        matInput
-        id="password"
-        name="password"
-        [type]="hidePasswordField ? 'password' : 'text'"
-        formControlName="password">
+        <mat-error>
+          Must provide valid email
+        </mat-error>
+      </mat-form-field>
 
-      <mat-icon
-        mat-icon-button
-        matSuffix
-        (click)="hidePasswordField = !hidePasswordField"
-        [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hidePasswordField">
-        {{hidePasswordField ? 'visibility_off' : 'visibility'}}
-      </mat-icon>
+      <mat-form-field
+        appearance="outline"
+        class="form-field mt-1"
+      >
+        <mat-label>Password</mat-label>
 
-      <mat-error>
-        Must provide valid password
-      </mat-error>
-    </mat-form-field>
+        <input
+          matInput
+          id="password"
+          name="password"
+          [type]="hidePasswordField ? 'password' : 'text'"
+          formControlName="password"
+        >
 
-    <div fxLayout="row" fxLayoutAlign="end center" class="form-field">
-      <button
-        mat-raised-button
-        type="submit"
-        (click)="login($event)"
-        color="primary"
-        #loginButton>
-        Login
-      </button>
-    </div>
-    <a routerLink="/sign-up" class="m-5">Create New Account</a>
-  </form>
+        <mat-icon
+          mat-icon-button
+          matSuffix
+          (click)="hidePasswordField = !hidePasswordField"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePasswordField"
+        >
+          {{hidePasswordField ? 'visibility_off' : 'visibility'}}
+        </mat-icon>
+
+        <mat-error>
+          Must provide valid password
+        </mat-error>
+      </mat-form-field>
+
+      <div
+        fxLayout="row"
+        fxLayoutAlign="end center"
+        class="form-field"
+      >
+        <button
+          mat-raised-button
+          type="submit"
+          (click)="login($event)"
+          color="primary"
+          #loginButton
+        >
+          Login
+        </button>
+      </div>
+      <a
+        routerLink="/sign-up"
+        class="m-5"
+      >Create New Account</a>
+    </form>
+  </section>
+
 </div>

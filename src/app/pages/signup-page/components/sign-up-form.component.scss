@@ -14,13 +14,20 @@ mat-icon {
     height: fit-content;
 
     font-size: 20rem;
+    cursor: default;
+
+    transition: 350ms color ease-in-out;
+
+    &:hover {
+      color: $accent;
+    }
   }
 
   .quotes {
     mat-icon {
       color: $primary;
 
-      margin-inline: .425rem;
+      margin-inline: 0.425rem;
 
       transform: rotate(180deg);
 
