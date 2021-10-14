@@ -56,7 +56,7 @@
           >
             <h2>Net Balance</h2>
             <h3 style="text-align: center;">
-              0,00<br>TL
+              {{ netBalance | currency: '₺ ' }}
             </h3>
           </div>
         </div>
@@ -98,7 +98,7 @@
               class="banking-accounts-item"
               fxLayout="column"
               fxLayoutAlign="space-around"
-              *ngFor="let account of bankingAccounts"
+              *ngFor="let account of user.accounts"
             >
               <div>
                 <h3>Account No.</h3>
@@ -107,7 +107,7 @@
 
               <div>
                 <h3>Balance</h3>
-                <p>{{ account.balance }} TL</p>
+                <p>{{ account.balance | currency: '₺ '}}</p>
               </div>
             </div>
 
@@ -140,12 +140,12 @@
         color="primary"
       >
         <mat-label>Order by</mat-label>
-        <mat-select>
-          <mat-option>
+        <mat-select (selectionChange)='reOrderTransactions()' [(value)]='transactionOrderType'>
+          <mat-option value='Date'>
             Date
           </mat-option>
 
-          <mat-option>
+          <mat-option value='Amount'>
             Amount
           </mat-option>
         </mat-select>
@@ -161,7 +161,7 @@
           fxLayout="column"
           fxLayoutAlign="start start"
           fxLayoutGap=".3rem"
-          *ngFor="let transaction of transactions"
+          *ngFor="let transaction of allTransactions"
         >
           <div
             class="w-100 transaction-item-title"
@@ -180,17 +180,18 @@
             </span>
           </div>
 
-          <div
+          <!-- <div
             class="transaction-item-account-no"
             fxLayout="row"
             matTooltip="Which of your accounts is related to this transaction"
             matTooltipShowDelay="450"
           >
-            <strong>Account No.</strong> 123456789
-          </div>
+            <strong>Account No.</strong> {{ transaction.accountNo }}
+          </div> -->
 
           <div fxLayout="row">
-            {{ transaction.action }} {{ transaction.amount }} TL from {{ transaction.from }} to {{ transaction.to }}
+            {{ transaction.action }} {{ transaction.amount | currency: '₺' }} {{ transaction.action === 'SENT' ? 'to ' +
+            transaction.to : 'from ' + transaction.from }}
           </div>
 
         </li>
