@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
-import { User } from 'src/app/models/user.model';
 
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
-
-import { DebugPageService } from '../../services/debug-page.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+import { LoginService } from 'src/app/pages/login-page/services/login.service';
+import { DebugPageService } from '../../services/debug-page.service';
+
+import { User } from 'src/app/models/user.model';
+import { Transaction } from 'src/app/models/transaction.model';
+
 import { environment } from 'src/environments/environment';
 
 @UntilDestroy()
@@ -16,18 +20,42 @@ import { environment } from 'src/environments/environment';
 export class DebugSetupComponent {
   mockUser: User;
 
+  mockUserTransactions: Transaction[];
+
   constructor(
     private toastrService: ToastrService,
     private debugService: DebugPageService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private loginService: LoginService
   ) {
-    this.mockUser = new User(
-      'Aziz',
-      'abodenaal@gmail.com',
-      'password',
-      new Date('1999-08-01'),
-      '+90 534 620 64 60'
+    // this.mockUser = new User(
+    //   'Aziz',
+    //   'abodenaal@gmail.com',
+    //   'password',
+    //   new Date('1999-08-01'),
+    //   '+90 534 620 64 60'
+    // );
+
+    this.mockUser = this.loginService.getUser();
+
+    this.mockUserTransactions = this.getSpreadUserTransactions();
+  }
+
+  getSpreadUserTransactions(): Transaction[] {
+    let allTransactions = [] as Transaction[];
+
+    this.mockUser.accounts?.forEach((account) => {
+      account.transactionHistory?.forEach((transaction) => {
+        allTransactions.push(transaction);
+      });
+    });
+
+    // Order by date
+    allTransactions = allTransactions.sort(
+      (a, b) => a.date.getTime() - b.date.getDate()
     );
+
+    return allTransactions;
   }
 
   sendGetRequest() {

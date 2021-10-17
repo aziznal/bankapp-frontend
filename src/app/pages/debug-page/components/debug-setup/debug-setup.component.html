@@ -1,60 +1,114 @@
-<div fxLayout="column" fxLayoutAlign="center center">
+<div
+  fxLayout="column"
+  fxLayoutAlign="center center"
+>
 
-  <app-barchart></app-barchart>
+  <div
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    style="padding: 3rem; background-color: aliceblue; padding-left: 10rem;"
+  >
+    <app-barchart
+      [data]="mockUserTransactions"
+      x="date"
+      y="amount"
+    ></app-barchart>
+  </div>
 
   <h1>
     Debug Page
   </h1>
 
-  <div fxLayout="column" fxLayoutAlign="center center" class="mb-6">
+  <div
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    class="mb-6"
+  >
     <h2>
       GET Request Test
     </h2>
 
-    <button mat-raised-button color="primary" (click)="sendGetRequest()">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="sendGetRequest()"
+    >
       GET
     </button>
 
   </div>
 
 
-  <div fxLayout="column" fxLayoutAlign="center center" class="mb-6">
+  <div
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    class="mb-6"
+  >
     <h2>
       POST request test
     </h2>
 
-    <button mat-raised-button color="accent" (click)="sendPostRequest()">
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="sendPostRequest()"
+    >
       POST
     </button>
 
   </div>
 
-  <div fxLayout="column" fxLayoutAlign="center center" class="mb-6">
+  <div
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    class="mb-6"
+  >
     <h2>
       New Account Request
     </h2>
 
-    <button mat-raised-button color="accent" (click)="sendNewAccountRequest()">
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="sendNewAccountRequest()"
+    >
       POST
     </button>
 
   </div>
 
 
-  <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1em" class="mb-6">
+  <div
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    fxLayoutGap="1em"
+    class="mb-6"
+  >
     <h2>
       Cookie Management
     </h2>
 
-    <button mat-raised-button color="primary" (click)="checkAvailableCookies()">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="checkAvailableCookies()"
+    >
       Get All Cookies
     </button>
 
-    <button mat-raised-button color="primary" (click)="getAuthenticatedCookie()">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="getAuthenticatedCookie()"
+    >
       Get Authenticated Cookie
     </button>
 
-    <button mat-raised-button color="warn" (click)="deleteAllAvailableCookies()">
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="deleteAllAvailableCookies()"
+    >
       Delete All Cookies
     </button>
 
