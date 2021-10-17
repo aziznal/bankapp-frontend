@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/pages/login-page/services/login.service';
 
@@ -8,7 +9,13 @@ import { LoginService } from 'src/app/pages/login-page/services/login.service';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
+  @Input('sidenav') sidenav!: MatSidenav;
+
   constructor(private loginService: LoginService, private router: Router) {}
+
+  toggleSidenav() {
+    this.sidenav.toggle();
+  }
 
   logout() {
     this.loginService.logout();

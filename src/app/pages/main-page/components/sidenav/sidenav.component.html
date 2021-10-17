@@ -1,0 +1,61 @@
+<div
+  class="sidenav"
+  fxLayout="column"
+  fxLayoutAlign="space-between start"
+  fxFill
+>
+  <a
+    routerLink=""
+    class="nav-logo"
+  >
+    <mat-icon>savings</mat-icon>
+    Verpara
+  </a>
+
+  <nav
+    fxLayout="column"
+    fxLayoutAlign="start center"
+    fxFlex
+    fxFill
+  >
+    <ul
+      fxLayout="column"
+      fxFlexFill
+    >
+      <li class="nav-link">
+        <a [routerLink]="''">
+          <mat-icon>home</mat-icon>
+          Home
+        </a>
+      </li>
+      <li class="nav-link">
+        <a [routerLink]="''">
+          <mat-icon>send</mat-icon>
+          Send Money
+        </a>
+      </li>
+
+      <li class="nav-link">
+        <a [routerLink]="''">
+          <mat-icon>settings</mat-icon>
+          Account Settings
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div
+    fxLayout="row"
+    fxLayoutAlign="end center"
+    class="w-100"
+  >
+    <button
+      mat-flat-button
+      color="accent"
+      class="mb-2 mr-2"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+  </div>
+</div>

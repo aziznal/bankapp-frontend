@@ -6,12 +6,13 @@
   <div
     fxLayout="column"
     fxLayoutAlign="center center"
-    style="padding: 3rem; background-color: aliceblue; padding-left: 10rem;"
   >
     <app-barchart
       [data]="mockUserTransactions"
       x="date"
       y="amount"
+      [width]=400
+      [height]=250
     ></app-barchart>
   </div>
 

@@ -1,36 +1,17 @@
-<div class="navbar" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="3rem">
-  <nav fxLayout="row" fxLayoutAlign="start center" fxFlex>
-    <ul fxLayout="row" fxFlexFill>
-      <li class="nav-link">
-        <a [routerLink]="''">
-          <mat-icon>home</mat-icon>
-          Home
-        </a>
-      </li>
-      <li class="nav-link">
-        <a [routerLink]="''">
-          <mat-icon>send</mat-icon>
-          Send Money
-        </a>
-      </li>
+<div
+  class="navbar"
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+>
+  <button
+    mat-icon-button
+    (click)='toggleSidenav()'
+    class="toggle-sidenav-button"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
 
-      <li class="nav-link">
-        <a [routerLink]="''">
-          <mat-icon>settings</mat-icon>
-          Account Settings
-        </a>
-      </li>
-    </ul>
-  </nav>
-
-  <a routerLink="" class="nav-logo">
-    <mat-icon>savings</mat-icon>
-    Verpara
-  </a>
-
-  <div fxLayout="row" fxLayoutAlign="end center" fxFlex>
-    <button mat-flat-button color="accent" (click)="logout()">
-      Logout
-    </button>
-  </div>
+  <button mat-flat-button color="accent" (click)="logout()">
+    logout
+  </button>
 </div>

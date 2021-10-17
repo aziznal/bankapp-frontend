@@ -1,5 +1,13 @@
 @import "src/styles/_variables.scss";
 
+.toggle-sidenav-button {
+  mat-icon {
+    font-size: 2rem;
+    width: fit-content;
+    height: fit-content;
+  }
+}
+
 .navbar {
   color: white;
 
@@ -43,7 +51,6 @@
   mat-icon {
     font-size: 2rem;
   }
-
 }
 
 .nav-link {
