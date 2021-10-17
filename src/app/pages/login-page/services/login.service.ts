@@ -16,13 +16,13 @@ const DEFAULT_USER: User = {
   password: 'password',
   accounts: [
     {
-      accountNo: '123456',
-      balance: 1250,
+      accountNo: Math.round(Math.random() * 10 ** 6).toString(),
+      balance: Math.round(Math.random() * 10 ** 4),
       ownerName: 'John Doe',
       transactionHistory: [
         {
           action: 'RECEIVED',
-          amount: 100,
+          amount: Math.round(Math.random() * 1000),
           date: new Date('2021-08-01'),
           from: 'Jane Doe',
           to: 'John Doe',
@@ -30,7 +30,7 @@ const DEFAULT_USER: User = {
         },
         {
           action: 'SENT',
-          amount: 250,
+          amount: Math.round(Math.random() * 1000),
           date: new Date('2021-08-07'),
           from: 'John Doe',
           to: 'Jane Doe',
@@ -38,7 +38,7 @@ const DEFAULT_USER: User = {
         },
         {
           action: 'RECEIVED',
-          amount: 100,
+          amount: Math.round(Math.random() * 1000),
           date: new Date('2021-09-23'),
           from: 'Jane Doe',
           to: 'John Doe',
@@ -47,13 +47,13 @@ const DEFAULT_USER: User = {
       ],
     },
     {
-      accountNo: '987654',
+      accountNo: Math.round(Math.random() * 10 ** 6).toString(),
       balance: 3500,
       ownerName: 'John Doe',
       transactionHistory: [
         {
           action: 'RECEIVED',
-          amount: 100,
+          amount: Math.round(Math.random() * 1000),
           date: new Date('2021-08-13'),
           from: 'Jane Doe',
           to: 'John Doe',
@@ -61,7 +61,7 @@ const DEFAULT_USER: User = {
         },
         {
           action: 'SENT',
-          amount: 350,
+          amount: Math.round(Math.random() * 1000),
           date: new Date('2021-08-19'),
           from: 'John Doe',
           to: 'Jane Doe',
@@ -69,7 +69,7 @@ const DEFAULT_USER: User = {
         },
         {
           action: 'RECEIVED',
-          amount: 50,
+          amount: Math.round(Math.random() * 1000),
           date: new Date('2021-09-07'),
           from: 'Jane Doe',
           to: 'John Doe',
@@ -77,7 +77,7 @@ const DEFAULT_USER: User = {
         },
         {
           action: 'RECEIVED',
-          amount: 900,
+          amount: Math.round(Math.random() * 1000),
           date: new Date('2021-09-09'),
           from: 'Jane Doe',
           to: 'John Doe',
@@ -85,7 +85,7 @@ const DEFAULT_USER: User = {
         },
         {
           action: 'RECEIVED',
-          amount: 500,
+          amount: Math.round(Math.random() * 1000),
           date: new Date('2021-09-10'),
           from: 'Jane Doe',
           to: 'John Doe',
@@ -93,13 +93,69 @@ const DEFAULT_USER: User = {
         },
         {
           action: 'RECEIVED',
-          amount: 250,
+          amount: Math.round(Math.random() * 1000),
           date: new Date('2021-09-15'),
+          from: 'Jane Doe',
+          to: 'John Doe',
+          transactionNo: '10',
+        },
+        {
+          action: 'RECEIVED',
+          amount: Math.round(Math.random() * 1000),
+          date: new Date('2021-09-16'),
+          from: 'Jane Doe',
+          to: 'John Doe',
+          transactionNo: '16',
+        },
+        {
+          action: 'RECEIVED',
+          amount: Math.round(Math.random() * 1000),
+          date: new Date('2021-09-17'),
+          from: 'Jane Doe',
+          to: 'John Doe',
+          transactionNo: '17',
+        },
+        {
+          action: 'RECEIVED',
+          amount: Math.round(Math.random() * 1000),
+          date: new Date('2021-09-18'),
+          from: 'Jane Doe',
+          to: 'John Doe',
+          transactionNo: '18',
+        },
+        {
+          action: 'RECEIVED',
+          amount: Math.round(Math.random() * 1000),
+          date: new Date('2021-09-19'),
           from: 'Jane Doe',
           to: 'John Doe',
           transactionNo: '19',
         },
       ],
+    },
+    {
+      accountNo: Math.round(Math.random() * 10 ** 6).toString(),
+      balance: Math.round(Math.random() * 10 ** 4),
+      ownerName: 'John Doe',
+      transactionHistory: [],
+    },
+    {
+      accountNo: Math.round(Math.random() * 10 ** 6).toString(),
+      balance: Math.round(Math.random() * 10 ** 4),
+      ownerName: 'John Doe',
+      transactionHistory: [],
+    },
+    {
+      accountNo: Math.round(Math.random() * 10 ** 6).toString(),
+      balance: Math.round(Math.random() * 10 ** 4),
+      ownerName: 'John Doe',
+      transactionHistory: [],
+    },
+    {
+      accountNo: Math.round(Math.random() * 10 ** 6).toString(),
+      balance: Math.round(Math.random() * 10 ** 4),
+      ownerName: 'John Doe',
+      transactionHistory: [],
     },
   ],
 };
@@ -144,8 +200,7 @@ export class LoginService {
    * @returns boolean
    */
   checkIfUserIsLoggedIn(): boolean {
-    // return this.cookieService.check(environment.AUTH_COOKIE_NAME);
-    return true;
+    return this.cookieService.check(environment.AUTH_COOKIE_NAME);
   }
 
   /**
@@ -155,19 +210,17 @@ export class LoginService {
    * @returns void
    */
   login(email: string, password: string): Observable<any> {
-    // return this.http
-    //   .post(
-    //     environment.API.LOGIN_URL,
-    //     { email, password },
-    //     { withCredentials: true }
-    //   )
-    //   .pipe(
-    //     map((response) => {
-    //       this.userIsLoggedIn.next(true);
-    //     })
-    //   );
-
-    return of(this.userIsLoggedIn.next(true));
+    return this.http
+      .post(
+        environment.API.LOGIN_URL,
+        { email, password },
+        { withCredentials: true }
+      )
+      .pipe(
+        map((response) => {
+          this.userIsLoggedIn.next(true);
+        })
+      );
   }
 
   /**
@@ -177,7 +230,7 @@ export class LoginService {
    * @returns void
    */
   logout(): void {
-    // this.cookieService.delete(environment.AUTH_COOKIE_NAME);
+    this.cookieService.delete(environment.AUTH_COOKIE_NAME);
     this.userIsLoggedIn.next(false);
   }
 }

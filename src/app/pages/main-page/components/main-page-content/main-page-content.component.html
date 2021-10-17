@@ -7,12 +7,12 @@
     fxLayout="row"
     fxFlexOffset="1.625rem"
   >
-    <h3>Welcome, User</h3>
+    <h3>Welcome, {{ user.name }}!</h3>
   </div>
 
   <!-- Info Blocks -->
   <div
-    class="w-75"
+    class="w-100 p-1"
     fxLayout="row wrap"
     fxLayoutAlign="center start"
     fxLayoutGap="1rem"
@@ -24,49 +24,6 @@
       fxLayoutGap="1rem"
       fxFlex="60"
     >
-      <section
-        class="info-block horizontal-info-block"
-        fxLayout="column"
-        fxLayoutAlign="start center"
-      >
-        <span
-          class="info-block-title w-100"
-          fxLayout="row"
-          fxLayoutAlign="start start"
-        >Your Assets</span>
-
-        <div
-          class="w-100 h-100"
-          fxLayout="row"
-          fxLayoutAlign="start center"
-        >
-          <div
-            class="assets-barchart"
-            fxFlexOffset="1.125rem"
-            fxFlex="60"
-          >
-            <app-barchart
-              [data]="allTransactions"
-              x="date"
-              y="amount"
-              [width]=475
-              [height]=285
-            ></app-barchart>
-          </div>
-
-          <div
-            class="net-balance"
-            fxLayout="column"
-            fxLayoutAlign="center center"
-            fxFlex
-          >
-            <h2>Net Balance</h2>
-            <h3 style="text-align: center;">
-              {{ netBalance | currency: '₺ ' }}
-            </h3>
-          </div>
-        </div>
-      </section>
 
       <section
         class="info-block horizontal-info-block"
@@ -95,27 +52,28 @@
           <div
             class="banking-accounts-list w-100 h-100"
             fxLayout="row"
-            fxLayoutAlign="center center"
+            fxLayoutAlign="start center"
             fxLayoutGap="1rem"
             #accountsList
           >
 
-            <div
+            <mat-card
               class="banking-accounts-item"
               fxLayout="column"
-              fxLayoutAlign="space-around"
               *ngFor="let account of user.accounts"
             >
-              <div>
-                <h3>Account No.</h3>
-                <p>{{ account.accountNo }}</p>
-              </div>
+              <mat-card-title>
+                Account No. {{ account.accountNo }}
+              </mat-card-title>
 
-              <div>
+              <mat-card-content
+                fxLayout="column"
+                fxFlexOffset="1rem"
+              >
                 <h3>Balance</h3>
                 <p>{{ account.balance | currency: '₺ '}}</p>
-              </div>
-            </div>
+              </mat-card-content>
+            </mat-card>
 
           </div>
 
@@ -126,6 +84,50 @@
           </mat-icon>
         </div>
       </section>
+
+      <section
+        class="info-block horizontal-info-block"
+        fxLayout="column"
+        fxLayoutAlign="start center"
+      >
+        <span
+          class="info-block-title w-100"
+          fxLayout="row"
+          fxLayoutAlign="start start"
+        >Your Assets</span>
+
+        <div
+          class="w-100 h-100 assets-info-block"
+          fxLayout="row"
+          fxLayoutAlign="start start"
+        >
+          <div
+            class="assets-barchart"
+            fxFlexOffset="1.125rem"
+            fxFlex
+          >
+            <app-barchart
+              [data]="allTransactions"
+              x="date"
+              y="amount"
+              [width]=900
+              [height]=285
+            ></app-barchart>
+          </div>
+
+          <div
+            class="net-balance"
+            fxLayout="column"
+            fxLayoutAlign="start center"
+          >
+            <h2>Net Balance</h2>
+            <h3 style="text-align: center;">
+              {{ netBalance | currency: '₺ ' }}
+            </h3>
+          </div>
+        </div>
+      </section>
+
     </div>
 
     <!-- Recent Transactions -->
@@ -142,7 +144,7 @@
 
       <mat-form-field
         class="order-by-form"
-        appearance="outline"
+        appearance="fill"
         color="primary"
       >
         <mat-label>Order by</mat-label>
@@ -165,7 +167,7 @@
         fxLayout="column"
         fxLayoutAlign="start center"
       >
-        <li
+        <mat-card
           class="transaction-item"
           fxLayout="column"
           fxLayoutAlign="start start"
@@ -203,7 +205,7 @@
             transaction.to : 'from ' + transaction.from }}
           </div>
 
-        </li>
+        </mat-card>
       </ul>
     </div>
   </div>
