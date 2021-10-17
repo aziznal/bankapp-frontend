@@ -11,6 +11,9 @@ export class BarchartComponent {
   @Input('x') x!: string;
   @Input('y') y!: string;
 
+  @Input('width') width!: number;
+  @Input('height') height!: number;
+
   @ViewChild('chartContainer') chartContainer!: ElementRef<HTMLDivElement>;
 
   constructor() {}
@@ -79,36 +82,39 @@ export class BarchartComponent {
 
   makeChart() {
     // set the dimensions and margins of the graph
-    const margin = { top: 10, right: 30, bottom: 100, left: 50 },
-      width = 800 - margin.left - margin.right,
-      height = 600 - margin.top - margin.bottom;
+    const margin = { top: 10, right: 10, bottom: 100, left: 50 };
+    (this.width = this.width - margin.left - margin.right),
+      (this.height = this.height - margin.top - margin.bottom);
 
     // append the svg object to the body of the page
     let svg = d3
       .select(this.chartContainer.nativeElement)
       .append('svg')
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
+      .attr('width', this.width + margin.left + margin.right)
+      .attr('height', this.height + margin.top + margin.bottom)
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     // X axis
     const Axis = d3
       .scaleBand()
-      .range([0, width])
+      .range([0, this.width])
       .domain(this.data.map((d) => d[this.x].toString().substring(0, 15)))
       .padding(0.2);
 
     svg
       .append('g')
-      .attr('transform', `translate(0,${height})`)
+      .attr('transform', `translate(0,${this.height})`)
       .call(d3.axisBottom(Axis))
       .selectAll('text')
       .attr('transform', 'translate(-10,0)rotate(-45)')
       .style('text-anchor', 'end');
 
     // Add Y axis
-    const yAxis = d3.scaleLinear().domain([0, 500]).range([height, 0]);
+    const yAxis = d3
+      .scaleLinear()
+      .domain([0, d3.max(this.data, (d) => d[this.y]) * 1.1])
+      .range([this.height, 0]);
 
     svg.append('g').call(d3.axisLeft(yAxis));
 
@@ -123,7 +129,7 @@ export class BarchartComponent {
       .attr(this.x, (d) => d[this.x])
       .attr(this.y, (d) => d[this.y])
       // no bar at the beginning thus:
-      .attr('height', (d) => height - yAxis(0)) // always equal to 0
+      .attr('height', (d) => this.height - yAxis(0)) // always equal to 0
       .attr('y', (d) => yAxis(0));
 
     // Animation
@@ -132,7 +138,7 @@ export class BarchartComponent {
       .transition()
       .duration(800)
       .attr('y', (d: any) => yAxis(d[this.y]))
-      .attr('height', (d: any) => height - yAxis(d[this.y]))
+      .attr('height', (d: any) => this.height - yAxis(d[this.y]))
       .delay((d, i) => {
         return i * 100;
       });

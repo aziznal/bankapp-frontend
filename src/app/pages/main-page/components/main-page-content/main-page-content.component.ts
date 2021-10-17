@@ -66,7 +66,7 @@ export class MainPageContentComponent {
    */
   orderTransactionsByDate(): Transaction[] {
     return this.allTransactions.sort(
-      (a, b) => b.date.getTime() - a.date.getTime()
+      (a, b) => a.date.getTime() - b.date.getTime()
     );
   }
 

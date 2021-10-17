@@ -5,6 +5,7 @@ import { PagesRoutingModule } from './pages.routing';
 import { SignUpPageModule } from './signup-page/sign-up-page.module';
 import { DebugPageModule } from './debug-page/debug-page.module';
 import { MainPageModule } from './main-page/main-page.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [],
@@ -15,6 +16,7 @@ import { MainPageModule } from './main-page/main-page.module';
     SignUpPageModule,
     DebugPageModule,
     MainPageModule,
+    SharedModule,
   ],
 
   providers: [],

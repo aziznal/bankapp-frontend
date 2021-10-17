@@ -7,9 +7,10 @@ import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { BarchartComponent } from '../components/barchart/barchart.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [BarchartComponent],
 
   imports: [
     MaterialModule,
@@ -27,6 +28,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ReactiveFormsModule,
     RouterModule,
     CommonModule,
+
+    BarchartComponent,
   ],
 
   providers: [],
