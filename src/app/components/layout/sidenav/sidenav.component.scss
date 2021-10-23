@@ -7,6 +7,7 @@
   border-top: $navbar-height solid $primary;
 
   overflow-x: hidden;
+  overflow-y: hidden;
 
   ul {
     margin: 0;
@@ -18,16 +19,16 @@
       display: flex;
       place-content: left;
       place-items: center;
-      
+
       width: 100%;
-      
+
       transition: 75ms color, 75ms background-color;
 
       &:hover {
         color: black;
         background-color: rgb(223, 223, 223);
       }
-      
+
       &.active-link {
         color: blue;
         background-color: rgb(223, 223, 223);
@@ -47,7 +48,6 @@
         gap: 0.45rem;
 
         font-weight: bold;
-
       }
     }
   }
