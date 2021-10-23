@@ -1,0 +1,17 @@
+<mat-sidenav-container>
+
+  <mat-sidenav
+    [opened]="true"
+    mode="side"
+    style="width: 15%"
+    #sidenav
+  >
+    <app-sidenav></app-sidenav>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <app-navbar [sidenav]='sidenav'></app-navbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

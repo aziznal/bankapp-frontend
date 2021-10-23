@@ -1,0 +1,18 @@
+@import "src/styles/_variables.scss";
+
+.footer {
+  color: white;
+
+  background-color: $primary;
+
+  width: 100%;
+  height: $footer-height;
+
+  padding-inline: 1rem;
+
+  a {
+    &:hover {
+      color: $accent;
+    }
+  }
+}
