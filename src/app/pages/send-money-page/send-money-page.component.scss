@@ -1,9 +1,6 @@
 @import "src/styles/_variables.scss";
 
-.fill-page-height {
-  // height: calc(100vh - #{$footer-height} - #{$navbar-height}) !important;
-  height: $page-content-height !important;
-}
+
 
 .send-money-form {
   height: 50%;

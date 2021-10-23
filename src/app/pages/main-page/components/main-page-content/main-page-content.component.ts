@@ -3,6 +3,8 @@ import { LoginService } from 'src/app/pages/login-page/services/login.service';
 
 import { User } from 'src/app/models/user.model';
 import { Transaction } from 'src/app/models/transaction.model';
+import { BankingAccount } from 'src/app/models/banking-account.model';
+import { Router } from '@angular/router';
 
 // TODO: make barchart width dynamic (make it fit its container's width)
 
@@ -17,7 +19,7 @@ export class MainPageContentComponent {
   allTransactions: Transaction[];
   transactionOrderType: 'Date' | 'Amount' = 'Date';
 
-  constructor(private loginService: LoginService) {
+  constructor(private loginService: LoginService, private router: Router) {
     this.user = this.loginService.getUser();
     this.netBalance = this.getNetBalance();
 
@@ -103,5 +105,9 @@ export class MainPageContentComponent {
       left: -225,
       behavior: 'smooth',
     });
+  }
+
+  navigateToAccountPage(account: BankingAccount) {
+    this.router.navigate([`account`, `${account.accountNo}`]);
   }
 }

@@ -11,6 +11,7 @@ import { DebugSetupComponent } from './debug-page/components/debug-setup/debug-s
 import { MainPageContentComponent } from './main-page/components/main-page-content/main-page-content.component';
 import { SendMoneyPageComponent } from './send-money-page/send-money-page.component';
 import { AccountSettingsPageComponent } from './account-settings-page/account-settings-page.component';
+import { SingleBankAccountPageComponent } from './single-bank-account-page/single-bank-account-page.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,11 @@ const routes: Routes = [
         path: 'account-settings',
         canActivate: [AuthGuard],
         component: AccountSettingsPageComponent,
+      },
+      {
+        path: 'account/:accountNo',
+        canActivate: [AuthGuard],
+        component: SingleBankAccountPageComponent,
       },
     ],
   },

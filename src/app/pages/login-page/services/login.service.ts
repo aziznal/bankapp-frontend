@@ -16,7 +16,7 @@ const DEFAULT_USER: User = {
   password: 'password',
   accounts: [
     {
-      accountNo: Math.round(Math.random() * 10 ** 6).toString(),
+      accountNo: "1",
       balance: Math.round(Math.random() * 10 ** 4),
       ownerName: 'John Doe',
       transactionHistory: [

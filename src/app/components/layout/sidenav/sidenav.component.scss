@@ -2,8 +2,9 @@
 
 .sidenav {
   color: $primary;
-  
-  // border-left: 2rem solid $primary;
+
+  border: none;
+  border-top: $navbar-height solid $primary;
 
   overflow-x: hidden;
 

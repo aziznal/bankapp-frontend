@@ -2,11 +2,6 @@
 
 $infoBlockHeight: calc(48vh - #{$footer-height} - #{$navbar-height});
 
-.fill-page-height {
-  // height: calc(100vh - #{$footer-height} - #{$navbar-height}) !important;
-  height: $page-content-height !important;
-}
-
 .info-block {
   // background-color: $off-white;
   background-color: rgb(249, 249, 249);

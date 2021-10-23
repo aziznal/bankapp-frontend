@@ -56,11 +56,11 @@
             fxLayoutGap="1rem"
             #accountsList
           >
-
             <mat-card
               class="banking-accounts-item"
               fxLayout="column"
               *ngFor="let account of user.accounts"
+              (click)="navigateToAccountPage(account)"
             >
               <mat-card-title>
                 Account No. {{ account.accountNo }}
