@@ -15,6 +15,9 @@ body {
   border: 1px solid black;
 }
 
+.w-30 {
+  width: 30% !important;
+}
 .w-75 {
   width: 75% !important;
 }
@@ -44,6 +47,24 @@ body {
 .p-5 {
   padding: 28px !important;
 }
+
+.py-1 {
+  padding-block: 12px !important;
+}
+.py-2 {
+  padding-block: 16px !important;
+}
+.py-3 {
+  padding-block: 20px !important;
+}
+.py-4 {
+  padding-block: 24px !important;
+}
+.py-5 {
+  padding-block: 28px !important;
+}
+
+
 
 .m-1 {
   margin: 12px !important;

@@ -4,6 +4,8 @@ import { LoginService } from 'src/app/pages/login-page/services/login.service';
 import { User } from 'src/app/models/user.model';
 import { Transaction } from 'src/app/models/transaction.model';
 
+// TODO: make barchart width dynamic (make it fit its container's width)
+
 @Component({
   templateUrl: './main-page-content.component.html',
   styleUrls: ['./main-page-content.component.scss'],

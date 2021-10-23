@@ -4,3 +4,45 @@
   // height: calc(100vh - #{$footer-height} - #{$navbar-height}) !important;
   height: $page-content-height !important;
 }
+
+.settings-form {
+  width: 33%;
+  height: auto;
+
+  background-color: white;
+
+  padding: 1.375rem;
+
+  border: 1px solid rgb(196, 196, 196);
+  border-radius: 9px;
+
+  & > * {
+    width: 100%;
+  }
+
+  // Form Title
+  & > h3 {
+    margin-block: 0 2em;
+  }
+}
+
+.user-accounts-list {
+  height: 300px;
+  overflow-y: auto;
+
+  .user-account {
+    background-color: rgb(251, 251, 251);
+
+    width: 100%;
+    box-sizing: border-box;
+
+    position: relative;
+
+    mat-card-actions {
+      position: absolute;
+
+      top: 0.1rem;
+      right: 0.35rem;
+    }
+  }
+}

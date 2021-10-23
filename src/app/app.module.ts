@@ -31,7 +31,9 @@ import { NavbarComponent } from './components/layout/navbar/navbar.component';
     HttpClientModule,
     BrowserAnimationsModule,
 
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right'
+    }),
 
     AppRoutingModule,
     SharedModule,
