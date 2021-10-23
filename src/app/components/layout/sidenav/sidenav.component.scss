@@ -26,6 +26,11 @@
         color: black;
         background-color: rgb(223, 223, 223);
       }
+      
+      &.active-link {
+        color: blue;
+        background-color: rgb(223, 223, 223);
+      }
 
       a {
         display: flex;

@@ -22,20 +22,32 @@
       fxLayout="column"
       fxFlexFill
     >
-      <li class="nav-link">
+      <li
+        class="nav-link"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{exact: true}"
+      >
         <a [routerLink]="''">
           <mat-icon>home</mat-icon>
           Home
         </a>
       </li>
-      <li class="nav-link">
+      <li
+        class="nav-link"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{exact: true}"
+      >
         <a [routerLink]="'send-money'">
           <mat-icon>send</mat-icon>
           Send Money
         </a>
       </li>
 
-      <li class="nav-link">
+      <li
+        class="nav-link"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{exact: true}"
+      >
         <a [routerLink]="'account-settings'">
           <mat-icon>settings</mat-icon>
           Account Settings

@@ -1,1 +1,53 @@
-<p>send-money-page works!</p>
+<div
+  class="fill-page-height"
+  fxLayout="column"
+  fxLayoutAlign="start center"
+>
+  <form
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    fxFill
+    [formGroup]="formGroup"
+  >
+    <h3>Send money to someone using their email address or account id</h3>
+    <mat-form-field
+      appearance="outline"
+      fxLayout="row"
+    >
+      <mat-label>Send To</mat-label>
+      <input
+        type="text"
+        matInput
+        autocomplete="none"
+        formControlName="sendTo"
+      >
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      fxLayout="row"
+    >
+      <mat-label>Amount</mat-label>
+      <input
+        type="number"
+        matInput
+        min="1"
+        autocomplete="none"
+        formControlName="amount"
+        style="text-align: right;"
+      >
+      <span matPrefix>₺</span>
+    </mat-form-field>
+
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="sendMoney($event)"
+    >
+      Send
+      <mat-icon>attach_money</mat-icon>
+      <mat-icon>send</mat-icon>
+    </button>
+  </form>
+</div>
