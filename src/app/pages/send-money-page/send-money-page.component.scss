@@ -4,3 +4,18 @@
   // height: calc(100vh - #{$footer-height} - #{$navbar-height}) !important;
   height: $page-content-height !important;
 }
+
+.send-money-form {
+  height: 50%;
+
+  padding: 2rem;
+
+  background-color: white;
+
+  border: 1px solid rgb(214, 214, 214);
+  border-radius: 9px;
+
+  & > * {
+    width: 100%;
+  }
+}
