@@ -6,9 +6,14 @@ import { SignUpPageModule } from './signup-page/sign-up-page.module';
 import { DebugPageModule } from './debug-page/debug-page.module';
 import { MainPageModule } from './main-page/main-page.module';
 import { SharedModule } from '../shared/shared.module';
+import { SendMoneyPageComponent } from './send-money-page/send-money-page.component';
+import { AccountSettingsPageComponent } from './account-settings-page/account-settings-page.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    SendMoneyPageComponent,
+    AccountSettingsPageComponent
+  ],
 
   imports: [
     LoginPageModule,
