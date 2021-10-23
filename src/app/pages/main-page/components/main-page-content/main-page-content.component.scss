@@ -9,7 +9,7 @@ $infoBlockHeight: calc(48vh - #{$footer-height} - #{$navbar-height});
 
 .info-block {
   // background-color: $off-white;
-  background-color: white;
+  background-color: rgb(249, 249, 249);
 
   height: calc(#{$infoBlockHeight} * 2 + 1rem);
 
