@@ -1,0 +1,13 @@
+@import "src/styles/_variables.scss";
+
+mat-sidenav-content {
+  position: relative;
+
+  app-back-button {
+    color: red;
+    position: absolute;
+
+    top: $navbar-height + 1rem;
+    left: 1rem;
+  }
+}
