@@ -8,6 +8,11 @@ import { Router } from '@angular/router';
 
 // TODO: make barchart width dynamic (make it fit its container's width)
 
+interface AppendedTransaction {
+  transaction: Transaction;
+  account: BankingAccount;
+}
+
 @Component({
   templateUrl: './main-page-content.component.html',
   styleUrls: ['./main-page-content.component.scss'],
@@ -16,14 +21,18 @@ export class MainPageContentComponent {
   @ViewChild('accountsList') accountsList!: ElementRef<HTMLDivElement>;
   user: User;
   netBalance: number;
-  allTransactions: Transaction[];
+
+  appendedTransactions: AppendedTransaction[];
+  flatTransactionList: Transaction[];
+
   transactionOrderType: 'Date' | 'Amount' = 'Date';
 
   constructor(private loginService: LoginService, private router: Router) {
     this.user = this.loginService.getUser();
     this.netBalance = this.getNetBalance();
 
-    this.allTransactions = this.getAllTransactions();
+    this.appendedTransactions = this.getAppendedTransactions();
+    this.flatTransactionList = this.getTransactionList();
     this.reOrderTransactions();
   }
 
@@ -49,16 +58,28 @@ export class MainPageContentComponent {
    * @return {*}  {Transaction[]}
    * @memberof MainPageContentComponent
    */
-  getAllTransactions(): Transaction[] {
-    let aggregatedTransactions = [] as Transaction[];
+  getAppendedTransactions(): AppendedTransaction[] {
+    let aggregatedTransactions = [] as AppendedTransaction[];
 
     this.user.accounts?.forEach((account) => {
       account.transactionHistory?.forEach((transaction) => {
-        aggregatedTransactions.push(transaction);
+        aggregatedTransactions.push({ transaction, account });
       });
     });
 
     return aggregatedTransactions;
+  }
+
+  getTransactionList(): Transaction[] {
+    let transactions = [] as Transaction[];
+
+    this.user.accounts?.forEach((account) => {
+      account.transactionHistory?.forEach((transaction) => {
+        transactions.push(transaction);
+      });
+    });
+
+    return transactions;
   }
 
   /**
@@ -68,9 +89,9 @@ export class MainPageContentComponent {
    * @return {*}  {Transaction[]}
    * @memberof MainPageContentComponent
    */
-  orderTransactionsByDate(): Transaction[] {
-    return this.allTransactions.sort(
-      (a, b) => a.date.getTime() - b.date.getTime()
+  orderTransactionsByDate(): AppendedTransaction[] {
+    return this.appendedTransactions.sort(
+      (a, b) => a.transaction.date.getTime() - b.transaction.date.getTime()
     );
   }
 
@@ -81,8 +102,10 @@ export class MainPageContentComponent {
    * @return {*}  {Transaction[]}
    * @memberof MainPageContentComponent
    */
-  orderTransactionsByAmount(): Transaction[] {
-    return this.allTransactions.sort((a, b) => b.amount - a.amount);
+  orderTransactionsByAmount(): AppendedTransaction[] {
+    return this.appendedTransactions.sort(
+      (a, b) => b.transaction.amount - a.transaction.amount
+    );
   }
 
   reOrderTransactions() {
@@ -109,5 +132,13 @@ export class MainPageContentComponent {
 
   navigateToAccountPage(account: BankingAccount) {
     this.router.navigate([`account`, `${account.accountNo}`]);
+  }
+
+  navigateToTransactionPage(appendedTransaction: AppendedTransaction) {
+    this.router.navigate([
+      `transaction`,
+      `${appendedTransaction.account.accountNo}`,
+      `${appendedTransaction.transaction.transactionNo}`,
+    ]);
   }
 }

@@ -1,0 +1,26 @@
+.account-page-section {
+  background-color: white;
+  width: 46%;
+
+  border: 1px solid rgb(206, 206, 206);
+  border-radius: 9px;
+}
+
+.transaction-list {
+  height: 100%;
+  overflow-y: auto;
+
+  .transaction-item {
+    background-color: rgb(250, 250, 250);
+  }
+}
+
+.half-section {
+  position: relative;
+
+  h3 {
+    position: absolute;
+    top: .275rem;
+    left: 2rem;
+  }
+}

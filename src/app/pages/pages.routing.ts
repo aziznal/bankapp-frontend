@@ -12,6 +12,7 @@ import { MainPageContentComponent } from './main-page/components/main-page-conte
 import { SendMoneyPageComponent } from './send-money-page/send-money-page.component';
 import { AccountSettingsPageComponent } from './account-settings-page/account-settings-page.component';
 import { SingleBankAccountPageComponent } from './single-bank-account-page/single-bank-account-page.component';
+import { SingleTransactionPageComponent } from './single-transaction-page/single-transaction-page.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,11 @@ const routes: Routes = [
         path: 'account/:accountNo',
         canActivate: [AuthGuard],
         component: SingleBankAccountPageComponent,
+      },
+      {
+        path: 'transaction/:accountNo/:transactionNo',
+        canActivate: [AuthGuard],
+        component: SingleTransactionPageComponent,
       },
     ],
   },

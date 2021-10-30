@@ -107,7 +107,7 @@
             fxFlex
           >
             <app-barchart
-              [data]="allTransactions"
+              [data]="flatTransactionList"
               x="date"
               y="amount"
               [width]=900
@@ -172,7 +172,8 @@
           fxLayout="column"
           fxLayoutAlign="start start"
           fxLayoutGap=".3rem"
-          *ngFor="let transaction of allTransactions"
+          *ngFor="let appendedTransaction of appendedTransactions"
+          (click)="navigateToTransactionPage(appendedTransaction)"
         >
           <div
             class="w-100 transaction-item-title"
@@ -180,29 +181,30 @@
             fxLayoutAlign="space-between center"
           >
             <span>
-              <strong>Transaction No.</strong> {{ transaction.transactionNo }}
+              <strong>Transaction No.</strong> {{ appendedTransaction.transaction.transactionNo }}
             </span>
 
             <span
               matTooltip="When this transaction took place"
               matTooltipShowDelay="450"
             >
-              {{ transaction.date | date }}
+              {{ appendedTransaction.transaction.date | date }}
             </span>
           </div>
 
-          <!-- <div
-            class="transaction-item-account-no"
+          <div
+            class="transaction-item-account-no mb-1"
             fxLayout="row"
             matTooltip="Which of your accounts is related to this transaction"
             matTooltipShowDelay="450"
           >
-            <strong>Account No.</strong> {{ transaction.accountNo }}
-          </div> -->
+            <strong>Account No.</strong> {{ appendedTransaction.account.accountNo }}
+          </div>
 
           <div fxLayout="row">
-            {{ transaction.action }} {{ transaction.amount | currency: '₺' }} {{ transaction.action === 'SENT' ? 'to ' +
-            transaction.to : 'from ' + transaction.from }}
+            {{ appendedTransaction.transaction.action }} {{ appendedTransaction.transaction.amount | currency: '₺' }} {{
+            appendedTransaction.transaction.action === 'SENT' ? 'to ' +
+            appendedTransaction.transaction.to : 'from ' + appendedTransaction.transaction.from }}
           </div>
 
         </mat-card>

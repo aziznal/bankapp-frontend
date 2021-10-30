@@ -9,12 +9,14 @@ import { SharedModule } from '../shared/shared.module';
 import { SendMoneyPageComponent } from './send-money-page/send-money-page.component';
 import { AccountSettingsPageComponent } from './account-settings-page/account-settings-page.component';
 import { SingleBankAccountPageComponent } from './single-bank-account-page/single-bank-account-page.component';
+import { SingleTransactionPageComponent } from './single-transaction-page/single-transaction-page.component';
 
 @NgModule({
   declarations: [
     SendMoneyPageComponent,
     AccountSettingsPageComponent,
-    SingleBankAccountPageComponent
+    SingleBankAccountPageComponent,
+    SingleTransactionPageComponent
   ],
 
   imports: [
