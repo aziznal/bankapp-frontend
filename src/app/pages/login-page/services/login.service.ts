@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { User } from 'src/app/models/user.model';
 
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 const DEFAULT_USER: User = {
   email: 'mockuser@email.com',
@@ -16,7 +17,7 @@ const DEFAULT_USER: User = {
   password: 'password',
   accounts: [
     {
-      accountNo: "1",
+      accountNo: '1',
       balance: Math.round(Math.random() * 10 ** 4),
       ownerName: 'John Doe',
       transactionHistory: [
@@ -178,7 +179,11 @@ export class LoginService {
    * @param {ToastrService} toastrService
    * @memberof LoginService
    */
-  constructor(private http: HttpClient, private cookieService: CookieService) {
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService,
+    private router: Router
+  ) {
     this.username = '';
     this.userPassword = '';
   }
@@ -232,5 +237,6 @@ export class LoginService {
   logout(): void {
     this.cookieService.delete(environment.AUTH_COOKIE_NAME);
     this.userIsLoggedIn.next(false);
+    this.router.navigateByUrl('login');
   }
 }

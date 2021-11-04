@@ -11,6 +11,16 @@
     <mat-icon>savings</mat-icon>
     Verpara
   </a>
+  
+  <div
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    class="p-3"
+    style="color: black;"
+  >
+    <h3>Welcome, {{ user.name }}</h3>
+  </div>
+
 
   <nav
     fxLayout="column"
@@ -32,6 +42,18 @@
           Home
         </a>
       </li>
+
+      <li
+        class="nav-link"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{exact: true}"
+      >
+        <a [routerLink]="'create-banking-account'">
+          <mat-icon>add</mat-icon>
+          Create New Banking Account
+        </a>
+      </li>
+
       <li
         class="nav-link"
         routerLinkActive="active-link"

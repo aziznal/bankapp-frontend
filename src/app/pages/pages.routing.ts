@@ -13,6 +13,7 @@ import { SendMoneyPageComponent } from './send-money-page/send-money-page.compon
 import { AccountSettingsPageComponent } from './account-settings-page/account-settings-page.component';
 import { SingleBankAccountPageComponent } from './single-bank-account-page/single-bank-account-page.component';
 import { SingleTransactionPageComponent } from './single-transaction-page/single-transaction-page.component';
+import { CreateBankingAccountPageComponent } from './create-banking-account-page/create-banking-account-page.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,11 @@ const routes: Routes = [
         path: '',
         canActivate: [AuthGuard],
         component: MainPageContentComponent,
+      },
+      {
+        path: 'create-banking-account',
+        canActivate: [AuthGuard],
+        component: CreateBankingAccountPageComponent,
       },
       {
         path: 'send-money',
@@ -66,7 +72,7 @@ const routes: Routes = [
 
   {
     path: '**',
-    redirectTo: '/',
+    redirectTo: '/login',
   },
 ];
 

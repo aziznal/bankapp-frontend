@@ -10,13 +10,15 @@ import { SendMoneyPageComponent } from './send-money-page/send-money-page.compon
 import { AccountSettingsPageComponent } from './account-settings-page/account-settings-page.component';
 import { SingleBankAccountPageComponent } from './single-bank-account-page/single-bank-account-page.component';
 import { SingleTransactionPageComponent } from './single-transaction-page/single-transaction-page.component';
+import { CreateBankingAccountPageComponent } from './create-banking-account-page/create-banking-account-page.component';
 
 @NgModule({
   declarations: [
     SendMoneyPageComponent,
     AccountSettingsPageComponent,
     SingleBankAccountPageComponent,
-    SingleTransactionPageComponent
+    SingleTransactionPageComponent,
+    CreateBankingAccountPageComponent
   ],
 
   imports: [

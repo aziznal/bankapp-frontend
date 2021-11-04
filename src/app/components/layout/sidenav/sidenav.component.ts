@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { User } from 'src/app/models/user.model';
+import { LoginService } from 'src/app/pages/login-page/services/login.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -6,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidenav.component.scss'],
 })
 export class SidenavComponent {
-  constructor() {}
+  user!: User;
+
+  constructor(private loginService: LoginService) {
+    this.user = this.loginService.getUser();
+  }
 }
