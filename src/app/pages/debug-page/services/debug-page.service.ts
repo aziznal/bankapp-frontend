@@ -30,7 +30,7 @@ export class DebugPageService {
     console.log('Including user');
     console.log(user);
 
-    return this.http.post<any>(`${BACKEND_URL}/new-user`, user);
+    return this.http.post<any>(`${BACKEND_URL}/register`, user);
   }
 
   sendLoginRequest(mockUser: User): Observable<any> {

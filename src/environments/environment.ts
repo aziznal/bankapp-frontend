@@ -8,7 +8,7 @@ export const environment = {
   API: {
     API_URL: 'http://localhost:3000',
 
-    NEW_USER_URL: 'http://localhost:3000/new-user',
+    NEW_USER_URL: 'http://localhost:3000/register',
     LOGIN_URL: 'http://localhost:3000/auth',
   },
 
