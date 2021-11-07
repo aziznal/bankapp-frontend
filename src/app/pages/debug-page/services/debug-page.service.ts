@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { User } from 'src/app/models/user.model';
 
-const BACKEND_URL = 'http://localhost:8080';
+const BACKEND_URL = 'http://localhost:3000';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +35,7 @@ export class DebugPageService {
 
   sendLoginRequest(mockUser: User): Observable<any> {
     return this.http.post(
-      `${BACKEND_URL}/login`,
+      `${BACKEND_URL}/auth`,
       {
         email: mockUser.email,
         password: mockUser.password,

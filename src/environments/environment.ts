@@ -6,10 +6,10 @@ export const environment = {
   production: false,
 
   API: {
-    API_URL: 'http://localhost:8080',
+    API_URL: 'http://localhost:3000',
 
-    NEW_USER_URL: 'http://localhost:8080/new-user',
-    LOGIN_URL: 'http://localhost:8080/login',
+    NEW_USER_URL: 'http://localhost:3000/new-user',
+    LOGIN_URL: 'http://localhost:3000/auth',
   },
 
   AUTH_COOKIE_NAME: 'auth',
