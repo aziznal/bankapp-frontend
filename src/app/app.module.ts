@@ -4,13 +4,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
-import { CookieService } from 'ngx-cookie-service';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 
 import { SharedModule } from './shared/shared.module';
-import { MaterialModule } from './shared/material.module';
 import { PagesModule } from './pages/pages.module';
+
+import { AuthService } from './services/auth.service';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -34,14 +35,14 @@ import { BackButtonComponent } from './components/layout/back-button/back-button
     BrowserAnimationsModule,
 
     ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right'
+      positionClass: 'toast-bottom-right',
     }),
 
     AppRoutingModule,
     SharedModule,
     PagesModule,
   ],
-  providers: [CookieService],
+  providers: [AuthService, CookieService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

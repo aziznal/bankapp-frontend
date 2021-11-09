@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
-import { LoginService } from 'src/app/pages/login-page/services/login.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,14 +11,14 @@ import { LoginService } from 'src/app/pages/login-page/services/login.service';
 export class NavbarComponent {
   @Input('sidenav') sidenav!: MatSidenav;
 
-  constructor(private loginService: LoginService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   toggleSidenav() {
     this.sidenav.toggle();
   }
 
   logout() {
-    this.loginService.logout();
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }

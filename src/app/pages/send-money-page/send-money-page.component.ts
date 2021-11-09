@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/models/user.model';
-import { LoginService } from '../login-page/services/login.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 // TODO: add button to 'check' if receiving person actually exists
 
@@ -19,11 +19,11 @@ export class SendMoneyPageComponent {
   formGroup: FormGroup;
 
   constructor(
-    private loginService: LoginService,
+    private authService: AuthService,
     private formBuilder: FormBuilder,
     private toastrService: ToastrService
   ) {
-    this.user = this.loginService.getUser();
+    this.user = this.authService.getUser();
     this.formGroup = this.createFormGroup();
   }
 

@@ -1,10 +1,10 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { LoginService } from 'src/app/pages/login-page/services/login.service';
 
 import { User } from 'src/app/models/user.model';
 import { Transaction } from 'src/app/models/transaction.model';
 import { BankingAccount } from 'src/app/models/banking-account.model';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 // TODO: make barchart width dynamic (make it fit its container's width)
 
@@ -27,8 +27,8 @@ export class MainPageContentComponent {
 
   transactionOrderType: 'Date' | 'Amount' = 'Date';
 
-  constructor(private loginService: LoginService, private router: Router) {
-    this.user = this.loginService.getUser();
+  constructor(private authService: AuthService, private router: Router) {
+    this.user = this.authService.getUser();
     this.netBalance = this.getNetBalance();
 
     this.appendedTransactions = this.getAppendedTransactions();

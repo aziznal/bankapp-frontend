@@ -7,16 +7,16 @@ import {
   CanLoad,
   CanActivateChild,
 } from '@angular/router';
-import { LoginService } from '../pages/login-page/services/login.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
-  constructor(private loginService: LoginService, public router: Router) {}
+  constructor(private authService: AuthService, public router: Router) {}
 
   canActivate(): boolean | UrlTree {
-    if (this.loginService.checkIfUserIsLoggedIn()) {
+    if (this.authService.isLoggedIn) {
       return true;
     } else {
       this.router.navigate(['/login']);

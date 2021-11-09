@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ToastrService } from 'ngx-toastr';
-import { LoginService } from '../login-page/services/login.service';
 
 import { BankingAccount } from 'src/app/models/banking-account.model';
 import { Transaction } from 'src/app/models/transaction.model';
 import { User } from 'src/app/models/user.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-single-transaction-page',
@@ -19,12 +19,12 @@ export class SingleTransactionPageComponent {
   currentTransaction!: Transaction;
 
   constructor(
-    private loginService: LoginService,
+    private authService: AuthService,
     private toastrService: ToastrService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.user = this.loginService.getUser();
+    this.user = this.authService.getUser();
 
     this.route.params.subscribe({
       next: (params) => {

@@ -3,8 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { ToastrService } from 'ngx-toastr';
-
-import { LoginService } from '../../services/login.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login-form',
@@ -19,13 +18,16 @@ export class LoginFormComponent {
   hidePasswordField: boolean = true;
 
   /**
+   * Creates an instance of LoginFormComponent.
    *
-   * Sets default values and initializes Login Service
-   *
-   * @param  {LoginService} privateloginService
+   * @param {AuthService} authService
+   * @param {ToastrService} toastrService
+   * @param {Router} router
+   * @param {FormBuilder} formBuilder
+   * @memberof LoginFormComponent
    */
   constructor(
-    private loginService: LoginService,
+    private authService: AuthService,
     private toastrService: ToastrService,
     private router: Router,
     private formBuilder: FormBuilder
@@ -51,7 +53,7 @@ export class LoginFormComponent {
     if (this.formGroup.valid) {
       this.loginButton.disabled = true;
 
-      this.loginService.login(email, password).subscribe({
+      this.authService.login(email, password).subscribe({
         next: (_response) => {
           this.toastrService.success(
             'Successfully logged in as ' + email,

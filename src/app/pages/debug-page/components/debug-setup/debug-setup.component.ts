@@ -4,13 +4,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { LoginService } from 'src/app/pages/login-page/services/login.service';
 import { DebugPageService } from '../../services/debug-page.service';
 
 import { User } from 'src/app/models/user.model';
 import { Transaction } from 'src/app/models/transaction.model';
 
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/services/auth.service';
 
 @UntilDestroy()
 @Component({
@@ -26,7 +26,7 @@ export class DebugSetupComponent {
     private toastrService: ToastrService,
     private debugService: DebugPageService,
     private cookieService: CookieService,
-    private loginService: LoginService
+    private authService: AuthService
   ) {
     // this.mockUser = new User(
     //   'Aziz',
@@ -36,7 +36,7 @@ export class DebugSetupComponent {
     //   '+90 534 620 64 60'
     // );
 
-    this.mockUser = this.loginService.getUser();
+    this.mockUser = this.authService.getUser();
 
     this.mockUserTransactions = this.getSpreadUserTransactions();
   }
