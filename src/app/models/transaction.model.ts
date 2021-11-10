@@ -1,3 +1,9 @@
+/**
+ * Interface for a transaction done between two banking accounts
+ *
+ * @export
+ * @interface Transaction
+ */
 export interface Transaction {
   transactionNo: string;
   from: string;

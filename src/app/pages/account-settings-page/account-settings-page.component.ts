@@ -1,19 +1,56 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { ToastrService } from 'ngx-toastr';
-import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 
+import { User } from 'src/app/models/user.model';
+
+/**
+ * Page for showing account settings, including personal settings and banking
+ * account settings
+ *
+ * @export
+ * @class AccountSettingsPageComponent
+ */
 @Component({
   selector: 'app-account-settings-page',
   templateUrl: './account-settings-page.component.html',
   styleUrls: ['./account-settings-page.component.scss'],
 })
 export class AccountSettingsPageComponent {
+  /**
+   * The current user
+   *
+   * @type {User}
+   * @memberof AccountSettingsPageComponent
+   */
   user: User;
-  formGroup: FormGroup;
-  passwordFormGroup: FormGroup;
 
+  /**
+   * form group for user's personal details
+   *
+   * @type {FormGroup}
+   * @memberof AccountSettingsPageComponent
+   */
+  personalDetailsForm: FormGroup;
+
+  /**
+   * form group allowing user to change their password
+   *
+   * @type {FormGroup}
+   * @memberof AccountSettingsPageComponent
+   */
+  passwordChangeForm: FormGroup;
+
+  /**
+   * Creates an instance of AccountSettingsPageComponent. Inits forms.
+   *
+   * @param {AuthService} authService
+   * @param {FormBuilder} formBuilder
+   * @param {ToastrService} toastrService
+   * @memberof AccountSettingsPageComponent
+   */
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
@@ -21,11 +58,17 @@ export class AccountSettingsPageComponent {
   ) {
     this.user = this.authService.getUser();
 
-    this.formGroup = this.createFormGroup();
-    this.passwordFormGroup = this.createPasswordFormGroup();
+    this.personalDetailsForm = this.createPersonalDetailsForm();
+    this.passwordChangeForm = this.createPasswordChangeForm();
   }
 
-  createFormGroup(): FormGroup {
+  /**
+   * Creates and returns a from group for the user's personal details
+   *
+   * @return {*}  {FormGroup}
+   * @memberof AccountSettingsPageComponent
+   */
+  createPersonalDetailsForm(): FormGroup {
     // TODO: add validator to make sure email is not already taken
 
     return this.formBuilder.group({
@@ -36,9 +79,15 @@ export class AccountSettingsPageComponent {
     });
   }
 
-  createPasswordFormGroup(): FormGroup {
+  /**
+   * Creates and returns a form group allowing the user to change their password
+   *
+   * @return {*}  {FormGroup}
+   * @memberof AccountSettingsPageComponent
+   */
+  createPasswordChangeForm(): FormGroup {
     // TODO: add validator to make sure first password is correct
-    // TODO: add validator to make sure new password and its confirmation match eachother.
+    /* TODO: add validator to make sure new password and its confirmation match eachother. (this may be better to implement as a button or something) */
 
     return this.formBuilder.group({
       currentPassword: ['', Validators.required],
@@ -47,8 +96,17 @@ export class AccountSettingsPageComponent {
     });
   }
 
-  updateInformation(event: Event): void {
-    if (!this.formGroup.valid) {
+  /**
+   * Updates the user's personal details if the input information is valid
+   *
+   * @param {Event} event
+   * @return {*}  {void}
+   * @memberof AccountSettingsPageComponent
+   */
+  updatePersonalDetails(event: Event): void {
+    event.preventDefault();
+
+    if (!this.personalDetailsForm.valid) {
       this.toastrService.error(
         'Make sure you have entered valid values in all fields',
         'Failed to update'
@@ -56,13 +114,20 @@ export class AccountSettingsPageComponent {
       return;
     }
 
-    event.preventDefault();
-
     this.toastrService.info('Updating your information...', 'Updating');
   }
 
-  changePassword(event: Event) {
-    if (!this.passwordFormGroup.valid) {
+  /**
+   * Changes the user's password if the form is valid
+   *
+   * @param {Event} event
+   * @return {*}
+   * @memberof AccountSettingsPageComponent
+   */
+  changePassword(event: Event): void {
+    event.preventDefault();
+
+    if (!this.passwordChangeForm.valid) {
       this.toastrService.error(
         'Make sure you have entered your current password correctly and that your new passwords match.',
         'Password change failed!'
@@ -70,8 +135,6 @@ export class AccountSettingsPageComponent {
 
       return;
     }
-
-    event.preventDefault();
 
     this.toastrService.info('Changing your password...', 'Changing password');
   }

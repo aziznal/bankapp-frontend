@@ -1,19 +1,40 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { ToastrService } from 'ngx-toastr';
-import { BankingAccount } from 'src/app/models/banking-account.model';
-import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 
+import { BankingAccount } from 'src/app/models/banking-account.model';
+import { User } from 'src/app/models/user.model';
+
+/**
+ * Page showing details of a single bank account
+ *
+ * @export
+ * @class SingleBankAccountPageComponent
+ */
 @Component({
   selector: 'app-single-bank-account-page',
   templateUrl: './single-bank-account-page.component.html',
   styleUrls: ['./single-bank-account-page.component.scss'],
 })
 export class SingleBankAccountPageComponent {
+  /** Current user */
   user: User;
+
+  /** The current selected account */
   currentAccount!: BankingAccount;
 
+  /**
+   * Creates an instance of SingleBankAccountPageComponent. Handles errors if
+   * bad account id is given
+   *
+   * @param {AuthService} authService
+   * @param {ToastrService} toastrService
+   * @param {ActivatedRoute} route
+   * @param {Router} router
+   * @memberof SingleBankAccountPageComponent
+   */
   constructor(
     private authService: AuthService,
     private toastrService: ToastrService,

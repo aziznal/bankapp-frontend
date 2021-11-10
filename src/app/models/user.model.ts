@@ -1,5 +1,11 @@
 import { BankingAccount } from "./banking-account.model";
 
+/**
+ * Interface for a user
+ *
+ * @export
+ * @class User
+ */
 export class User {
   constructor(
     public name: string,

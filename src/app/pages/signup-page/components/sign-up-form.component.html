@@ -34,7 +34,7 @@
       fxLayout="column"
       fxLayoutAlign="center center"
       class="w-75 p-3"
-      [formGroup]="formGroup"
+      [formGroup]="signUpForm"
     >
       <h2 class="mb-5">Create an account</h2>
 
@@ -90,7 +90,7 @@
             [errorStateMatcher]="errorMatcher"
           >
 
-          <mat-error *ngIf="formGroup.controls.emailGroup.hasError('notSame')">
+          <mat-error *ngIf="signUpForm.controls.emailGroup.hasError('notSame')">
             Must Provide Matching Emails
           </mat-error>
         </mat-form-field>

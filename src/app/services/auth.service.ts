@@ -69,7 +69,7 @@ export class AuthService {
    *
    * Logs User In and stores a session cookie
    *
-   * @returns void
+   * @returns Observable<any>
    */
   login(email: string, password: string): Observable<any> {
     return this.http.post(

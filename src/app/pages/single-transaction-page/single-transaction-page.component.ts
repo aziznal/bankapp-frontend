@@ -8,16 +8,36 @@ import { Transaction } from 'src/app/models/transaction.model';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 
+/**
+ * Page for showing details for a single transaction
+ *
+ * @export
+ * @class SingleTransactionPageComponent
+ */
 @Component({
   selector: 'app-single-transaction-page',
   templateUrl: './single-transaction-page.component.html',
   styleUrls: ['./single-transaction-page.component.scss'],
 })
 export class SingleTransactionPageComponent {
+  /** Current user */
   user: User;
+
+  /** associated account for the current transaction */
   currentAccount!: BankingAccount;
+
+  /** current transaction data */
   currentTransaction!: Transaction;
 
+  /**
+   * Creates an instance of SingleTransactionPageComponent. Handles errors for
+   * bad transaction id
+   * @param {AuthService} authService
+   * @param {ToastrService} toastrService
+   * @param {ActivatedRoute} route
+   * @param {Router} router
+   * @memberof SingleTransactionPageComponent
+   */
   constructor(
     private authService: AuthService,
     private toastrService: ToastrService,
@@ -45,9 +65,6 @@ export class SingleTransactionPageComponent {
           );
         }
 
-        console.log(this.currentAccount);
-        console.log(this.currentAccount);
-
         // In case user is refreshing an old page or an account has been deleted in-session.
         if (
           !this.currentAccount.accountNo ||
@@ -62,7 +79,6 @@ export class SingleTransactionPageComponent {
       },
 
       error: (e) => {
-        console.log('ya done goofed');
         this.router.navigateByUrl('/');
         this.toastrService.error(
           "The account or transaction you're attempting to access don't seem to exist.",
@@ -72,6 +88,12 @@ export class SingleTransactionPageComponent {
     });
   }
 
+  /**
+   * Navigates to assoicated account page for the current transaction
+   *
+   * @param {BankingAccount} account
+   * @memberof SingleTransactionPageComponent
+   */
   navigateToAccountPage(account: BankingAccount) {
     this.router.navigate([`account`, `${account.accountNo}`]);
   }
