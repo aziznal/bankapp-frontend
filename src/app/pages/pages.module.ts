@@ -6,20 +6,15 @@ import { SignUpPageModule } from './signup-page/sign-up-page.module';
 import { DebugPageModule } from './debug-page/debug-page.module';
 import { MainPageModule } from './main-page/main-page.module';
 import { SharedModule } from '../shared/shared.module';
-import { SendMoneyPageComponent } from './send-money-page/send-money-page.component';
-import { AccountSettingsPageComponent } from './account-settings-page/account-settings-page.component';
-import { SingleBankAccountPageComponent } from './single-bank-account-page/single-bank-account-page.component';
-import { SingleTransactionPageComponent } from './single-transaction-page/single-transaction-page.component';
-import { CreateBankingAccountPageComponent } from './create-banking-account-page/create-banking-account-page.component';
+
+import { AccountSettingsPageModule } from './account-settings-page/account-settings-page.module';
+import { CreateBankingAccountPageModule } from './create-banking-account-page/create-banking-account-page.module';
+import { SendMoneyPageModule } from './send-money-page/send-money-page.module';
+import { SingleBankAccountPageModule } from './single-bank-account-page/single-bank-account-page.module';
+import { SingleTransactionPageModule } from './single-transaction-page/single-transaction-page.module';
 
 @NgModule({
-  declarations: [
-    SendMoneyPageComponent,
-    AccountSettingsPageComponent,
-    SingleBankAccountPageComponent,
-    SingleTransactionPageComponent,
-    CreateBankingAccountPageComponent
-  ],
+  declarations: [],
 
   imports: [
     LoginPageModule,
@@ -28,6 +23,12 @@ import { CreateBankingAccountPageComponent } from './create-banking-account-page
     DebugPageModule,
     MainPageModule,
     SharedModule,
+
+    AccountSettingsPageModule,
+    CreateBankingAccountPageModule,
+    SendMoneyPageModule,
+    SingleBankAccountPageModule,
+    SingleTransactionPageModule,
   ],
 
   providers: [],
