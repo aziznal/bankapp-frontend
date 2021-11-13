@@ -19,6 +19,7 @@ import { SidenavComponent } from './components/layout/sidenav/sidenav.component'
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { NavbarComponent } from './components/layout/navbar/navbar.component';
 import { BackButtonComponent } from './components/layout/back-button/back-button.component';
+import { LoadingScreenComponent } from './components/loading-screen/loading-screen.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { BackButtonComponent } from './components/layout/back-button/back-button
     FooterComponent,
     NavbarComponent,
     BackButtonComponent,
+    LoadingScreenComponent,
   ],
   imports: [
     BrowserModule,

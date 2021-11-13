@@ -19,6 +19,8 @@ import { MatCardModule } from '@angular/material/card';
 
 import { MatDividerModule } from '@angular/material/divider';
 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 /**
  * This module is where all angular material components/modules etc. are
  * imported
@@ -39,6 +41,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatTooltipModule,
     MatCardModule,
     MatDividerModule,
+    MatProgressSpinnerModule
   ],
 
   exports: [
@@ -53,6 +56,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatTooltipModule,
     MatCardModule,
     MatDividerModule,
+    MatProgressSpinnerModule
   ],
 })
 export class MaterialModule {}
