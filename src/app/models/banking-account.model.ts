@@ -7,8 +7,8 @@ import { Transaction } from './transaction.model';
  * @interface BankingAccount
  */
 export interface BankingAccount {
-  ownerName: string;
-  accountNo: string;
+  ownerName: string;  // TODO: replace with ID
+  accountNo: string;  // TODO: replace with label
   balance: number;
-  transactionHistory?: Transaction[];
+  transactionHistory?: Transaction[]; // TODO: rename to 'transactions'
 }

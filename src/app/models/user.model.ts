@@ -8,9 +8,9 @@ import { BankingAccount } from "./banking-account.model";
  */
 export class User {
   constructor(
-    public name: string,
+    public name: string,  // TODO: change to fullname
     public email: string,
-    public password: string,
+    public password: string,  // TODO: remove this
     public birthdate?: Date,
     public phoneNumber?: string,
     public accounts?: BankingAccount[]
