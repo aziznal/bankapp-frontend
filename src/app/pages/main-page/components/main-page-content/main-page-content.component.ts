@@ -1,39 +1,82 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { LoginService } from 'src/app/pages/login-page/services/login.service';
+import { Router } from '@angular/router';
+
+import { AuthService } from 'src/app/services/auth.service';
 
 import { User } from 'src/app/models/user.model';
 import { Transaction } from 'src/app/models/transaction.model';
 import { BankingAccount } from 'src/app/models/banking-account.model';
-import { Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 // TODO: make barchart width dynamic (make it fit its container's width)
 
+/**
+ * an object that extends transaction but also has a field for the account
+ * associated with that transaction
+ *
+ * @interface AppendedTransaction
+ */
 interface AppendedTransaction {
   transaction: Transaction;
   account: BankingAccount;
 }
 
+/**
+ * Main page component shows three main sections, including "Accounts",
+ * "Assets", and "Recent Transactions"
+ *
+ * @export
+ * @class MainPageContentComponent
+ */
+@UntilDestroy()
 @Component({
   templateUrl: './main-page-content.component.html',
   styleUrls: ['./main-page-content.component.scss'],
 })
 export class MainPageContentComponent {
+  /**  Stores ref to list of banking accounts */
   @ViewChild('accountsList') accountsList!: ElementRef<HTMLDivElement>;
-  user: User;
-  netBalance: number;
 
-  appendedTransactions: AppendedTransaction[];
-  flatTransactionList: Transaction[];
+  /**
+   * Current user
+   *
+   * @type {User}
+   * @memberof MainPageContentComponent
+   */
+  user!: User;
 
+  /** Total balance of all accounts of the current user */
+  netBalance!: number;
+
+  /** stores ordered list of appended transactions */
+  appendedTransactions!: AppendedTransaction[];
+
+  /** Stores list of transactions */
+  flatTransactionList!: Transaction[];
+
+  /** Stores order-type of transactions */
   transactionOrderType: 'Date' | 'Amount' = 'Date';
 
-  constructor(private loginService: LoginService, private router: Router) {
-    this.user = this.loginService.getUser();
-    this.netBalance = this.getNetBalance();
+  /**
+   * Creates an instance of MainPageContentComponent.
+   *
+   * @param {AuthService} authService
+   * @param {Router} router
+   * @memberof MainPageContentComponent
+   */
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService
+      .getUser()
+      .pipe(untilDestroyed(this))
+      .subscribe((user) => {
+        this.user = user;
 
-    this.appendedTransactions = this.getAppendedTransactions();
-    this.flatTransactionList = this.getTransactionList();
-    this.reOrderTransactions();
+        this.netBalance = this.getNetBalance();
+
+        this.appendedTransactions = this.getAppendedTransactions();
+        this.flatTransactionList = this.getFlatTransactionList();
+        this.reOrderTransactions();
+      });
   }
 
   /**
@@ -62,7 +105,7 @@ export class MainPageContentComponent {
     let aggregatedTransactions = [] as AppendedTransaction[];
 
     this.user.accounts?.forEach((account) => {
-      account.transactionHistory?.forEach((transaction) => {
+      account.transactions?.forEach((transaction) => {
         aggregatedTransactions.push({ transaction, account });
       });
     });
@@ -70,11 +113,17 @@ export class MainPageContentComponent {
     return aggregatedTransactions;
   }
 
-  getTransactionList(): Transaction[] {
+  /**
+   * Returns a list of transaction objects from all accounts
+   *
+   * @return {*}  {Transaction[]}
+   * @memberof MainPageContentComponent
+   */
+  getFlatTransactionList(): Transaction[] {
     let transactions = [] as Transaction[];
 
     this.user.accounts?.forEach((account) => {
-      account.transactionHistory?.forEach((transaction) => {
+      account.transactions?.forEach((transaction) => {
         transactions.push(transaction);
       });
     });
@@ -108,7 +157,12 @@ export class MainPageContentComponent {
     );
   }
 
-  reOrderTransactions() {
+  /**
+   * Causes transaction list to get re-ordered according to chosen ordering type
+   *
+   * @memberof MainPageContentComponent
+   */
+  reOrderTransactions(): void {
     if (this.transactionOrderType === 'Amount') {
       this.orderTransactionsByAmount();
     } else {
@@ -116,29 +170,53 @@ export class MainPageContentComponent {
     }
   }
 
-  scrollAccountsListToRight() {
+  /**
+   * Scrolls list of banking accounts to the right
+   *
+   * @memberof MainPageContentComponent
+   */
+  scrollAccountsListToRight(): void {
+    // TODO: change this to make it scroll exactly one account-card
     this.accountsList.nativeElement.scrollBy({
       left: 225,
       behavior: 'smooth',
     });
   }
 
+  /**
+   * Scrolls list of banking accounts to the left
+   *
+   * @memberof MainPageContentComponent
+   */
   scrollAccountsListToLeft() {
+    // TODO: change this to make it scroll exactly one account-card
     this.accountsList.nativeElement.scrollBy({
       left: -225,
       behavior: 'smooth',
     });
   }
 
+  /**
+   * Navigates to a page showing chosen account in more detail
+   *
+   * @param {BankingAccount} account
+   * @memberof MainPageContentComponent
+   */
   navigateToAccountPage(account: BankingAccount) {
-    this.router.navigate([`account`, `${account.accountNo}`]);
+    this.router.navigate([`account`, `${account.label}`]);
   }
 
+  /**
+   * Navigates to page showing chosen transaction with more detail
+   *
+   * @param {AppendedTransaction} appendedTransaction
+   * @memberof MainPageContentComponent
+   */
   navigateToTransactionPage(appendedTransaction: AppendedTransaction) {
     this.router.navigate([
       `transaction`,
-      `${appendedTransaction.account.accountNo}`,
-      `${appendedTransaction.transaction.transactionNo}`,
+      `${appendedTransaction.account.label}`,
+      `${appendedTransaction.transaction.id}`,
     ]);
   }
 }

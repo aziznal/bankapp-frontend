@@ -9,6 +9,13 @@ import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BarchartComponent } from '../components/barchart/barchart.component';
 
+/**
+ * Shared module where modules used across different components are imported to
+ * be used throughout the project
+ *
+ * @export
+ * @class SharedModule
+ */
 @NgModule({
   declarations: [BarchartComponent],
 

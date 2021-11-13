@@ -1,8 +1,14 @@
-import { BankingAccount } from "./banking-account.model";
+import { BankingAccount } from './banking-account.model';
 
+/**
+ * Interface for a user
+ *
+ * @export
+ * @class User
+ */
 export class User {
   constructor(
-    public name: string,
+    public fullname: string,
     public email: string,
     public password: string,
     public birthdate?: Date,

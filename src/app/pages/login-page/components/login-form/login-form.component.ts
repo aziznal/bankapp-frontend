@@ -3,9 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
 
-import { LoginService } from '../../services/login.service';
-
+/**
+ * Login form allowing user to type their email and password to attempt login
+ *
+ * @export
+ * @class LoginFormComponent
+ */
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
@@ -14,44 +19,61 @@ import { LoginService } from '../../services/login.service';
 export class LoginFormComponent {
   @ViewChild('loginButton') loginButton!: HTMLButtonElement;
 
-  formGroup: FormGroup;
+  /** Form containing fields for email and password */
+  loginForm: FormGroup;
 
+  /** toggle for showing or hiding password field */
   hidePasswordField: boolean = true;
 
   /**
+   * Creates an instance of LoginFormComponent. Inits form.
    *
-   * Sets default values and initializes Login Service
-   *
-   * @param  {LoginService} privateloginService
+   * @param {AuthService} authService
+   * @param {ToastrService} toastrService
+   * @param {Router} router
+   * @param {FormBuilder} formBuilder
+   * @memberof LoginFormComponent
    */
   constructor(
-    private loginService: LoginService,
+    private authService: AuthService,
     private toastrService: ToastrService,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
-    this.formGroup = this.createFormGroup();
+    this.loginForm = this.createLoginForm();
   }
 
-  createFormGroup(): FormGroup {
+  /**
+   * Creates and returns form for login fields
+   *
+   * @return {*}  {FormGroup}
+   * @memberof LoginFormComponent
+   */
+  createLoginForm(): FormGroup {
     return this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
+  /**
+   * Attempts to log user in if form is valid
+   *
+   * @param {Event} event
+   * @memberof LoginFormComponent
+   */
   login(event: Event) {
     event.preventDefault();
 
-    this.formGroup.markAllAsTouched();
+    this.loginForm.markAllAsTouched();
 
-    let email = this.formGroup.controls.email.value;
-    let password = this.formGroup.controls.password.value;
+    let email = this.loginForm.controls.email.value;
+    let password = this.loginForm.controls.password.value;
 
-    if (this.formGroup.valid) {
+    if (this.loginForm.valid) {
       this.loginButton.disabled = true;
 
-      this.loginService.login(email, password).subscribe({
+      this.authService.login(email, password).subscribe({
         next: (_response) => {
           this.toastrService.success(
             'Successfully logged in as ' + email,

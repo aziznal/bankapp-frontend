@@ -7,45 +7,16 @@ import {
   ValidatorFn,
   Validators,
   FormGroup,
-  FormControl,
-  FormGroupDirective,
-  NgForm,
 } from '@angular/forms';
 
-import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { ToastrService } from 'ngx-toastr';
-
-import { User } from 'src/app/models/user.model';
 import { SignUpService } from '../services/sign-up.service';
 
-/**
- *
- * This class is used to match a field with its complementary confirmation field.
- *
- * @class
- */
-class CustomErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const invalidControl = !!(
-      control?.invalid &&
-      control?.parent?.dirty &&
-      control?.parent?.touched
-    );
-    const invalidParent = !!(
-      control?.parent?.invalid &&
-      control?.parent?.dirty &&
-      control?.parent?.touched
-    );
-
-    return invalidControl || invalidParent;
-  }
-}
+import { User } from 'src/app/models/user.model';
+import { CustomErrorStateMatcher } from './custom-error-matcher';
 
 /**
  * Page with form that allows user to create a new account
@@ -61,40 +32,20 @@ class CustomErrorStateMatcher implements ErrorStateMatcher {
 export class SignUpFormComponent {
   @ViewChild('signupButton') signupButton!: HTMLButtonElement;
 
-  /**
-   *
-   * Used to store user properties
-   *
-   * @type {User}
-   */
+  /** Stores user information from the fields they populate */
   user!: User;
 
-  /**
-   *
-   * stores all form groups and form controls
-   *
-   * @type {FormGroup}
-   */
-  formGroup: FormGroup;
+  /** stores all form groups and form controls */
+  signUpForm: FormGroup;
 
-  /**
-   *
-   * Used to match fields with their complementary confirmation fields
-   *
-   * @type {CustomErrorStateMatcher}
-   */
+  /** Used to match fields with their complementary confirmation fields */
   errorMatcher: CustomErrorStateMatcher;
 
-  /**
-   *
-   * a toggle for whether the password field(s) show their characters or not
-   *
-   * @type boolean
-   */
+  /** a toggle for whether the password field(s) show their characters or not */
   hidePasswordField: boolean = true;
 
   /**
-   * Creates an instance of SignUpFormComponent.
+   * Creates an instance of SignUpFormComponent. Inits form.
    *
    * @param {SignUpService} signUpService
    * @param {FormBuilder} formBuilder
@@ -107,17 +58,15 @@ export class SignUpFormComponent {
     private router: Router
   ) {
     this.user = new User('', '', '');
-
     this.errorMatcher = new CustomErrorStateMatcher();
-
-    this.formGroup = this.createFormGroup();
+    this.signUpForm = this.createFormGroup();
   }
 
   /**
-   *
    * Creates and returns form group and controls using FormBuilder
    *
-   * @returns FormGroup
+   * @return {*}  {FormGroup}
+   * @memberof SignUpFormComponent
    */
   createFormGroup(): FormGroup {
     let formGroup = this.formBuilder.group({
@@ -138,6 +87,7 @@ export class SignUpFormComponent {
             [
               Validators.required,
               Validators.pattern(
+                // multiple-case, includes a number, includes a special char, at least 8 chars.
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
               ),
             ],
@@ -195,16 +145,16 @@ export class SignUpFormComponent {
    * @memberof SignUpFormComponent
    */
   assignUserData(): void {
-    this.user.name = this.formGroup.controls.fullName.value;
-    this.user.email = this.formGroup.get(['emailGroup', 'email'])!.value;
+    this.user.fullname = this.signUpForm.controls.fullName.value;
+    this.user.email = this.signUpForm.get(['emailGroup', 'email'])!.value;
 
-    this.user.password = this.formGroup.get([
+    this.user.password = this.signUpForm.get([
       'passwordGroup',
       'password',
     ])!.value;
 
-    this.user.birthdate = this.formGroup.controls.dateOfBirth.value;
-    this.user.phoneNumber = this.formGroup.controls.phoneNumber.value;
+    this.user.birthdate = this.signUpForm.controls.dateOfBirth.value;
+    this.user.phoneNumber = this.signUpForm.controls.phoneNumber.value;
   }
 
   /**
@@ -213,10 +163,10 @@ export class SignUpFormComponent {
    *
    */
   createNewUser(): void {
-    this.user.name = this.formGroup.controls.fullName.value;
-    this.user.email = this.formGroup.get(['emailGroup', 'email'])!.value;
+    this.user.fullname = this.signUpForm.controls.fullName.value;
+    this.user.email = this.signUpForm.get(['emailGroup', 'email'])!.value;
 
-    if (this.formGroup.valid) {
+    if (this.signUpForm.valid) {
       this.signupButton.disabled = true;
 
       this.assignUserData();

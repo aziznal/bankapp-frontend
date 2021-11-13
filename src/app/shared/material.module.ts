@@ -19,6 +19,13 @@ import { MatCardModule } from '@angular/material/card';
 
 import { MatDividerModule } from '@angular/material/divider';
 
+/**
+ * This module is where all angular material components/modules etc. are
+ * imported
+ *
+ * @export
+ * @class MaterialModule
+ */
 @NgModule({
   imports: [
     MatSidenavModule,

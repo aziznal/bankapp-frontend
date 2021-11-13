@@ -18,7 +18,7 @@
         class="settings-form w-100"
         fxLayout="column"
         fxLayoutAlign="start center"
-        [formGroup]="formGroup"
+        [formGroup]="personalDetailsForm"
       >
         <h3>Edit / Update your account information and settings</h3>
 
@@ -76,7 +76,7 @@
             type="button"
             mat-flat-button
             color="primary"
-            (click)="updateInformation($event)"
+            (click)="updatePersonalDetails($event)"
           >
             <mat-icon>
               autorenew
@@ -89,7 +89,7 @@
       <form
         fxLayout="column"
         fxLayoutAlign="start start"
-        [formGroup]="passwordFormGroup"
+        [formGroup]="passwordChangeForm"
         class="settings-form w-100"
       >
         <h3>Change your password</h3>
@@ -161,7 +161,7 @@
           *ngFor="let account of user.accounts"
         >
           <mat-card-title>
-            Account No. {{ account.accountNo }}
+            Account No. {{ !account.id }}
           </mat-card-title>
 
           <mat-card-content

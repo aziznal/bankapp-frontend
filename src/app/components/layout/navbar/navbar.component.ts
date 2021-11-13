@@ -1,8 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
-import { LoginService } from 'src/app/pages/login-page/services/login.service';
+import { AuthService } from 'src/app/services/auth.service';
 
+/**
+ * Navigation Bar displayed on the top of the page
+ *
+ * @export
+ * @class NavbarComponent
+ */
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -11,14 +17,30 @@ import { LoginService } from 'src/app/pages/login-page/services/login.service';
 export class NavbarComponent {
   @Input('sidenav') sidenav!: MatSidenav;
 
-  constructor(private loginService: LoginService, private router: Router) {}
+  /**
+   * Creates an instance of NavbarComponent.
+   *
+   * @param {AuthService} authService
+   * @param {Router} router
+   * @memberof NavbarComponent
+   */
+  constructor(private authService: AuthService, private router: Router) {}
 
+  /**
+   * Causes sidenav to toggle between displayed / hidden
+   *
+   * @memberof NavbarComponent
+   */
   toggleSidenav() {
     this.sidenav.toggle();
   }
 
+  /**
+   * calls auth service method to log user out
+   *
+   * @memberof NavbarComponent
+   */
   logout() {
-    this.loginService.logout();
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 }

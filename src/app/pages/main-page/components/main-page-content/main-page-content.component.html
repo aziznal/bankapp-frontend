@@ -3,7 +3,6 @@
   fxLayout="column"
   fxLayoutAlign="start center"
 >
-  
   <!-- Info Blocks -->
   <div
     class="w-100 p-1"
@@ -18,7 +17,6 @@
       fxLayoutGap="1rem"
       fxFlex="60"
     >
-
       <section
         class="info-block horizontal-info-block"
         fxLayout="column"
@@ -57,7 +55,7 @@
               (click)="navigateToAccountPage(account)"
             >
               <mat-card-title>
-                Account No. {{ account.accountNo }}
+                Account {{ account.label }} - {{ account.id }}
               </mat-card-title>
 
               <mat-card-content
@@ -175,7 +173,7 @@
             fxLayoutAlign="space-between center"
           >
             <span>
-              <strong>Transaction No.</strong> {{ appendedTransaction.transaction.transactionNo }}
+              <strong>Transaction No.</strong> {{ appendedTransaction.transaction.id }}
             </span>
 
             <span
@@ -192,13 +190,14 @@
             matTooltip="Which of your accounts is related to this transaction"
             matTooltipShowDelay="450"
           >
-            <strong>Account No.</strong> {{ appendedTransaction.account.accountNo }}
+            <strong>Account</strong>&nbsp;{{ appendedTransaction.account.label }} - {{ appendedTransaction.account.id }}
           </div>
 
           <div fxLayout="row">
-            {{ appendedTransaction.transaction.action }} {{ appendedTransaction.transaction.amount | currency: '₺' }} {{
-            appendedTransaction.transaction.action === 'SENT' ? 'to ' +
-            appendedTransaction.transaction.to : 'from ' + appendedTransaction.transaction.from }}
+            {{ appendedTransaction.transaction.action }}
+            {{ appendedTransaction.transaction.amount | currency: appendedTransaction.account.currency }}
+            {{ appendedTransaction.transaction.action === 'SENT' ? 'to' : 'from' }}
+            {{ appendedTransaction.transaction.otherPerson.name }}
           </div>
 
         </mat-card>

@@ -7,7 +7,7 @@
     class="send-money-form w-50"
     fxLayout="column"
     fxLayoutAlign="start start"
-    [formGroup]="formGroup"
+    [formGroup]="sendMoneyForm"
   >
     <h3>Send money to someone using their email address or account id</h3>
 
@@ -25,7 +25,7 @@
             *ngFor="let account of user.accounts"
             [value]="account"
           >
-            {{ account.accountNo }} - balance: {{ account.balance }} ₺
+            {{ account.id }} - balance: {{ account.balance }} ₺
           </mat-option>
         </mat-select>
       </mat-form-field>

@@ -1,8 +1,15 @@
+import { OtherPerson } from "./other-person.model";
+
+/**
+ * Interface for a transaction done between two banking accounts
+ *
+ * @export
+ * @interface Transaction
+ */
 export interface Transaction {
-  transactionNo: string;
-  from: string;
-  to: string;
-  action: 'SENT' | 'RECEIVED';
+  id: string;
+  action: 'SENT' | 'GOT';
   amount: number;
   date: Date;
+  otherPerson: OtherPerson;
 }

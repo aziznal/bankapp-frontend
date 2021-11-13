@@ -8,7 +8,7 @@
     class="p-3"
   >
     <mat-card-title>
-      Transaction {{ currentTransaction.transactionNo }}
+      Transaction {{ currentTransaction.id }}
     </mat-card-title>
 
     <mat-divider></mat-divider>
@@ -29,11 +29,17 @@
       </p>
 
       <p>
-        {{ currentTransaction.action === 'SENT' ? 'To ' + currentTransaction.to : 'From ' + currentTransaction.from }}
+        {{ currentTransaction.action }}
+        {{ currentTransaction.amount | currency: currentAccount.currency }}
+        {{ currentTransaction.action === 'SENT' ? 'to' : 'from' }}
+        {{ currentTransaction.otherPerson.name }}
       </p>
 
-      <p (click)="navigateToAccountPage(currentAccount)" style="color: blue; cursor: pointer;">
-        <strong>Account:</strong> {{ currentAccount.accountNo }}
+      <p
+        (click)="navigateToAccountPage(currentAccount)"
+        style="color: blue; cursor: pointer;"
+      >
+        <strong>Account:</strong> {{ currentAccount.label }} - {{ currentAccount.id }}
       </p>
     </mat-card-content>
 
