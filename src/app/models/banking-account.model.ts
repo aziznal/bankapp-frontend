@@ -7,8 +7,9 @@ import { Transaction } from './transaction.model';
  * @interface BankingAccount
  */
 export interface BankingAccount {
-  ownerName: string;  // TODO: replace with ID
-  accountNo: string;  // TODO: replace with label
+  id: string;
+  label: string;
+  currency: 'TL' | 'DOLLAR' | 'EURO';
   balance: number;
-  transactionHistory?: Transaction[]; // TODO: rename to 'transactions'
+  transactions?: Transaction[];
 }

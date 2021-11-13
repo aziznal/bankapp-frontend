@@ -72,7 +72,7 @@ export class AccountSettingsPageComponent {
     // TODO: add validator to make sure email is not already taken
 
     return this.formBuilder.group({
-      name: [this.user.name, Validators.required],
+      name: [this.user.fullname, Validators.required],
       email: [this.user.email, [Validators.required, Validators.email]],
       birthdate: [this.user.birthdate],
       phoneNumber: [this.user.phoneNumber],

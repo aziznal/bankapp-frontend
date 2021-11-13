@@ -18,10 +18,10 @@
     >
       <mat-card
         class="transaction-item"
-        *ngFor="let transaction of currentAccount.transactionHistory"
+        *ngFor="let transaction of currentAccount.transactions"
       >
         <mat-card-title>
-          No. {{ transaction.transactionNo }}
+          No. {{ transaction.id }}
         </mat-card-title>
 
         <mat-card-content
@@ -29,9 +29,10 @@
           fxLayoutGap="1rem"
         >
           <span>
-            <strong>From:</strong> {{ transaction.from === currentAccount.ownerName ? 'You' : transaction.from }}
+            DO SOMETHING ABOUT THIS
+            <!-- <strong>From:</strong> {{ transaction.from === currentAccount.ownerName ? 'You' : transaction.from }} -->
             &nbsp;&nbsp;&nbsp;
-            <strong>To:</strong> {{ transaction.to === currentAccount.ownerName ? 'You' : transaction.to }}
+            <!-- <strong>To:</strong> {{ transaction.to === currentAccount.ownerName ? 'You' : transaction.to }} -->
           </span>
           <span><strong>Action:</strong> {{ transaction.action }}</span>
           <span><strong>Amount:</strong> {{ transaction.amount | currency: '₺ ' }}</span>
@@ -60,7 +61,7 @@
         fxLayoutGap=".5rem"
         fxFlexOffset="5rem"
       >
-        <span>Account Number: {{ currentAccount.accountNo }}</span>
+        <span>Account Number: {{ currentAccount.id }}</span>
 
         <mat-icon matTooltip="Use this number to transfer money between accounts">
           help_outline
@@ -86,8 +87,8 @@
 
       <app-barchart
         class="mt-5"
-        *ngIf="currentAccount.transactionHistory!.length > 0 else noTransactionHistory"
-        [data]="currentAccount.transactionHistory || []"
+        *ngIf="currentAccount.transactions!.length > 0 else noTransactionHistory"
+        [data]="currentAccount.transactions || []"
         x="date"
         y="amount"
         [width]="750"

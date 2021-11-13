@@ -49,13 +49,13 @@ export class SingleTransactionPageComponent {
     this.route.params.subscribe({
       next: (params) => {
         this.currentAccount = this.user.accounts!.find((account) => {
-          return account.accountNo === params['accountNo'];
+          return account.label === params['accountNo'];
         }) as BankingAccount;
 
         try {
           this.currentTransaction =
-            this.currentAccount.transactionHistory!.find((transaction) => {
-              return transaction.transactionNo === params['transactionNo'];
+            this.currentAccount.transactions!.find((transaction) => {
+              return transaction.id === params['transactionNo'];
             }) as Transaction;
         } catch (e) {
           this.router.navigateByUrl('/');
@@ -67,8 +67,8 @@ export class SingleTransactionPageComponent {
 
         // In case user is refreshing an old page or an account has been deleted in-session.
         if (
-          !this.currentAccount.accountNo ||
-          !this.currentTransaction.transactionNo
+          !this.currentAccount.label ||
+          !this.currentTransaction.id
         ) {
           this.router.navigateByUrl('/');
           this.toastrService.error(
@@ -95,6 +95,6 @@ export class SingleTransactionPageComponent {
    * @memberof SingleTransactionPageComponent
    */
   navigateToAccountPage(account: BankingAccount) {
-    this.router.navigate([`account`, `${account.accountNo}`]);
+    this.router.navigate([`account`, `${account.label}`]);
   }
 }

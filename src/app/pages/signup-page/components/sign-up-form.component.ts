@@ -145,7 +145,7 @@ export class SignUpFormComponent {
    * @memberof SignUpFormComponent
    */
   assignUserData(): void {
-    this.user.name = this.signUpForm.controls.fullName.value;
+    this.user.fullname = this.signUpForm.controls.fullName.value;
     this.user.email = this.signUpForm.get(['emailGroup', 'email'])!.value;
 
     this.user.password = this.signUpForm.get([
@@ -163,7 +163,7 @@ export class SignUpFormComponent {
    *
    */
   createNewUser(): void {
-    this.user.name = this.signUpForm.controls.fullName.value;
+    this.user.fullname = this.signUpForm.controls.fullName.value;
     this.user.email = this.signUpForm.get(['emailGroup', 'email'])!.value;
 
     if (this.signUpForm.valid) {

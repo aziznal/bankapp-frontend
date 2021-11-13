@@ -45,7 +45,7 @@ export class DebugSetupComponent {
     let allTransactions = [] as Transaction[];
 
     this.mockUser.accounts?.forEach((account) => {
-      account.transactionHistory?.forEach((transaction) => {
+      account.transactions?.forEach((transaction) => {
         allTransactions.push(transaction);
       });
     });

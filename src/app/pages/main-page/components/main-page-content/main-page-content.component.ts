@@ -97,7 +97,7 @@ export class MainPageContentComponent {
     let aggregatedTransactions = [] as AppendedTransaction[];
 
     this.user.accounts?.forEach((account) => {
-      account.transactionHistory?.forEach((transaction) => {
+      account.transactions?.forEach((transaction) => {
         aggregatedTransactions.push({ transaction, account });
       });
     });
@@ -115,7 +115,7 @@ export class MainPageContentComponent {
     let transactions = [] as Transaction[];
 
     this.user.accounts?.forEach((account) => {
-      account.transactionHistory?.forEach((transaction) => {
+      account.transactions?.forEach((transaction) => {
         transactions.push(transaction);
       });
     });
@@ -195,7 +195,7 @@ export class MainPageContentComponent {
    * @memberof MainPageContentComponent
    */
   navigateToAccountPage(account: BankingAccount) {
-    this.router.navigate([`account`, `${account.accountNo}`]);
+    this.router.navigate([`account`, `${account.label}`]);
   }
 
   /**
@@ -207,8 +207,8 @@ export class MainPageContentComponent {
   navigateToTransactionPage(appendedTransaction: AppendedTransaction) {
     this.router.navigate([
       `transaction`,
-      `${appendedTransaction.account.accountNo}`,
-      `${appendedTransaction.transaction.transactionNo}`,
+      `${appendedTransaction.account.label}`,
+      `${appendedTransaction.transaction.id}`,
     ]);
   }
 }

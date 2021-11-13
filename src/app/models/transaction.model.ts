@@ -1,3 +1,5 @@
+import { OtherPerson } from "./other-person.model";
+
 /**
  * Interface for a transaction done between two banking accounts
  *
@@ -5,10 +7,9 @@
  * @interface Transaction
  */
 export interface Transaction {
-  transactionNo: string;  // TODO: replace with id
-  from: string; // TODO: replace with otherPerson
-  to: string; // TODO: replace with otherPerson
-  action: 'SENT' | 'RECEIVED';  // TODO: replace 'RECEIVED' with 'GOT'
+  id: string;
+  action: 'SENT' | 'GOT';
   amount: number;
   date: Date;
+  otherPerson: OtherPerson;
 }

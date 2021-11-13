@@ -45,7 +45,7 @@ export class SingleBankAccountPageComponent {
 
     this.route.params.subscribe((params) => {
       this.currentAccount = this.user.accounts!.find((account) => {
-        return account.accountNo === params['accountNo'];
+        return account.label === params['accountNo'];
       }) as BankingAccount;
 
       // In case user is refreshing an old page or an account has been deleted in-session.
