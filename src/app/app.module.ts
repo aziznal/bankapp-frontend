@@ -20,6 +20,7 @@ import { FooterComponent } from './components/layout/footer/footer.component';
 import { NavbarComponent } from './components/layout/navbar/navbar.component';
 import { BackButtonComponent } from './components/layout/back-button/back-button.component';
 import { LoadingScreenComponent } from './components/loading-screen/loading-screen.component';
+import { AppSettingsService } from './services/app-settings.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,7 @@ import { LoadingScreenComponent } from './components/loading-screen/loading-scre
     SharedModule,
     PagesModule,
   ],
-  providers: [AuthService, CookieService],
+  providers: [AuthService, CookieService, AppSettingsService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

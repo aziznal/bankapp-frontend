@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/models/user.model';
@@ -40,16 +41,11 @@ export class SendMoneyPageComponent {
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private route: ActivatedRoute
   ) {
-    this.authService
-      .getUser()
-      .pipe(untilDestroyed(this))
-      .subscribe((user) => {
-        this.user = user;
-
-        this.sendMoneyForm = this.createFormGroup();
-      });
+    this.user = this.route.snapshot.data.user;
+    this.sendMoneyForm = this.createFormGroup();
   }
 
   /**

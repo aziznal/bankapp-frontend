@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 
 import { User } from 'src/app/models/user.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ActivatedRoute } from '@angular/router';
 
 /**
  * Page for showing account settings, including personal settings and banking
@@ -54,19 +55,13 @@ export class AccountSettingsPageComponent {
    * @memberof AccountSettingsPageComponent
    */
   constructor(
-    private authService: AuthService,
     private formBuilder: FormBuilder,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private route: ActivatedRoute
   ) {
-    this.authService
-      .getUser()
-      .pipe(untilDestroyed(this))
-      .subscribe((user) => {
-        this.user = user;
-
-        this.personalDetailsForm = this.createPersonalDetailsForm();
-        this.passwordChangeForm = this.createPasswordChangeForm();
-      });
+    this.user = this.route.snapshot.data.user;
+    this.personalDetailsForm = this.createPersonalDetailsForm();
+    this.passwordChangeForm = this.createPasswordChangeForm();
   }
 
   /**

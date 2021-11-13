@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -64,19 +64,13 @@ export class MainPageContentComponent {
    * @param {Router} router
    * @memberof MainPageContentComponent
    */
-  constructor(private authService: AuthService, private router: Router) {
-    this.authService
-      .getUser()
-      .pipe(untilDestroyed(this))
-      .subscribe((user) => {
-        this.user = user;
+  constructor(private router: Router, private route: ActivatedRoute) {
+    this.user = this.route.snapshot.data.user;
+    this.netBalance = this.getNetBalance();
 
-        this.netBalance = this.getNetBalance();
-
-        this.appendedTransactions = this.getAppendedTransactions();
-        this.flatTransactionList = this.getFlatTransactionList();
-        this.reOrderTransactions();
-      });
+    this.appendedTransactions = this.getAppendedTransactions();
+    this.flatTransactionList = this.getFlatTransactionList();
+    this.reOrderTransactions();
   }
 
   /**
