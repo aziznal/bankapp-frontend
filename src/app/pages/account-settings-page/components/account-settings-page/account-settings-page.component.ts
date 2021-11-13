@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 
 import { User } from 'src/app/models/user.model';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 /**
  * Page for showing account settings, including personal settings and banking
@@ -13,6 +14,7 @@ import { User } from 'src/app/models/user.model';
  * @export
  * @class AccountSettingsPageComponent
  */
+@UntilDestroy()
 @Component({
   selector: 'app-account-settings-page',
   templateUrl: './account-settings-page.component.html',
@@ -25,7 +27,7 @@ export class AccountSettingsPageComponent {
    * @type {User}
    * @memberof AccountSettingsPageComponent
    */
-  user: User;
+  user!: User;
 
   /**
    * form group for user's personal details
@@ -33,7 +35,7 @@ export class AccountSettingsPageComponent {
    * @type {FormGroup}
    * @memberof AccountSettingsPageComponent
    */
-  personalDetailsForm: FormGroup;
+  personalDetailsForm!: FormGroup;
 
   /**
    * form group allowing user to change their password
@@ -41,7 +43,7 @@ export class AccountSettingsPageComponent {
    * @type {FormGroup}
    * @memberof AccountSettingsPageComponent
    */
-  passwordChangeForm: FormGroup;
+  passwordChangeForm!: FormGroup;
 
   /**
    * Creates an instance of AccountSettingsPageComponent. Inits forms.
@@ -56,10 +58,15 @@ export class AccountSettingsPageComponent {
     private formBuilder: FormBuilder,
     private toastrService: ToastrService
   ) {
-    this.user = this.authService.getUser();
+    this.authService
+      .getUser()
+      .pipe(untilDestroyed(this))
+      .subscribe((user) => {
+        this.user = user;
 
-    this.personalDetailsForm = this.createPersonalDetailsForm();
-    this.passwordChangeForm = this.createPasswordChangeForm();
+        this.personalDetailsForm = this.createPersonalDetailsForm();
+        this.passwordChangeForm = this.createPasswordChangeForm();
+      });
   }
 
   /**

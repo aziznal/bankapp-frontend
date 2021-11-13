@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -16,16 +17,17 @@ import { AuthService } from 'src/app/services/auth.service';
  * @export
  * @class SendMoneyPageComponent
  */
+@UntilDestroy()
 @Component({
   templateUrl: './send-money-page.component.html',
   styleUrls: ['./send-money-page.component.scss'],
 })
 export class SendMoneyPageComponent {
   /** Current user */
-  user: User;
+  user!: User;
 
   /** Form for sending money */
-  sendMoneyForm: FormGroup;
+  sendMoneyForm!: FormGroup;
 
   /**
    * Creates an instance of SendMoneyPageComponent.
@@ -40,8 +42,14 @@ export class SendMoneyPageComponent {
     private formBuilder: FormBuilder,
     private toastrService: ToastrService
   ) {
-    this.user = this.authService.getUser();
-    this.sendMoneyForm = this.createFormGroup();
+    this.authService
+      .getUser()
+      .pipe(untilDestroyed(this))
+      .subscribe((user) => {
+        this.user = user;
+
+        this.sendMoneyForm = this.createFormGroup();
+      });
   }
 
   /**

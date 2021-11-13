@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 
 import { BankingAccount } from 'src/app/models/banking-account.model';
 import { User } from 'src/app/models/user.model';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 /**
  * Page showing details of a single bank account
@@ -13,6 +14,7 @@ import { User } from 'src/app/models/user.model';
  * @export
  * @class SingleBankAccountPageComponent
  */
+@UntilDestroy()
 @Component({
   selector: 'app-single-bank-account-page',
   templateUrl: './single-bank-account-page.component.html',
@@ -20,7 +22,7 @@ import { User } from 'src/app/models/user.model';
 })
 export class SingleBankAccountPageComponent {
   /** Current user */
-  user: User;
+  user!: User;
 
   /** The current selected account */
   currentAccount!: BankingAccount;
@@ -41,8 +43,23 @@ export class SingleBankAccountPageComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.user = this.authService.getUser();
+    this.authService
+      .getUser()
+      .pipe(untilDestroyed(this))
+      .subscribe((user) => {
+        this.user = user;
 
+        this.getAccountInfoFromUrl();
+      });
+  }
+
+  /**
+   * Displays info about the account the info of which is passed in the url.
+   * Goes to home page if the given account id is invalid.
+   *
+   * @memberof SingleBankAccountPageComponent
+   */
+  getAccountInfoFromUrl() {
     this.route.params.subscribe((params) => {
       this.currentAccount = this.user.accounts!.find((account) => {
         return account.label === params['accountNo'];

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -14,6 +15,7 @@ import { AuthService } from 'src/app/services/auth.service';
  * @export
  * @class SingleTransactionPageComponent
  */
+@UntilDestroy()
 @Component({
   selector: 'app-single-transaction-page',
   templateUrl: './single-transaction-page.component.html',
@@ -21,7 +23,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class SingleTransactionPageComponent {
   /** Current user */
-  user: User;
+  user!: User;
 
   /** associated account for the current transaction */
   currentAccount!: BankingAccount;
@@ -44,8 +46,23 @@ export class SingleTransactionPageComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.user = this.authService.getUser();
+    this.authService
+      .getUser()
+      .pipe(untilDestroyed(this))
+      .subscribe((user) => {
+        this.user = user;
 
+        this.getTransactionInfoFromUrl();
+      });
+  }
+
+  /**
+   * Displays info about the transaction the info of which is passed in the url.
+   * Goes to home page if the given transaction id is invalid.
+   *
+   * @memberof SingleTransactionPageComponent
+   */
+  getTransactionInfoFromUrl() {
     this.route.params.subscribe({
       next: (params) => {
         this.currentAccount = this.user.accounts!.find((account) => {
@@ -53,10 +70,11 @@ export class SingleTransactionPageComponent {
         }) as BankingAccount;
 
         try {
-          this.currentTransaction =
-            this.currentAccount.transactions!.find((transaction) => {
+          this.currentTransaction = this.currentAccount.transactions!.find(
+            (transaction) => {
               return transaction.id === params['transactionNo'];
-            }) as Transaction;
+            }
+          ) as Transaction;
         } catch (e) {
           this.router.navigateByUrl('/');
           this.toastrService.error(
@@ -66,10 +84,7 @@ export class SingleTransactionPageComponent {
         }
 
         // In case user is refreshing an old page or an account has been deleted in-session.
-        if (
-          !this.currentAccount.label ||
-          !this.currentTransaction.id
-        ) {
+        if (!this.currentAccount.label || !this.currentTransaction.id) {
           this.router.navigateByUrl('/');
           this.toastrService.error(
             "The account or transaction you're attempting to access don't seem to exist.",

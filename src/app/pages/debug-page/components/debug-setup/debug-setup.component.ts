@@ -18,9 +18,9 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./debug-setup.component.scss'],
 })
 export class DebugSetupComponent {
-  mockUser: User;
+  mockUser!: User;
 
-  mockUserTransactions: Transaction[];
+  mockUserTransactions!: Transaction[];
 
   constructor(
     private toastrService: ToastrService,
@@ -28,17 +28,14 @@ export class DebugSetupComponent {
     private cookieService: CookieService,
     private authService: AuthService
   ) {
-    // this.mockUser = new User(
-    //   'Aziz',
-    //   'abodenaal@gmail.com',
-    //   'password',
-    //   new Date('1999-08-01'),
-    //   '+90 534 620 64 60'
-    // );
+    this.authService
+      .getUser()
+      .pipe(untilDestroyed(this))
+      .subscribe((user) => {
+        this.mockUser = user;
 
-    this.mockUser = this.authService.getUser();
-
-    this.mockUserTransactions = this.getSpreadUserTransactions();
+        this.mockUserTransactions = this.getSpreadUserTransactions();
+      });
   }
 
   getSpreadUserTransactions(): Transaction[] {

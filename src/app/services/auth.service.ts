@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 
 import { CookieService } from 'ngx-cookie-service';
 
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+
 import { User } from '../models/user.model';
 import { environment } from 'src/environments/environment';
 
@@ -19,8 +21,6 @@ import { DEFAULT_USER } from './mock-user-data';
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  userId!: string;
-
   /**
    * Shortcut for checking whether user is still logged in.
    *
@@ -51,8 +51,8 @@ export class AuthService {
    * @return {*}  {User}
    * @memberof AuthService
    */
-  getUser(): User {
-    return DEFAULT_USER;
+  getUser(): Observable<User> {
+    return of(DEFAULT_USER).pipe(delay(1000));
   }
 
   /**

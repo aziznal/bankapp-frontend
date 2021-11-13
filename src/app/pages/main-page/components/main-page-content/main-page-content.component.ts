@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user.model';
 import { Transaction } from 'src/app/models/transaction.model';
 import { BankingAccount } from 'src/app/models/banking-account.model';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 // TODO: make barchart width dynamic (make it fit its container's width)
 
@@ -27,6 +28,7 @@ interface AppendedTransaction {
  * @export
  * @class MainPageContentComponent
  */
+@UntilDestroy()
 @Component({
   templateUrl: './main-page-content.component.html',
   styleUrls: ['./main-page-content.component.scss'],
@@ -41,16 +43,16 @@ export class MainPageContentComponent {
    * @type {User}
    * @memberof MainPageContentComponent
    */
-  user: User;
+  user!: User;
 
   /** Total balance of all accounts of the current user */
-  netBalance: number;
+  netBalance!: number;
 
   /** stores ordered list of appended transactions */
-  appendedTransactions: AppendedTransaction[];
+  appendedTransactions!: AppendedTransaction[];
 
   /** Stores list of transactions */
-  flatTransactionList: Transaction[];
+  flatTransactionList!: Transaction[];
 
   /** Stores order-type of transactions */
   transactionOrderType: 'Date' | 'Amount' = 'Date';
@@ -63,12 +65,18 @@ export class MainPageContentComponent {
    * @memberof MainPageContentComponent
    */
   constructor(private authService: AuthService, private router: Router) {
-    this.user = this.authService.getUser();
-    this.netBalance = this.getNetBalance();
+    this.authService
+      .getUser()
+      .pipe(untilDestroyed(this))
+      .subscribe((user) => {
+        this.user = user;
 
-    this.appendedTransactions = this.getAppendedTransactions();
-    this.flatTransactionList = this.getFlatTransactionList();
-    this.reOrderTransactions();
+        this.netBalance = this.getNetBalance();
+
+        this.appendedTransactions = this.getAppendedTransactions();
+        this.flatTransactionList = this.getFlatTransactionList();
+        this.reOrderTransactions();
+      });
   }
 
   /**
