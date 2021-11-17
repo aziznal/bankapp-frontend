@@ -28,14 +28,11 @@ export class DebugSetupComponent {
     private cookieService: CookieService,
     private authService: AuthService
   ) {
-    this.authService
-      .getUser()
-      .pipe(untilDestroyed(this))
-      .subscribe((user) => {
-        this.mockUser = user;
+    this.authService.user.pipe(untilDestroyed(this)).subscribe((user: any) => {
+      this.mockUser = user;
 
-        this.mockUserTransactions = this.getSpreadUserTransactions();
-      });
+      this.mockUserTransactions = this.getSpreadUserTransactions();
+    });
   }
 
   getSpreadUserTransactions(): Transaction[] {
@@ -121,15 +118,15 @@ export class DebugSetupComponent {
     console.log('All your cookies have been deleted >:D ');
   }
 
-  getAuthenticatedCookie() {
-    this.debugService.sendLoginRequest(this.mockUser).subscribe(() => {
-      let authCookie = this.cookieService.get(environment.AUTH_COOKIE_NAME);
+  // getAuthenticatedCookie() {
+  //   this.debugService.sendLoginRequest(this.mockUser).subscribe(() => {
+  //     let authCookie = this.cookieService.get(environment.AUTH_COOKIE_NAME);
 
-      if (authCookie !== '' && authCookie !== undefined) {
-        console.log(`Got the following cookie: \n${authCookie}`);
-      } else {
-        console.log('No authed cookies for you :(');
-      }
-    });
-  }
+  //     if (authCookie !== '' && authCookie !== undefined) {
+  //       console.log(`Got the following cookie: \n${authCookie}`);
+  //     } else {
+  //       console.log('No authed cookies for you :(');
+  //     }
+  //   });
+  // }
 }

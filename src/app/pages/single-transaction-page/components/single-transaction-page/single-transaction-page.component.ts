@@ -41,19 +41,12 @@ export class SingleTransactionPageComponent {
    * @memberof SingleTransactionPageComponent
    */
   constructor(
-    private authService: AuthService,
     private toastrService: ToastrService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.authService
-      .getUser()
-      .pipe(untilDestroyed(this))
-      .subscribe((user) => {
-        this.user = user;
-
-        this.getTransactionInfoFromUrl();
-      });
+    this.user = this.route.snapshot.data.user;
+    this.getTransactionInfoFromUrl();
   }
 
   /**

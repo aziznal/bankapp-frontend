@@ -1,10 +1,15 @@
+const BASE_API_URL = 'http://bankapp.aziznal.com:3000';
+
 export const environment = {
-  production: true,
+  production: false,
+
+  baseApiUrl: BASE_API_URL,
+
+  accessTokenCookieName: 'super_secret_cookie',
 
   API: {
-    API_URL: 'localhost:3000',
-
-    NEW_USER_URL: 'localhost:3000/register',
-    LOGIN_URL: 'http://localhost:3000/auth',
+    REGISTER: BASE_API_URL + '/register',
+    LOGIN_URL: BASE_API_URL + '/auth/login',
+    VERIFY_TOKEN: BASE_API_URL + '/auth/verify',
   },
 };

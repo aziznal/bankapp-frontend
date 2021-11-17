@@ -7,5 +7,5 @@ export interface OtherPerson {
   id: string;
   name: string;
   email: string;
-  accountNo: string;
+  accountId: string;
 }

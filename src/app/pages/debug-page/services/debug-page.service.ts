@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { User } from 'src/app/models/user.model';
-
-const BACKEND_URL = 'http://localhost:3000';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -14,14 +13,14 @@ export class DebugPageService {
 
   sendGetRequest(): Observable<any> {
     console.log('Sending Get Request');
-    return this.http.get(BACKEND_URL, {
+    return this.http.get(environment.baseApiUrl, {
       withCredentials: true,
     });
   }
 
   sendPostRequest(): Observable<any> {
     console.log('Sending Post Request');
-    return this.http.post(BACKEND_URL, { body: 'hello backend!' });
+    return this.http.post(environment.baseApiUrl, { body: 'hello backend!' });
   }
 
   sendNewAccountRequest(user: User): Observable<any> {
@@ -30,12 +29,12 @@ export class DebugPageService {
     console.log('Including user');
     console.log(user);
 
-    return this.http.post<any>(`${BACKEND_URL}/register`, user);
+    return this.http.post<any>(environment.API.REGISTER, user);
   }
 
   sendLoginRequest(mockUser: User): Observable<any> {
     return this.http.post(
-      `${BACKEND_URL}/auth`,
+      environment.API.LOGIN,
       {
         email: mockUser.email,
         password: mockUser.password,

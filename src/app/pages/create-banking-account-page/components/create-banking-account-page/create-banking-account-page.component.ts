@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 import { ToastrService } from 'ngx-toastr';
+import { User } from 'src/app/models/user.model';
 
 /**
  * Page for creating a new bank account.
@@ -15,6 +17,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./create-banking-account-page.component.scss'],
 })
 export class CreateBankingAccountPageComponent {
+  user: User;
+
   /**
    * Form for fields relating to creating a new banking account
    *
@@ -32,8 +36,10 @@ export class CreateBankingAccountPageComponent {
    */
   constructor(
     private formBuilder: FormBuilder,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private route: ActivatedRoute
   ) {
+    this.user = this.route.snapshot.data.user;
     this.form = this.createFormGroup();
   }
 
@@ -56,6 +62,7 @@ export class CreateBankingAccountPageComponent {
    * @memberof CreateBankingAccountPageComponent
    */
   createNewAccount(event: Event): void {
+    // TODO: add check to make sure user hasn't used duplicate labels
     event.preventDefault();
 
     if (this.form.valid) {

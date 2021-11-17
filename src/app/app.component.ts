@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AppSettingsService } from './services/app-settings.service';
 
 @Component({
   selector: 'app-root',
@@ -6,9 +7,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  loading: boolean = true;
+  /**
+   * Creates an instance of AppComponent.
+   *
+   * @param {AppSettingsService} appSettingsService
+   * @memberof AppComponent
+   */
+  constructor(private appSettingsService: AppSettingsService) {}
 
-  constructor() {
-    setTimeout(() => (this.loading = false), 1500);
+  get loading(): boolean {
+    return this.appSettingsService.settings.showLoadingScreen;
+  }
+
+  set loading(val: boolean) {
+    this.appSettingsService.settings.showLoadingScreen = val;
   }
 }

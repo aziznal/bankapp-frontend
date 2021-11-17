@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import { AuthService } from 'src/app/services/auth.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { User } from 'src/app/models/user.model';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 /**
  * Sidenav component displayed on the left-side of the page
@@ -32,12 +32,7 @@ export class SidenavComponent {
    * @param {AuthService} authService
    * @memberof SidenavComponent
    */
-  constructor(private authService: AuthService) {
-    this.authService
-      .getUser()
-      .pipe(untilDestroyed(this))
-      .subscribe((user) => {
-        this.user = user;
-      });
+  constructor(private route: ActivatedRoute) {
+    this.user = this.route.snapshot.data.user;
   }
 }

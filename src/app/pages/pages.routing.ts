@@ -14,41 +14,64 @@ import { CreateBankingAccountPageComponent } from './create-banking-account-page
 import { SendMoneyPageComponent } from './send-money-page/components/send-money-page/send-money-page.component';
 import { SingleBankAccountPageComponent } from './single-bank-account-page/components/single-bank-account-page/single-bank-account-page.component';
 import { SingleTransactionPageComponent } from './single-transaction-page/components/single-transaction-page/single-transaction-page.component';
+import { UserResolver } from '../resolvers/user.resolver';
 
 const routes: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    resolve: {
+      user: UserResolver,
+    },
     component: LayoutComponent,
     children: [
       {
         path: '',
         canActivate: [AuthGuard],
+        resolve: {
+          user: UserResolver,
+        },
         component: MainPageContentComponent,
       },
       {
         path: 'create-banking-account',
         canActivate: [AuthGuard],
+        resolve: {
+          user: UserResolver,
+        },
         component: CreateBankingAccountPageComponent,
       },
       {
         path: 'send-money',
         canActivate: [AuthGuard],
+        resolve: {
+          user: UserResolver,
+        },
         component: SendMoneyPageComponent,
       },
       {
         path: 'account-settings',
         canActivate: [AuthGuard],
+        resolve: {
+          user: UserResolver,
+        },
         component: AccountSettingsPageComponent,
       },
       {
         path: 'account/:accountNo',
         canActivate: [AuthGuard],
+        resolve: {
+          user: UserResolver,
+        },
         component: SingleBankAccountPageComponent,
       },
       {
         path: 'transaction/:accountNo/:transactionNo',
         canActivate: [AuthGuard],
+        resolve: {
+          user: UserResolver,
+        },
         component: SingleTransactionPageComponent,
       },
     ],

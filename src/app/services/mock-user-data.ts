@@ -17,7 +17,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-08-01'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },
@@ -29,7 +29,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-08-07'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },
@@ -41,7 +41,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-09-23'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },
@@ -61,7 +61,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-08-13'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },
@@ -73,7 +73,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-08-19'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },
@@ -85,7 +85,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-09-07'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },
@@ -97,7 +97,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-09-09'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },
@@ -109,7 +109,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-09-10'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },
@@ -121,7 +121,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-09-15'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },
@@ -133,7 +133,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-09-16'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },
@@ -145,7 +145,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-09-17'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },
@@ -157,7 +157,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-09-18'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },
@@ -169,7 +169,7 @@ export const DEFAULT_USER: User = {
           date: new Date('2021-09-19'),
           otherPerson: {
             id: '2',
-            accountNo: '12345',
+            accountId: '12345',
             email: 'janedoe@gmail.com',
             name: 'janedoe',
           },

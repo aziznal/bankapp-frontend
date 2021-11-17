@@ -2,17 +2,21 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+// const BASE_API_URL = 'http://localhost:3000';
+const BASE_API_URL = 'http://bankapp.aziznal.com:3000';
+
 export const environment = {
   production: false,
 
+  baseApiUrl: BASE_API_URL,
+
+  accessTokenCookieName: 'super_secret_cookie',
+
   API: {
-    API_URL: 'http://localhost:3000',
-
-    NEW_USER_URL: 'http://localhost:3000/register',
-    LOGIN_URL: 'http://localhost:3000/auth',
+    REGISTER: BASE_API_URL + '/register',
+    LOGIN: BASE_API_URL + '/auth/login',
+    VERIFY_TOKEN: BASE_API_URL + '/auth/verify',
   },
-
-  AUTH_COOKIE_NAME: 'auth',
 };
 
 /*
