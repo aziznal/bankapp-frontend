@@ -7,7 +7,7 @@ import { AuthService } from '../services/auth.service';
 
 import { User } from '../models/user.model';
 import { AppSettingsService } from '../services/app-settings.service';
-import { finalize } from 'rxjs/operators';
+import { finalize, map, take } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UserResolver implements Resolve<User> {
@@ -30,12 +30,14 @@ export class UserResolver implements Resolve<User> {
    * @return {*}  {(Observable<User> | Promise<User> | User)}
    * @memberof UserResolver
    */
-  resolve(): Observable<User> | Promise<User> | User {
+  resolve(): any {
     this.appSettingsService.settings.showLoadingScreen = true;
 
-    return this.authService.getUser().pipe(
-      finalize(() => {
+    return this.authService.user.pipe(
+      take(1),
+      map((user) => {
         this.appSettingsService.settings.showLoadingScreen = false;
+        return user;
       })
     );
   }

@@ -10,10 +10,15 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class SignUpService {
+  /**
+   * Creates an instance of SignUpService.
+   *
+   * @param {HttpClient} http
+   * @memberof SignUpService
+   */
   constructor(private http: HttpClient) {}
 
   /**
-   *
    * Sends request to create a new user
    *
    * @param {User} user
@@ -21,6 +26,6 @@ export class SignUpService {
    * @memberof SignUpService
    */
   createNewUser(user: User): Observable<any> {
-    return this.http.post(environment.API.NEW_USER_URL, user);
+    return this.http.post(environment.API.REGISTER, user);
   }
 }

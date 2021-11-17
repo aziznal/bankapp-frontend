@@ -2,15 +2,33 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
+import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+
 import { CookieService } from 'ngx-cookie-service';
 
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import decode from 'jwt-decode';
 
-import { User } from '../models/user.model';
 import { environment } from 'src/environments/environment';
 
-import { DEFAULT_USER } from './mock-user-data';
+interface LoginResponse {
+  access_token: string;
+}
+
+interface DecodedToken {
+  iat: number;
+  exp: number;
+
+  email: string;
+  fullname: string;
+  sub: string;
+}
+
+interface UserFromToken {
+  email: string;
+  fullname: string;
+  id: string;
+}
 
 /**
  * Authorization service is used to open a login session for user and make sure
@@ -21,6 +39,14 @@ import { DEFAULT_USER } from './mock-user-data';
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  accessToken: string | undefined = '';
+
+  cookieName: string = environment.accessTokenCookieName;
+
+  user: BehaviorSubject<UserFromToken | null> = new BehaviorSubject(
+    this.getUser()
+  );
+
   /**
    * Shortcut for checking whether user is still logged in.
    *
@@ -29,7 +55,7 @@ export class AuthService {
    * @memberof AuthService
    */
   get isLoggedIn(): boolean {
-    return this.checkIfUserIsLoggedIn();
+    return this.checkUserIsLoggedIn();
   }
 
   /**
@@ -41,52 +67,98 @@ export class AuthService {
    */
   constructor(
     private http: HttpClient,
-    private cookieService: CookieService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private cookieService: CookieService
+  ) {
+    this.accessToken = this.getAccessTokenFromCookie();
+    this.user.next(this.getUser());
+  }
 
   /**
-   * Returns current user's information (mock data)
+   * Returns the access token stored in the cookies from previous sessions (if it's still there)
    *
-   * @return {*}  {User}
+   * @private
+   * @return {*}  {string}
    * @memberof AuthService
    */
-  getUser(): Observable<User> {
-    return of(DEFAULT_USER).pipe(delay(1000));
+  private getAccessTokenFromCookie(): string | undefined {
+    return this.cookieService.get(environment.accessTokenCookieName);
+  }
+
+  private saveAccessTokenAsCookie(): void {
+    const decodedToken = decode<DecodedToken>(this.accessToken!);
+
+    this.cookieService.set(
+      environment.accessTokenCookieName,
+      this.accessToken!,
+      decodedToken.exp,
+      '/',
+      'localhost'
+    );
+
+    this.user.next(this.getUser());
+  }
+
+  private removeAccessTokenCookie(): void {
+    this.cookieService.delete(this.cookieName);
+  }
+
+  getUser(): UserFromToken | null {
+    if (!this.accessToken) return null;
+
+    const decodedToken = decode<DecodedToken>(this.accessToken);
+
+    return decodedToken
+      ? {
+          email: decodedToken.email,
+          fullname: decodedToken.fullname,
+          id: decodedToken.sub,
+        }
+      : null;
+  }
+
+  private checkUserIsLoggedIn(): boolean {
+    if (!this.accessToken) return false;
+
+    const decodedToken = decode<DecodedToken>(this.accessToken!);
+
+    const now = Math.floor(new Date().valueOf() / 1000);
+
+    return decodedToken !== undefined && decodedToken.exp >= now;
   }
 
   /**
-   *
-   * Checks user cookies to see if a session is active
-   *
-   * @returns boolean
-   */
-  private checkIfUserIsLoggedIn(): boolean {
-    return this.cookieService.check(environment.AUTH_COOKIE_NAME);
-  }
-
-  /**
-   *
    * Logs User In and stores a session cookie
    *
    * @returns Observable<any>
    */
   login(email: string, password: string): Observable<any> {
-    return this.http.post(
-      environment.API.LOGIN_URL,
-      { email, password },
-      { withCredentials: true }
-    );
+    return this.http
+      .post<LoginResponse>(
+        environment.API.LOGIN,
+        { email, password },
+        { withCredentials: true }
+      )
+      .pipe(
+        map((response: LoginResponse) => {
+          this.accessToken = response.access_token;
+          this.saveAccessTokenAsCookie();
+        })
+      );
   }
 
   /**
-   *
    * Logs user out and removes session cookies
    *
    * @returns void
    */
   logout(): void {
-    this.cookieService.delete(environment.AUTH_COOKIE_NAME);
+    if (this.accessToken) {
+      this.removeAccessTokenCookie();
+      this.accessToken = undefined;
+      this.user.next(null);
+    }
+
     this.router.navigateByUrl('login');
   }
 }

@@ -1,8 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { AuthService } from 'src/app/services/auth.service';
-
 import { User } from 'src/app/models/user.model';
 import { Transaction } from 'src/app/models/transaction.model';
 import { BankingAccount } from 'src/app/models/banking-account.model';

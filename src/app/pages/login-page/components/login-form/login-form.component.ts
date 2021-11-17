@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
@@ -11,6 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
  * @export
  * @class LoginFormComponent
  */
+@UntilDestroy()
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
@@ -73,30 +75,38 @@ export class LoginFormComponent {
     if (this.loginForm.valid) {
       this.loginButton.disabled = true;
 
-      this.authService.login(email, password).subscribe({
-        next: (_response) => {
-          this.toastrService.success(
-            'Successfully logged in as ' + email,
-            'Login Successful'
-          );
+      this.authService
+        .login(email, password)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: (_response) => {
+            this.toastrService.success(
+              'Successfully logged in as ' + email,
+              'Login Successful'
+            );
 
-          setTimeout(() => {
-            this.router.navigate(['/']);
-          }, 1000);
-        },
+            setTimeout(() => {
+              this.router.navigate(['/']);
+            }, 1000);
+          },
 
-        error: (error) => {
-          this.toastrService.error(
-            error.error.body,
-            `${error.status} ${error.statusText}`
-          );
-          setTimeout(() => (this.loginButton.disabled = false), 1000);
-        },
+          error: (error) => {
+            setTimeout(() => (this.loginButton.disabled = false), 1000);
 
-        complete: () => {
-          setTimeout(() => (this.loginButton.disabled = false), 1000);
-        },
-      });
+            // Because the server sends back a 401 instead of a 404. (maybe the server shouldn't do that?)
+            if (error.status === 401) {
+              this.toastrService.error(
+                'Check your email and password then try again.',
+                '404 Not Found'
+              );
+            } else {
+              this.toastrService.error(
+                error.error.body,
+                `${error.status} ${error.statusText}`
+              );
+            }
+          },
+        });
     }
   }
 }
