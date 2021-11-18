@@ -1,7 +1,7 @@
 const BASE_API_URL = 'http://bankapp.aziznal.com:3000';
 
 export const environment = {
-  production: false,
+  production: true,
 
   baseApiUrl: BASE_API_URL,
 
@@ -9,7 +9,7 @@ export const environment = {
 
   API: {
     REGISTER: BASE_API_URL + '/register',
-    LOGIN_URL: BASE_API_URL + '/auth/login',
+    LOGIN: BASE_API_URL + '/auth/login',
     VERIFY_TOKEN: BASE_API_URL + '/auth/verify',
   },
 };
