@@ -20,14 +20,4 @@ export class CreateBankingAccountService {
       label: newAccountLabel,
     });
   }
-
-  /**
-   * Sends request to get all user's banking accounts
-   *
-   * @return {*}  {Observable<BankingAccount[]>}
-   * @memberof CreateBankingAccountService
-   */
-  getBankAccounts(): Observable<BankingAccount[]> {
-    return this.http.get<BankingAccount[]>(environment.API.USERS.GET_ACCOUNTS);
-  }
 }

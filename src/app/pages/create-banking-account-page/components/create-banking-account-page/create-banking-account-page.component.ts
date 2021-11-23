@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CreateBankingAccountService } from '../../services/create-banking-account.service';
 
 import { User } from 'src/app/interfaces/user.interface';
+import { UsersService } from 'src/app/services/users.service';
 
 /**
  * Page for creating a new bank account.
@@ -44,7 +45,8 @@ export class CreateBankingAccountPageComponent {
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
     private route: ActivatedRoute,
-    private createBankingAccountService: CreateBankingAccountService
+    private createBankingAccountService: CreateBankingAccountService,
+    private usersService: UsersService
   ) {
     this.user = this.route.snapshot.data.user;
     this.form = this.createFormGroup();
@@ -90,7 +92,7 @@ export class CreateBankingAccountPageComponent {
         .pipe(
           untilDestroyed(this),
           concatMap(() => {
-            return this.createBankingAccountService.getBankAccounts();
+            return this.usersService.getBankingAccounts();
           }),
           catchError((error) => {
             this.toastrService.error(
