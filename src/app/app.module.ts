@@ -22,6 +22,7 @@ import { BackButtonComponent } from './components/layout/back-button/back-button
 import { LoadingScreenComponent } from './components/loading-screen/loading-screen.component';
 import { AppSettingsService } from './services/app-settings.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { UsersService } from './services/users.service';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     AuthService,
     CookieService,
     AppSettingsService,
+    UsersService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

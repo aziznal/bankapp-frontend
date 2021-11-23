@@ -1,4 +1,4 @@
-import { Transaction } from './transaction.model';
+import { Transaction } from './transaction.interface';
 
 /**
  * Interface for a banking account
@@ -7,9 +7,8 @@ import { Transaction } from './transaction.model';
  * @interface BankingAccount
  */
 export interface BankingAccount {
-  id: string;
+  _id: string;
   label: string;
-  currency: 'TL' | 'DOLLAR' | 'EURO';
   balance: number;
   transactions?: Transaction[];
 }

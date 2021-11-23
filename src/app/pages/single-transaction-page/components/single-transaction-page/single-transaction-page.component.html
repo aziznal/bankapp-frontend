@@ -8,7 +8,7 @@
     class="p-3"
   >
     <mat-card-title>
-      Transaction {{ currentTransaction.id }}
+      Transaction {{ currentTransaction._id }}
     </mat-card-title>
 
     <mat-divider></mat-divider>
@@ -30,16 +30,16 @@
 
       <p>
         {{ currentTransaction.action }}
-        {{ currentTransaction.amount | currency: currentAccount.currency }}
+        {{ currentTransaction.amount }} ₺
         {{ currentTransaction.action === 'SENT' ? 'to' : 'from' }}
-        {{ currentTransaction.otherPerson.name }}
+        {{ currentTransaction.otherPerson.fullname }}
       </p>
 
       <p
         (click)="navigateToAccountPage(currentAccount)"
         style="color: blue; cursor: pointer;"
       >
-        <strong>Account:</strong> {{ currentAccount.label }} - {{ currentAccount.id }}
+        <strong>Account:</strong> {{ currentAccount.label }} - {{ currentAccount._id }}
       </p>
     </mat-card-content>
 

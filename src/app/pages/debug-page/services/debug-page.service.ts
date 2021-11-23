@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { NewUser } from 'src/app/interfaces/new-user.interface';
 
-import { User } from 'src/app/models/user.model';
+import { User } from 'src/app/interfaces/user.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -32,7 +33,7 @@ export class DebugPageService {
     return this.http.post<any>(environment.API.REGISTER, user);
   }
 
-  sendLoginRequest(mockUser: User): Observable<any> {
+  sendLoginRequest(mockUser: NewUser): Observable<any> {
     return this.http.post(
       environment.API.LOGIN,
       {

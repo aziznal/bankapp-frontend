@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from 'src/environments/environment';
 
-import { User } from 'src/app/models/user.model';
+import { User } from 'src/app/interfaces/user.interface';
 import { Observable } from 'rxjs';
+import { NewUser } from 'src/app/interfaces/new-user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class SignUpService {
    * @return {*}  {Observable<any>}
    * @memberof SignUpService
    */
-  createNewUser(user: User): Observable<any> {
+  createNewUser(user: NewUser): Observable<any> {
     return this.http.post(environment.API.REGISTER, user);
   }
 }

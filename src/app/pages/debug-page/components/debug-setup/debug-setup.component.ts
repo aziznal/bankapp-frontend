@@ -6,8 +6,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { DebugPageService } from '../../services/debug-page.service';
 
-import { User } from 'src/app/models/user.model';
-import { Transaction } from 'src/app/models/transaction.model';
+import { User } from 'src/app/interfaces/user.interface';
+import { Transaction } from 'src/app/interfaces/transaction.interface';
 
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/services/auth.service';

@@ -197,7 +197,7 @@ export class BarchartComponent implements AfterViewInit {
     // Add Y axis
     const yAxis = d3
       .scaleLinear()
-      .domain([0, d3.max(this.data, (d) => d[this.y]) * 1.1])
+      .domain([0, d3.max(this.data, (d) => Math.abs(d[this.y]))! * 1.1])
       .range([this.height, 0]);
 
     svg.append('g').call(d3.axisLeft(yAxis));
@@ -209,9 +209,9 @@ export class BarchartComponent implements AfterViewInit {
       .join('rect')
       .attr('x', (d: any) => Axis(d[this.x].toString().substring(0, 15)) || '')
       .attr('width', Axis.bandwidth())
-      .attr('fill', '#3F51B5')
+      .attr('fill', (d) => (d.amount > 0 ? '#3F51B5' : '#FF4081'))
       .attr(this.x, (d) => d[this.x])
-      .attr(this.y, (d) => d[this.y])
+      .attr(this.y, (d) => Math.abs(d[this.y]))
       // no bar at the beginning thus:
       .attr('height', (d) => this.height - yAxis(0)) // always equal to 0
       .attr('y', (d) => yAxis(0));
@@ -221,8 +221,8 @@ export class BarchartComponent implements AfterViewInit {
       .selectAll('rect')
       .transition()
       .duration(800)
-      .attr('y', (d: any) => yAxis(d[this.y]))
-      .attr('height', (d: any) => this.height - yAxis(d[this.y]))
+      .attr('y', (d: any) => yAxis(Math.abs(d[this.y])))
+      .attr('height', (d: any) => this.height - yAxis(Math.abs(d[this.y])))
       .delay((d, i) => {
         return i * 100;
       });

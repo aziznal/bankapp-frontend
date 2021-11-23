@@ -55,7 +55,7 @@
               (click)="navigateToAccountPage(account)"
             >
               <mat-card-title>
-                Account {{ account.label }} - {{ account.id }}
+                {{ account.label }}
               </mat-card-title>
 
               <mat-card-content
@@ -97,15 +97,28 @@
             class="assets-barchart"
             fxFlexOffset="1.125rem"
             fxFlex
+            *ngIf="!loading else loadingSpinner"
           >
             <app-barchart
-              [data]="flatTransactionList"
+              [data]="simplifiedTransactions"
               x="date"
               y="amount"
-              [width]=900
+              [width]='barchartWidth'
               [height]=285
             ></app-barchart>
           </div>
+
+          <ng-template #loadingSpinner>
+            <div
+              fxFill
+              fxLayout="row"
+              fxLayoutAlign="center center"
+            >
+              <mat-spinner>
+                Loading
+              </mat-spinner>
+            </div>
+          </ng-template>
 
           <div
             class="net-balance"
@@ -119,7 +132,6 @@
           </div>
         </div>
       </section>
-
     </div>
 
     <!-- Recent Transactions -->
@@ -173,7 +185,7 @@
             fxLayoutAlign="space-between center"
           >
             <span>
-              <strong>Transaction No.</strong> {{ appendedTransaction.transaction.id }}
+              <strong>Transaction No.</strong> {{ appendedTransaction.transaction._id }}
             </span>
 
             <span
@@ -190,14 +202,14 @@
             matTooltip="Which of your accounts is related to this transaction"
             matTooltipShowDelay="450"
           >
-            <strong>Account</strong>&nbsp;{{ appendedTransaction.account.label }} - {{ appendedTransaction.account.id }}
+            <strong>Account:</strong>&nbsp;{{ appendedTransaction.account.label }}
           </div>
 
           <div fxLayout="row">
             {{ appendedTransaction.transaction.action }}
-            {{ appendedTransaction.transaction.amount | currency: appendedTransaction.account.currency }}
+            {{ appendedTransaction.transaction.amount }} ₺
             {{ appendedTransaction.transaction.action === 'SENT' ? 'to' : 'from' }}
-            {{ appendedTransaction.transaction.otherPerson.name }}
+            {{ appendedTransaction.transaction.otherPerson.fullname }}
           </div>
 
         </mat-card>

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-
-import { Observable } from 'rxjs';
+import { Resolve } from '@angular/router';
 
 import { AuthService } from '../services/auth.service';
 
-import { User } from '../models/user.model';
+import { User } from '../interfaces/user.interface';
 import { AppSettingsService } from '../services/app-settings.service';
-import { finalize, map, take } from 'rxjs/operators';
+import { concatMap, map, take } from 'rxjs/operators';
+import { UsersService } from '../services/users.service';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UserResolver implements Resolve<User> {
@@ -20,6 +20,7 @@ export class UserResolver implements Resolve<User> {
    */
   constructor(
     private authService: AuthService,
+    private usersService: UsersService,
     private appSettingsService: AppSettingsService
   ) {}
 
@@ -30,13 +31,25 @@ export class UserResolver implements Resolve<User> {
    * @return {*}  {(Observable<User> | Promise<User> | User)}
    * @memberof UserResolver
    */
-  resolve(): any {
+  resolve(): Promise<User> | Observable<User> {
     this.appSettingsService.settings.showLoadingScreen = true;
 
     return this.authService.user.pipe(
       take(1),
+      concatMap(() => {
+        return this.usersService.getAllUserData();
+      }),
       map((user) => {
         this.appSettingsService.settings.showLoadingScreen = false;
+
+        user.accounts?.forEach((account, i) => {
+          user.accounts![i].transactions = account.transactions?.map(
+            (transaction) => {
+              return { ...transaction, date: new Date(transaction.date) };
+            }
+          );
+        });
+
         return user;
       })
     );

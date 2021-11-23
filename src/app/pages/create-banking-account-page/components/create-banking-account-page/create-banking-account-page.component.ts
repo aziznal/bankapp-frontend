@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { ToastrService } from 'ngx-toastr';
-import { User } from 'src/app/models/user.model';
+import { User } from 'src/app/interfaces/user.interface';
 
 /**
  * Page for creating a new bank account.

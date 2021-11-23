@@ -1,4 +1,4 @@
-import { OtherPerson } from "./other-person.model";
+import { OtherPerson } from './other-person.interface';
 
 /**
  * Interface for a transaction done between two banking accounts
@@ -7,7 +7,7 @@ import { OtherPerson } from "./other-person.model";
  * @interface Transaction
  */
 export interface Transaction {
-  id: string;
+  _id: string;
   action: 'SENT' | 'GOT';
   amount: number;
   date: Date;
