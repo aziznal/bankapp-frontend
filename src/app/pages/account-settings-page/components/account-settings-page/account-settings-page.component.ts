@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
-import { ToastrService } from 'ngx-toastr';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
 import { AuthService } from 'src/app/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { AccountSettingsService } from '../../services/account-settings.service';
 
 import { User } from 'src/app/interfaces/user.interface';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ActivatedRoute } from '@angular/router';
 
 /**
  * Page for showing account settings, including personal settings and banking
@@ -57,11 +60,15 @@ export class AccountSettingsPageComponent {
   constructor(
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private accountSettingsService: AccountSettingsService,
+    private authService: AuthService
   ) {
     this.user = this.route.snapshot.data.user;
     this.personalDetailsForm = this.createPersonalDetailsForm();
     this.passwordChangeForm = this.createPasswordChangeForm();
+
+    this.passwordChangeForm.disable();
   }
 
   /**
@@ -74,7 +81,7 @@ export class AccountSettingsPageComponent {
     // TODO: add validator to make sure email is not already taken
 
     return this.formBuilder.group({
-      name: [this.user.fullname, Validators.required],
+      fullname: [this.user.fullname, Validators.required],
       email: [this.user.email, [Validators.required, Validators.email]],
       birthdate: [this.user.birthdate],
       phoneNumber: [this.user.phoneNumber],
@@ -116,7 +123,57 @@ export class AccountSettingsPageComponent {
       return;
     }
 
-    this.toastrService.info('Updating your information...', 'Updating');
+    let userHasConfirmed = confirm(
+      'Proceeding will cause your session to expire and you will need to login again. Do you still want to proceed?'
+    );
+
+    // Make sure only changed values are sent to be updated
+    const changedValues = {
+      fullname:
+        this.personalDetailsForm.controls.fullname.value === this.user.fullname
+          ? undefined
+          : this.personalDetailsForm.controls.fullname.value,
+
+      email:
+        this.personalDetailsForm.controls.email.value === this.user.email
+          ? undefined
+          : this.personalDetailsForm.controls.email.value,
+
+      birthdate:
+        this.personalDetailsForm.controls.birthdate.value ===
+        this.user.birthdate
+          ? undefined
+          : this.personalDetailsForm.controls.birthdate.value,
+
+      phoneNumber:
+        this.personalDetailsForm.controls.phoneNumber.value ===
+        this.user.phoneNumber
+          ? undefined
+          : this.personalDetailsForm.controls.phoneNumber.value,
+    };
+
+    if (userHasConfirmed) {
+      this.accountSettingsService
+        .updateAccountInformation(changedValues)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: () => {
+            this.toastrService.success(
+              'Settings changed successfully. Please log in again using your new information',
+              'Settings Changed Successfully'
+            );
+
+            this.authService.logout();
+          },
+
+          error: (error: HttpErrorResponse) => {
+            this.toastrService.error(
+              `Something went wrong. ${error.message}`,
+              error.name
+            );
+          },
+        });
+    }
   }
 
   /**

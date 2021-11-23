@@ -14,6 +14,7 @@ export const environment = {
 
     USERS: {
       GET_USER_DATA: BASE_API_URL + '/u',
+      UPDATE_ACCOUNT_INFO: BASE_API_URL + '/u/update-user',
       GET_TRANSACTIONS: BASE_API_URL + '/u/transactions',
       GET_SIMPLIFIED_TRANSACTIONS:
         BASE_API_URL + '/u/transactions?forChart=true',
