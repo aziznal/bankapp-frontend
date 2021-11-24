@@ -30,4 +30,23 @@ export class AccountSettingsService {
       newInformation
     );
   }
+
+  editBankingAccount(oldLabel: string, newLabel: string): Observable<any> {
+    return this.http.put(environment.API.USERS.UPDATE_BANKING_ACCOUNT, {
+      oldLabel: oldLabel,
+      newLabel: newLabel,
+    });
+  }
+
+  deleteBankingAccount(
+    deletedAccountLabel: string,
+    fallbackAccountLabel: string
+  ): Observable<any> {
+    return this.http.delete(environment.API.USERS.DELETE_BANKING_ACCOUNT, {
+      body: {
+        deleteLabel: deletedAccountLabel,
+        transferToLabel: fallbackAccountLabel,
+      },
+    });
+  }
 }

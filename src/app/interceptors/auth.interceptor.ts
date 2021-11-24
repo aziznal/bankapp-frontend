@@ -34,20 +34,17 @@ export class AuthInterceptor implements HttpInterceptor {
       )
       .pipe(
         catchError((err: HttpErrorResponse) => {
-          if (
-            (err.status === 401 || err.status === 404) &&
-            this.authService.isLoggedIn
-          ) {
+          if (err.status === 401 && this.authService.isLoggedIn) {
             this.toastrService.error(
               'User session has expired. Please login again.',
               'Session Expired'
             );
+
+            this.appSettings.settings.showLoadingScreen = false;
+            this.authService.logout();
           }
 
           this.appSettings.settings.showLoadingScreen = false;
-
-          this.authService.logout();
-
           return throwError(err);
         })
       );
