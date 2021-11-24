@@ -19,6 +19,16 @@ import { MatCardModule } from '@angular/material/card';
 
 import { MatDividerModule } from '@angular/material/divider';
 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
+
+/**
+ * This module is where all angular material components/modules etc. are
+ * imported
+ *
+ * @export
+ * @class MaterialModule
+ */
 @NgModule({
   imports: [
     MatSidenavModule,
@@ -32,6 +42,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatTooltipModule,
     MatCardModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
+    MatDialogModule,
   ],
 
   exports: [
@@ -46,6 +58,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatTooltipModule,
     MatCardModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
+    MatDialogModule,
   ],
 })
 export class MaterialModule {}

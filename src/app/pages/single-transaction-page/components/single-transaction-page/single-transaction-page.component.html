@@ -1,0 +1,50 @@
+<div
+  class="fill-page-height"
+  fxLayout="row"
+  fxLayoutAlign="center center"
+>
+  <mat-card
+    fxFlex=75
+    class="p-3"
+  >
+    <mat-card-title>
+      Transaction {{ currentTransaction._id }}
+    </mat-card-title>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-content
+      class="mt-3"
+      fxLayout="column"
+      fxLayoutAlign="center start"
+    >
+      <p>
+        <strong>Action:</strong>
+        {{ currentTransaction.action }}
+      </p>
+
+      <p>
+        <strong>Amount:</strong>
+        {{ currentTransaction.amount | currency: '₺ ' }}
+      </p>
+
+      <p>
+        {{ currentTransaction.action }}
+        {{ currentTransaction.amount }} ₺
+        {{ currentTransaction.action === 'SENT' ? 'to' : 'from' }}
+        {{ currentTransaction.otherPerson.fullname }}
+      </p>
+
+      <p
+        (click)="navigateToAccountPage(currentAccount)"
+        style="color: blue; cursor: pointer;"
+      >
+        <strong>Account:</strong> {{ currentAccount.label }} - {{ currentAccount._id }}
+      </p>
+    </mat-card-content>
+
+    <mat-card-actions [align]="'end'">
+      {{ currentTransaction.date }}
+    </mat-card-actions>
+  </mat-card>
+</div>

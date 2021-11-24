@@ -1,0 +1,96 @@
+<div
+  class="fill-page-height"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+>
+  <form
+    class="send-money-form w-50"
+    fxLayout="column"
+    fxLayoutAlign="start start"
+    [formGroup]="sendMoneyForm"
+  >
+    <h2>Money Transfer</h2>
+
+    <h3>Send money to someone using their email address and account label</h3>
+
+    <div
+      fxLayout="column"
+      fxLayoutAlign="start"
+    >
+      <mat-form-field
+        class="w-100"
+        appearance="outline"
+      >
+        <mat-label>Choose which account to send from</mat-label>
+        <mat-select formControlName="sendingAccountLabel">
+          <mat-option
+            *ngFor="let account of user.accounts"
+            [value]="account.label"
+          >
+            {{ account.label }} - balance: {{ account.balance }} ₺
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field
+        class="w-100"
+        appearance="outline"
+      >
+        <mat-label>Receiver Email</mat-label>
+        <input
+          type="text"
+          matInput
+          autocomplete="none"
+          formControlName="receiverEmail"
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        class="w-100"
+        appearance="outline"
+      >
+        <mat-label>Receiver Account Label</mat-label>
+        <input
+          type="text"
+          matInput
+          autocomplete="none"
+          formControlName="receivingAccountLabel"
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        floatLabel="always"
+        fxLayout="row"
+      >
+        <mat-label>Amount</mat-label>
+        <input
+          type="number"
+          matInput
+          min="1"
+          autocomplete="none"
+          formControlName="amount"
+          style="text-align: right;"
+        >
+        <span matPrefix>₺</span>
+      </mat-form-field>
+    </div>
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign="end center"
+      fxFlexOffset="10rem"
+    >
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="sendMoney($event)"
+        [disabled]="disableSendButton"
+      >
+        Send
+        <mat-icon>attach_money</mat-icon>
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+  </form>
+</div>

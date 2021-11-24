@@ -4,13 +4,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { LoginService } from 'src/app/pages/login-page/services/login.service';
 import { DebugPageService } from '../../services/debug-page.service';
 
-import { User } from 'src/app/models/user.model';
-import { Transaction } from 'src/app/models/transaction.model';
+import { User } from 'src/app/interfaces/user.interface';
+import { Transaction } from 'src/app/interfaces/transaction.interface';
 
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/services/auth.service';
 
 @UntilDestroy()
 @Component({
@@ -18,34 +18,28 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./debug-setup.component.scss'],
 })
 export class DebugSetupComponent {
-  mockUser: User;
+  mockUser!: User;
 
-  mockUserTransactions: Transaction[];
+  mockUserTransactions!: Transaction[];
 
   constructor(
     private toastrService: ToastrService,
     private debugService: DebugPageService,
     private cookieService: CookieService,
-    private loginService: LoginService
+    private authService: AuthService
   ) {
-    // this.mockUser = new User(
-    //   'Aziz',
-    //   'abodenaal@gmail.com',
-    //   'password',
-    //   new Date('1999-08-01'),
-    //   '+90 534 620 64 60'
-    // );
+    this.authService.user.pipe(untilDestroyed(this)).subscribe((user: any) => {
+      this.mockUser = user;
 
-    this.mockUser = this.loginService.getUser();
-
-    this.mockUserTransactions = this.getSpreadUserTransactions();
+      this.mockUserTransactions = this.getSpreadUserTransactions();
+    });
   }
 
   getSpreadUserTransactions(): Transaction[] {
     let allTransactions = [] as Transaction[];
 
     this.mockUser.accounts?.forEach((account) => {
-      account.transactionHistory?.forEach((transaction) => {
+      account.transactions?.forEach((transaction) => {
         allTransactions.push(transaction);
       });
     });
@@ -124,15 +118,15 @@ export class DebugSetupComponent {
     console.log('All your cookies have been deleted >:D ');
   }
 
-  getAuthenticatedCookie() {
-    this.debugService.sendLoginRequest(this.mockUser).subscribe(() => {
-      let authCookie = this.cookieService.get(environment.AUTH_COOKIE_NAME);
+  // getAuthenticatedCookie() {
+  //   this.debugService.sendLoginRequest(this.mockUser).subscribe(() => {
+  //     let authCookie = this.cookieService.get(environment.AUTH_COOKIE_NAME);
 
-      if (authCookie !== '' && authCookie !== undefined) {
-        console.log(`Got the following cookie: \n${authCookie}`);
-      } else {
-        console.log('No authed cookies for you :(');
-      }
-    });
-  }
+  //     if (authCookie !== '' && authCookie !== undefined) {
+  //       console.log(`Got the following cookie: \n${authCookie}`);
+  //     } else {
+  //       console.log('No authed cookies for you :(');
+  //     }
+  //   });
+  // }
 }

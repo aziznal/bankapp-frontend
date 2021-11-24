@@ -1,37 +1,106 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import * as d3 from 'd3';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  ViewChild,
+} from '@angular/core';
 
+import * as d3 from 'd3';
+import * as moment from 'moment';
+
+/**
+ * a customized component that makes a simple animated horizontal barchart
+ *
+ * @export
+ * @class BarchartComponent
+ */
 @Component({
   selector: 'app-barchart',
   templateUrl: './barchart.component.html',
   styleUrls: ['./barchart.component.scss'],
 })
-export class BarchartComponent {
+export class BarchartComponent implements AfterViewInit {
+  /**
+   * The data fed into the barchart.
+   *
+   * @type {any[]}
+   * @memberof BarchartComponent
+   */
   @Input('data') data!: any[];
+
+  /**
+   * The x-axis label of the data
+   *
+   * @type {string}
+   * @memberof BarchartComponent
+   */
   @Input('x') x!: string;
+
+  /**
+   * The y-axis label of the data
+   *
+   * @type {string}
+   * @memberof BarchartComponent
+   */
   @Input('y') y!: string;
 
+  /**
+   * The unit displayed for the y-axis when a tooltip is hovered on etc.
+   *
+   * @type {string}
+   * @memberof BarchartComponent
+   */
+  @Input('yUnit') yUnit: string = 'TL';
+
+  /**
+   * The width of the barchart (in pixels)
+   *
+   * @type {number}
+   * @memberof BarchartComponent
+   */
   @Input('width') width!: number;
+
+  /**
+   * The height of the barchart (in pixels)
+   *
+   * @type {number}
+   * @memberof BarchartComponent
+   */
   @Input('height') height!: number;
 
+  /**
+   * The HTML element that encapsualtes the entire barchart
+   *
+   * @type {ElementRef<HTMLDivElement>}
+   * @memberof BarchartComponent
+   */
   @ViewChild('chartContainer') chartContainer!: ElementRef<HTMLDivElement>;
 
-  constructor() {}
-
-  ngAfterViewInit() {
+  /**
+   * Creates the barchart if data has been passed into it as input
+   *
+   * @memberof BarchartComponent
+   */
+  ngAfterViewInit(): void {
     if (this.data) {
       this.makeChart();
     }
   }
 
+  /**
+   * Creates the tooltip which is displayed when a bar is hovered on
+   *
+   * @return {*}  {d3.Selection<any, any, any, any>}
+   * @memberof BarchartComponent
+   */
   createTooltipElement(): d3.Selection<any, any, any, any> {
     let tooltip = d3
       .select(this.chartContainer.nativeElement)
       .append('span')
       .attr('class', 'tooltip')
       .style('visibility', 'hidden')
-      .style('color', 'black')
-      .style('background-color', '#F0F0F0')
+      .style('background-color', '#2F2F2F')
       .style('border-radius', '10px')
       .style('padding', '10px')
       .style('font-weight', 'bold')
@@ -42,31 +111,41 @@ export class BarchartComponent {
     return tooltip;
   }
 
-  showTooltipOnHover(svg: d3.Selection<any, any, any, unknown>) {
-    let that = this;
+  /**
+   * Sets listeners to show, move, and hide tooltip depending on mouse events
+   *
+   * @param {d3.Selection<any, any, any, unknown>} svg
+   * @memberof BarchartComponent
+   */
+  setupTooltipEvents(svg: d3.Selection<any, any, any, unknown>) {
+    let self = this;
     let tooltip = this.createTooltipElement();
 
+    /// For the three functions below, `bar` is the bar in the chart which is
+    /// currently being hovered on by the mouse.
     function showTooltip(bar: any, event: MouseEvent, d: any) {
       // Keep Tooltip next to mouse cursor
       tooltip
         .style('visibility', 'visible')
-        .text(`${d[that.y]}`)
-        .style('color', 'black');
-
-      d3.select(bar).style('stroke-width', '1').style('stroke-color', 'black');
+        .text(
+          `${d[self.y]} ${self.yUnit} - ${moment(d[self.x]).format(
+            'YYYY-MM-DD @HH:MM'
+          )}`
+        )
+        .style('color', 'white');
     }
 
     function moveTooltip(bar: any, event: MouseEvent, d: any) {
       tooltip
-        .style('top', `${event.clientY - 20}px`)
+        .style('top', `${event.clientY - 35}px`)
         .style('left', `${event.clientX + 20}px`);
     }
 
     function hideTooltip(bar: any, event: MouseEvent, d: any) {
       tooltip.style('visibility', 'hidden');
-      d3.select(bar).style('stroke-width', '0.5');
     }
 
+    // Assigning the above-defined functions to each bar of the barchart
     svg
       .selectAll('rect')
       .on('mouseover', function (event, d) {
@@ -80,6 +159,11 @@ export class BarchartComponent {
       });
   }
 
+  /**
+   * Creates / inits all components of the barchart.
+   *
+   * @memberof BarchartComponent
+   */
   makeChart() {
     // set the dimensions and margins of the graph
     const margin = { top: 10, right: 10, bottom: 100, left: 50 };
@@ -113,7 +197,7 @@ export class BarchartComponent {
     // Add Y axis
     const yAxis = d3
       .scaleLinear()
-      .domain([0, d3.max(this.data, (d) => d[this.y]) * 1.1])
+      .domain([0, d3.max(this.data, (d) => Math.abs(d[this.y]))! * 1.1])
       .range([this.height, 0]);
 
     svg.append('g').call(d3.axisLeft(yAxis));
@@ -125,9 +209,9 @@ export class BarchartComponent {
       .join('rect')
       .attr('x', (d: any) => Axis(d[this.x].toString().substring(0, 15)) || '')
       .attr('width', Axis.bandwidth())
-      .attr('fill', '#3F51B5')
+      .attr('fill', (d) => (d.amount > 0 ? '#3F51B5' : '#FF4081'))
       .attr(this.x, (d) => d[this.x])
-      .attr(this.y, (d) => d[this.y])
+      .attr(this.y, (d) => Math.abs(d[this.y]))
       // no bar at the beginning thus:
       .attr('height', (d) => this.height - yAxis(0)) // always equal to 0
       .attr('y', (d) => yAxis(0));
@@ -137,12 +221,12 @@ export class BarchartComponent {
       .selectAll('rect')
       .transition()
       .duration(800)
-      .attr('y', (d: any) => yAxis(d[this.y]))
-      .attr('height', (d: any) => this.height - yAxis(d[this.y]))
+      .attr('y', (d: any) => yAxis(Math.abs(d[this.y])))
+      .attr('height', (d: any) => this.height - yAxis(Math.abs(d[this.y])))
       .delay((d, i) => {
         return i * 100;
       });
 
-    this.showTooltipOnHover(svg);
+    this.setupTooltipEvents(svg);
   }
 }

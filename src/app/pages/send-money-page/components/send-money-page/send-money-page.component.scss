@@ -1,0 +1,17 @@
+@import "src/styles/_variables.scss";
+
+.send-money-form {
+  min-height: fit-content;
+  // height: 50%;
+
+  padding: 2rem;
+
+  background-color: white;
+
+  border: 1px solid rgb(214, 214, 214);
+  border-radius: 9px;
+
+  & > * {
+    width: 100%;
+  }
+}
