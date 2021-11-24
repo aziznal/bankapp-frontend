@@ -9,7 +9,9 @@
     fxLayoutAlign="start start"
     [formGroup]="sendMoneyForm"
   >
-    <h3>Send money to someone using their email address or account id</h3>
+    <h2>Money Transfer</h2>
+
+    <h3>Send money to someone using their email address and account label</h3>
 
     <div
       fxLayout="column"
@@ -20,12 +22,12 @@
         appearance="outline"
       >
         <mat-label>Choose which account to send from</mat-label>
-        <mat-select>
+        <mat-select formControlName="sendingAccountLabel">
           <mat-option
             *ngFor="let account of user.accounts"
-            [value]="account"
+            [value]="account.label"
           >
-            {{ account.id }} - balance: {{ account.balance }} ₺
+            {{ account.label }} - balance: {{ account.balance }} ₺
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -34,12 +36,25 @@
         class="w-100"
         appearance="outline"
       >
-        <mat-label>Send To</mat-label>
+        <mat-label>Receiver Email</mat-label>
         <input
           type="text"
           matInput
           autocomplete="none"
-          formControlName="sendTo"
+          formControlName="receiverEmail"
+        >
+      </mat-form-field>
+
+      <mat-form-field
+        class="w-100"
+        appearance="outline"
+      >
+        <mat-label>Receiver Account Label</mat-label>
+        <input
+          type="text"
+          matInput
+          autocomplete="none"
+          formControlName="receivingAccountLabel"
         >
       </mat-form-field>
 
@@ -70,6 +85,7 @@
         mat-flat-button
         color="primary"
         (click)="sendMoney($event)"
+        [disabled]="disableSendButton"
       >
         Send
         <mat-icon>attach_money</mat-icon>

@@ -9,10 +9,16 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { catchError } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { AppSettingsService } from '../services/app-settings.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private toastrService: ToastrService,
+    private appSettings: AppSettingsService
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -28,10 +34,17 @@ export class AuthInterceptor implements HttpInterceptor {
       )
       .pipe(
         catchError((err: HttpErrorResponse) => {
-          if (err.status === 401) {
+          if (err.status === 401 && this.authService.isLoggedIn) {
+            this.toastrService.error(
+              'User session has expired. Please login again.',
+              'Session Expired'
+            );
+
+            this.appSettings.settings.showLoadingScreen = false;
             this.authService.logout();
           }
 
+          this.appSettings.settings.showLoadingScreen = false;
           return throwError(err);
         })
       );

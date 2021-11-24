@@ -1,10 +1,12 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { User } from 'src/app/models/user.model';
-import { Transaction } from 'src/app/models/transaction.model';
-import { BankingAccount } from 'src/app/models/banking-account.model';
+import { User } from 'src/app/interfaces/user.interface';
+import { Transaction } from 'src/app/interfaces/transaction.interface';
+import { BankingAccount } from 'src/app/interfaces/banking-account.interface';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UsersService } from 'src/app/services/users.service';
+import { Observable } from 'rxjs';
 
 // TODO: make barchart width dynamic (make it fit its container's width)
 
@@ -52,8 +54,14 @@ export class MainPageContentComponent {
   /** Stores list of transactions */
   flatTransactionList!: Transaction[];
 
+  simplifiedTransactions!: { date: Date; amount: number }[];
+
   /** Stores order-type of transactions */
   transactionOrderType: 'Date' | 'Amount' = 'Date';
+
+  loading: boolean;
+
+  barchartWidth!: number;
 
   /**
    * Creates an instance of MainPageContentComponent.
@@ -62,13 +70,34 @@ export class MainPageContentComponent {
    * @param {Router} router
    * @memberof MainPageContentComponent
    */
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private usersService: UsersService
+  ) {
+    this.loading = true;
+
     this.user = this.route.snapshot.data.user;
     this.netBalance = this.getNetBalance();
 
     this.appendedTransactions = this.getAppendedTransactions();
     this.flatTransactionList = this.getFlatTransactionList();
     this.reOrderTransactions();
+
+    this.usersService
+      .getSimplifiedTransactions()
+      .pipe(untilDestroyed(this))
+      .subscribe((result) => {
+        this.simplifiedTransactions = result;
+        this.loading = false;
+      });
+
+    this.barchartWidth = (window.innerWidth * 40) / 100;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(_event: any) {
+    this.barchartWidth = (window.innerWidth * 40) / 100;
   }
 
   /**
@@ -208,7 +237,7 @@ export class MainPageContentComponent {
     this.router.navigate([
       `transaction`,
       `${appendedTransaction.account.label}`,
-      `${appendedTransaction.transaction.id}`,
+      `${appendedTransaction.transaction._id}`,
     ]);
   }
 }

@@ -4,8 +4,8 @@
  * @interface OtherPerson
  */
 export interface OtherPerson {
-  id: string;
-  name: string;
+  _id: string;
+  fullname: string;
   email: string;
-  accountId: string;
+  accountLabel: string;
 }

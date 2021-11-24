@@ -32,7 +32,7 @@
             </mat-label>
             <input
               matInput
-              formControlName="name"
+              formControlName="fullname"
             >
           </mat-form-field>
 
@@ -132,6 +132,7 @@
             mat-flat-button
             (click)="changePassword($event)"
             color="primary"
+            disabled
           >
             <mat-icon>
               refresh
@@ -150,18 +151,18 @@
       <h3>Manage your bank accounts</h3>
 
       <div
-        class="user-accounts-list"
-        fxLayout="row wrap"
+        class="user-accounts-list max-w-100"
+        fxLayout="row"
         fxLayoutAlign="start start"
         fxLayoutGap="2rem"
       >
         <mat-card
-          class="user-account w-30 my-1"
+          class="user-account min-w-30 my-1"
           fxLayout="column"
           *ngFor="let account of user.accounts"
         >
           <mat-card-title>
-            Account No. {{ !account.id }}
+            {{ account.label }}
           </mat-card-title>
 
           <mat-card-content
@@ -174,11 +175,17 @@
           </mat-card-content>
 
           <mat-card-actions>
-            <button mat-icon-button>
+            <button
+              mat-icon-button
+              (click)="editBankingAccount(account)"
+            >
               <mat-icon color="primary">edit</mat-icon>
             </button>
 
-            <button mat-icon-button>
+            <button
+              mat-icon-button
+              (click)="deleteBankingAccount(account)"
+            >
               <mat-icon color="warn">delete</mat-icon>
             </button>
           </mat-card-actions>

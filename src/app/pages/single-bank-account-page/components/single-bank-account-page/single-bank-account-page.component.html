@@ -21,7 +21,7 @@
         *ngFor="let transaction of currentAccount.transactions"
       >
         <mat-card-title>
-          No. {{ transaction.id }}
+          No. {{ transaction._id }}
         </mat-card-title>
 
         <mat-card-content
@@ -61,7 +61,7 @@
         fxLayoutGap=".5rem"
         fxFlexOffset="5rem"
       >
-        <span>Account Number: {{ currentAccount.id }}</span>
+        <span>Account Number: {{ currentAccount._id }}</span>
 
         <mat-icon matTooltip="Use this number to transfer money between accounts">
           help_outline

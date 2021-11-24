@@ -15,8 +15,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ToastrService } from 'ngx-toastr';
 import { SignUpService } from '../services/sign-up.service';
 
-import { User } from 'src/app/models/user.model';
+import { User } from 'src/app/interfaces/user.interface';
 import { CustomErrorStateMatcher } from './custom-error-matcher';
+import { NewUser } from 'src/app/interfaces/new-user.interface';
 
 /**
  * Page with form that allows user to create a new account
@@ -33,7 +34,7 @@ export class SignUpFormComponent {
   @ViewChild('signupButton') signupButton!: HTMLButtonElement;
 
   /** Stores user information from the fields they populate */
-  user!: User;
+  user!: NewUser;
 
   /** stores all form groups and form controls */
   signUpForm: FormGroup;
@@ -57,7 +58,7 @@ export class SignUpFormComponent {
     private formBuilder: FormBuilder,
     private router: Router
   ) {
-    this.user = new User('', '', '');
+    this.user = {} as NewUser;
     this.errorMatcher = new CustomErrorStateMatcher();
     this.signUpForm = this.createFormGroup();
   }

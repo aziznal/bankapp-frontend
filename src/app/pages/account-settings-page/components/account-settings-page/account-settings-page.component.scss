@@ -22,8 +22,12 @@
 }
 
 .user-accounts-list {
-  height: 300px;
+  // height: 300px;
   overflow-y: auto;
+  overflow-x: auto;
+
+  padding-left: 1rem;
+  padding-bottom: 1rem;
 
   .user-account {
     background-color: rgb(251, 251, 251);

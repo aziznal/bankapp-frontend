@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { catchError, concatMap } from 'rxjs/operators';
+
 import { ToastrService } from 'ngx-toastr';
-import { User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services/auth.service';
+import { UsersService } from 'src/app/services/users.service';
+import { SendMoneyService } from '../../services/send-money.service';
 
-// TODO: add button to 'check' if receiving person actually exists
-
-// TODO: add validator to make sure user can't send more money than they have
-
-// TODO: add field so user can pick which account they're sending money from (make all other fields disabled until this field is populated)
+import { User } from 'src/app/interfaces/user.interface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * Page allowing user to send money to another account
@@ -30,6 +30,8 @@ export class SendMoneyPageComponent {
   /** Form for sending money */
   sendMoneyForm!: FormGroup;
 
+  disableSendButton: boolean = false;
+
   /**
    * Creates an instance of SendMoneyPageComponent.
    *
@@ -39,10 +41,11 @@ export class SendMoneyPageComponent {
    * @memberof SendMoneyPageComponent
    */
   constructor(
-    private authService: AuthService,
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sendMoneyService: SendMoneyService,
+    private usersService: UsersService
   ) {
     this.user = this.route.snapshot.data.user;
     this.sendMoneyForm = this.createFormGroup();
@@ -56,8 +59,10 @@ export class SendMoneyPageComponent {
    */
   createFormGroup(): FormGroup {
     return this.formBuilder.group({
-      sendTo: ['', Validators.required],
-      amount: [1, [Validators.minLength(1), Validators.maxLength(10)]],
+      sendingAccountLabel: ['', Validators.required],
+      receiverEmail: ['', [Validators.email, Validators.required]],
+      receivingAccountLabel: ['', Validators.required],
+      amount: [1, [Validators.min(1), Validators.required]],
     });
   }
 
@@ -71,7 +76,10 @@ export class SendMoneyPageComponent {
   sendMoney(event: Event): void {
     event.preventDefault();
 
+    // Confirm form is valid
     if (!this.sendMoneyForm.valid) {
+      this.sendMoneyForm.markAllAsTouched();
+
       this.toastrService.error(
         'Unable to send money. Check that all fields have valid values.',
         'Failed to send money'
@@ -80,9 +88,58 @@ export class SendMoneyPageComponent {
       return;
     }
 
-    this.toastrService.info(
-      `Sending ${this.sendMoneyForm.controls.amount.value} ₺ to ${this.sendMoneyForm.controls.sendTo.value}`,
-      'Sending Money'
+    // Confirm user has enough money
+    const sendingAccount = this.user.accounts!.find(
+      (account) =>
+        account.label === this.sendMoneyForm.controls.sendingAccountLabel.value
     );
+    if (sendingAccount!.balance < this.sendMoneyForm.controls.amount.value) {
+      this.toastrService.error(
+        'The chosen account does not have enough money to commit the transaction',
+        'Insufficient Funds'
+      );
+
+      return;
+    }
+
+    // If everything checks out
+
+    // Disable the send button to prevent issues
+    this.disableSendButton = true;
+
+    this.sendMoneyService
+      .sendMoney(
+        this.sendMoneyForm.controls.sendingAccountLabel.value,
+        this.sendMoneyForm.controls.receiverEmail.value,
+        this.sendMoneyForm.controls.receivingAccountLabel.value,
+        this.sendMoneyForm.controls.amount.value
+      )
+      .pipe(
+        untilDestroyed(this),
+        concatMap(() => {
+          return this.usersService.getBankingAccounts();
+        }),
+        catchError((error: { error: HttpErrorResponse }) => {
+          this.toastrService.error(
+            `Something went wrong. ${error.error.message}`,
+            `${error.error.error}` // Why, yes! I do consider myself a professional programmer. Why do you ask?
+          );
+
+          this.disableSendButton = false;
+
+          throw error;
+        })
+      )
+      .subscribe((newBankingAccounts) => {
+        this.user.accounts = newBankingAccounts;
+
+        this.toastrService.success(
+          'Successfully performed money transfer.',
+          'Success!'
+        );
+
+        // re-enable button if everything is good
+        this.disableSendButton = false;
+      });
   }
 }

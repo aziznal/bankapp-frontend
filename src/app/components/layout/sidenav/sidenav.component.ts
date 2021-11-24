@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { User } from 'src/app/models/user.model';
+import { User } from 'src/app/interfaces/user.interface';
 
 /**
  * Sidenav component displayed on the left-side of the page

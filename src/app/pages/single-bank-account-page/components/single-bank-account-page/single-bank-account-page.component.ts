@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 
-import { BankingAccount } from 'src/app/models/banking-account.model';
-import { User } from 'src/app/models/user.model';
+import { BankingAccount } from 'src/app/interfaces/banking-account.interface';
+import { User } from 'src/app/interfaces/user.interface';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 /**

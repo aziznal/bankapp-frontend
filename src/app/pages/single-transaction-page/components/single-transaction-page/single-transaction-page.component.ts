@@ -4,9 +4,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { ToastrService } from 'ngx-toastr';
 
-import { BankingAccount } from 'src/app/models/banking-account.model';
-import { Transaction } from 'src/app/models/transaction.model';
-import { User } from 'src/app/models/user.model';
+import { BankingAccount } from 'src/app/interfaces/banking-account.interface';
+import { Transaction } from 'src/app/interfaces/transaction.interface';
+import { User } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 
 /**
@@ -65,7 +65,7 @@ export class SingleTransactionPageComponent {
         try {
           this.currentTransaction = this.currentAccount.transactions!.find(
             (transaction) => {
-              return transaction.id === params['transactionNo'];
+              return transaction._id === params['transactionNo'];
             }
           ) as Transaction;
         } catch (e) {
@@ -77,7 +77,7 @@ export class SingleTransactionPageComponent {
         }
 
         // In case user is refreshing an old page or an account has been deleted in-session.
-        if (!this.currentAccount.label || !this.currentTransaction.id) {
+        if (!this.currentAccount.label || !this.currentTransaction._id) {
           this.router.navigateByUrl('/');
           this.toastrService.error(
             "The account or transaction you're attempting to access don't seem to exist.",

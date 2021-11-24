@@ -2,8 +2,14 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { catchError, concatMap } from 'rxjs/operators';
+
 import { ToastrService } from 'ngx-toastr';
-import { User } from 'src/app/models/user.model';
+import { CreateBankingAccountService } from '../../services/create-banking-account.service';
+
+import { User } from 'src/app/interfaces/user.interface';
+import { UsersService } from 'src/app/services/users.service';
 
 /**
  * Page for creating a new bank account.
@@ -11,6 +17,7 @@ import { User } from 'src/app/models/user.model';
  * @export
  * @class CreateBankingAccountPageComponent
  */
+@UntilDestroy()
 @Component({
   selector: 'app-create-banking-account-page',
   templateUrl: './create-banking-account-page.component.html',
@@ -37,7 +44,9 @@ export class CreateBankingAccountPageComponent {
   constructor(
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private createBankingAccountService: CreateBankingAccountService,
+    private usersService: UsersService
   ) {
     this.user = this.route.snapshot.data.user;
     this.form = this.createFormGroup();
@@ -62,14 +71,45 @@ export class CreateBankingAccountPageComponent {
    * @memberof CreateBankingAccountPageComponent
    */
   createNewAccount(event: Event): void {
-    // TODO: add check to make sure user hasn't used duplicate labels
     event.preventDefault();
 
-    if (this.form.valid) {
-      this.toastrService.info(
-        'Creating a new banking account with the entered information...',
-        'Procesing your request...'
+    // Check given label doesn't already exist
+    if (
+      this.user.accounts?.some(
+        (account) => account.label === this.form.controls.accountLabel.value
+      )
+    ) {
+      this.toastrService.error(
+        'The given account label is already in use by another account',
+        'invalid label'
       );
+      return;
+    }
+
+    if (this.form.valid) {
+      this.createBankingAccountService
+        .createBankingAccount(this.form.controls.accountLabel.value)
+        .pipe(
+          untilDestroyed(this),
+          concatMap(() => {
+            return this.usersService.getBankingAccounts();
+          }),
+          catchError((error) => {
+            this.toastrService.error(
+              `Something went wrong. ${error.message}`,
+              `${error.name}`
+            );
+            throw error;
+          })
+        )
+        .subscribe((newBankingAccounts) => {
+          this.user.accounts = newBankingAccounts;
+
+          this.toastrService.success(
+            'New account created successfully!',
+            'Success'
+          );
+        });
     } else {
       this.form.markAllAsTouched();
 

@@ -1,12 +1,21 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/services/auth.service';
-
-import { User } from 'src/app/models/user.model';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ActivatedRoute } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+import { AuthService } from 'src/app/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { AccountSettingsService } from '../../services/account-settings.service';
+
+import { User } from 'src/app/interfaces/user.interface';
+import { BankingAccount } from 'src/app/interfaces/banking-account.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteAccountDialogComponent } from '../delete-account-dialog/delete-account-dialog.component';
+import { UsersService } from 'src/app/services/users.service';
+import { concatMap } from 'rxjs/operators';
+import { EditAccountDialogComponent } from '../edit-account-dialog/edit-account-dialog.component';
 
 /**
  * Page for showing account settings, including personal settings and banking
@@ -57,11 +66,17 @@ export class AccountSettingsPageComponent {
   constructor(
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private accountSettingsService: AccountSettingsService,
+    private authService: AuthService,
+    private usersService: UsersService,
+    private dialog: MatDialog
   ) {
     this.user = this.route.snapshot.data.user;
     this.personalDetailsForm = this.createPersonalDetailsForm();
     this.passwordChangeForm = this.createPasswordChangeForm();
+
+    this.passwordChangeForm.disable();
   }
 
   /**
@@ -74,7 +89,7 @@ export class AccountSettingsPageComponent {
     // TODO: add validator to make sure email is not already taken
 
     return this.formBuilder.group({
-      name: [this.user.fullname, Validators.required],
+      fullname: [this.user.fullname, Validators.required],
       email: [this.user.email, [Validators.required, Validators.email]],
       birthdate: [this.user.birthdate],
       phoneNumber: [this.user.phoneNumber],
@@ -116,7 +131,57 @@ export class AccountSettingsPageComponent {
       return;
     }
 
-    this.toastrService.info('Updating your information...', 'Updating');
+    let userHasConfirmed = confirm(
+      'Proceeding will cause your session to expire and you will need to login again. Do you still want to proceed?'
+    );
+
+    // Make sure only changed values are sent to be updated
+    const changedValues = {
+      fullname:
+        this.personalDetailsForm.controls.fullname.value === this.user.fullname
+          ? undefined
+          : this.personalDetailsForm.controls.fullname.value,
+
+      email:
+        this.personalDetailsForm.controls.email.value === this.user.email
+          ? undefined
+          : this.personalDetailsForm.controls.email.value,
+
+      birthdate:
+        this.personalDetailsForm.controls.birthdate.value ===
+        this.user.birthdate
+          ? undefined
+          : this.personalDetailsForm.controls.birthdate.value,
+
+      phoneNumber:
+        this.personalDetailsForm.controls.phoneNumber.value ===
+        this.user.phoneNumber
+          ? undefined
+          : this.personalDetailsForm.controls.phoneNumber.value,
+    };
+
+    if (userHasConfirmed) {
+      this.accountSettingsService
+        .updateAccountInformation(changedValues)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: () => {
+            this.toastrService.success(
+              'Settings changed successfully. Please log in again using your new information',
+              'Settings Changed Successfully'
+            );
+
+            this.authService.logout();
+          },
+
+          error: (error: HttpErrorResponse) => {
+            this.toastrService.error(
+              `Something went wrong. ${error.message}`,
+              error.name
+            );
+          },
+        });
+    }
   }
 
   /**
@@ -139,5 +204,117 @@ export class AccountSettingsPageComponent {
     }
 
     this.toastrService.info('Changing your password...', 'Changing password');
+  }
+
+  editBankingAccount(editedAccount: BankingAccount) {
+    const dialogRef = this.dialog.open(EditAccountDialogComponent, {
+      width: '400px',
+      disableClose: true,
+      data: {
+        editedAccountLabel: editedAccount.label,
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe((newAccountLabel: string) => {
+        if (!newAccountLabel) {
+          this.toastrService.error(
+            'Must provide new label in order to apply changes',
+            'Unable to proceed'
+          );
+
+          return;
+        }
+
+        // Confirm label is not already taken
+        if (
+          this.user.accounts?.some(
+            (account) => account.label === newAccountLabel
+          )
+        ) {
+          this.toastrService.error(
+            'This label is already in use by another account',
+            'Label already in use'
+          );
+
+          return;
+        }
+
+        this.accountSettingsService
+          .editBankingAccount(editedAccount.label, newAccountLabel)
+          .pipe(
+            untilDestroyed(this),
+            concatMap(() => {
+              return this.usersService.getBankingAccounts();
+            })
+          )
+          .subscribe({
+            next: (newAccounts) => {
+              this.user.accounts = newAccounts;
+
+              this.toastrService.success(
+                'Successfully deleted account',
+                'Success'
+              );
+            },
+            error: (error: HttpErrorResponse) => {
+              this.toastrService.error(
+                `Something went wrong. ${error.message}`,
+                error.name
+              );
+            },
+          });
+      });
+  }
+
+  deleteBankingAccount(deletedAccount: BankingAccount) {
+    const dialogRef = this.dialog.open(DeleteAccountDialogComponent, {
+      width: '400px',
+      disableClose: true,
+      data: {
+        deletedAccountLabel: deletedAccount.label,
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe((fallbackAccountLabel: string) => {
+        if (!fallbackAccountLabel) {
+          this.toastrService.error(
+            "Please provide an account label to transfer your deleted account's remaining funds",
+            'Unable to proceed'
+          );
+
+          return;
+        }
+
+        this.accountSettingsService
+          .deleteBankingAccount(deletedAccount.label, fallbackAccountLabel)
+          .pipe(
+            untilDestroyed(this),
+            concatMap(() => {
+              return this.usersService.getBankingAccounts();
+            })
+          )
+          .subscribe({
+            next: (newAccounts) => {
+              this.user.accounts = newAccounts;
+
+              this.toastrService.success(
+                'Successfully deleted account',
+                'Success'
+              );
+            },
+            error: (error: HttpErrorResponse) => {
+              this.toastrService.error(
+                `Something went wrong. ${error.message}`,
+                error.name
+              );
+            },
+          });
+      });
   }
 }
