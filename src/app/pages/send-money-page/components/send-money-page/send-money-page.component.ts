@@ -89,13 +89,11 @@ export class SendMoneyPageComponent {
     }
 
     // Confirm user has enough money
-    if (
-      !this.user.accounts!.find(
-        (account) =>
-          account.label ===
-          this.sendMoneyForm.controls.sendingAccountLabel.value
-      )?.balance <= this.sendMoneyForm.controls.amount.value
-    ) {
+    const sendingAccount = this.user.accounts!.find(
+      (account) =>
+        account.label === this.sendMoneyForm.controls.sendingAccountLabel.value
+    );
+    if (sendingAccount!.balance < this.sendMoneyForm.controls.amount.value) {
       this.toastrService.error(
         'The chosen account does not have enough money to commit the transaction',
         'Insufficient Funds'
