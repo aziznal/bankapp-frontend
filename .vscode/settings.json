@@ -2,5 +2,12 @@
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
 
-  "cSpell.words": ["bankapp", "aziznal", "fullname"]
+  "cSpell.words": [
+    "aziznal",
+    "bankapp",
+    "devkit",
+    "fullname",
+    "ngneat",
+    "toastr"
+  ]
 }
