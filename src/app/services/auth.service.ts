@@ -41,8 +41,6 @@ interface UserFromToken {
 export class AuthService {
   accessToken: string | undefined = '';
 
-  cookieName: string = environment.accessTokenCookieName;
-
   user: BehaviorSubject<UserFromToken | null> = new BehaviorSubject(
     this.getUser()
   );
@@ -100,7 +98,7 @@ export class AuthService {
   }
 
   private removeAccessTokenCookie(): void {
-    this.cookieService.delete(this.cookieName);
+    this.cookieService.delete(environment.accessTokenCookieName);
   }
 
   getUser(): UserFromToken | null {
