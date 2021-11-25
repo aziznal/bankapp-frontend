@@ -19,6 +19,7 @@
       <mat-card
         class="transaction-item"
         *ngFor="let transaction of currentAccount.transactions"
+        (click)="navigateToTransactionPage(transaction._id)"
       >
         <mat-card-title>
           No. {{ transaction._id }}
@@ -29,13 +30,11 @@
           fxLayoutGap="1rem"
         >
           <span>
-            DO SOMETHING ABOUT THIS
-            <!-- <strong>From:</strong> {{ transaction.from === currentAccount.ownerName ? 'You' : transaction.from }} -->
-            &nbsp;&nbsp;&nbsp;
-            <!-- <strong>To:</strong> {{ transaction.to === currentAccount.ownerName ? 'You' : transaction.to }} -->
+            <strong>{{ transaction.action }} {{ transaction.amount }} ₺
+              {{ transaction.action === 'SENT' ? 'to' : 'from'}}
+              {{ transaction.otherPerson.fullname }} ({{transaction.otherPerson.email}})
+            </strong>
           </span>
-          <span><strong>Action:</strong> {{ transaction.action }}</span>
-          <span><strong>Amount:</strong> {{ transaction.amount | currency: '₺ ' }}</span>
           <span><strong>Date:</strong> {{ transaction.date | date}}</span>
         </mat-card-content>
       </mat-card>
@@ -86,12 +85,12 @@
       <h3>Transaction History Column Chart</h3>
 
       <app-barchart
-        class="mt-5"
+        style="margin-top: 4rem;"
         *ngIf="currentAccount.transactions!.length > 0 else noTransactionHistory"
         [data]="currentAccount.transactions || []"
         x="date"
         y="amount"
-        [width]="750"
+        [width]="barchartWidth"
         [height]="350"
       ></app-barchart>
 

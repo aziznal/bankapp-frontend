@@ -1,14 +1,13 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { User } from 'src/app/interfaces/user.interface';
-import { Transaction } from 'src/app/interfaces/transaction.interface';
-import { BankingAccount } from 'src/app/interfaces/banking-account.interface';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { UsersService } from 'src/app/services/users.service';
-import { Observable } from 'rxjs';
 
-// TODO: make barchart width dynamic (make it fit its container's width)
+import { UsersService } from 'src/app/services/users.service';
+
+import { User } from 'src/app/interfaces/user.interface';
+import { BankingAccount } from 'src/app/interfaces/banking-account.interface';
+import { Transaction } from 'src/app/interfaces/transaction.interface';
 
 /**
  * an object that extends transaction but also has a field for the account
