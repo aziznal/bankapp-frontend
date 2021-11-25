@@ -95,6 +95,8 @@
         >
           <div
             class="assets-barchart"
+            fxLayout="row"
+            fxLayoutAlign="start start"
             fxFlexOffset="1.125rem"
             fxFlex
             *ngIf="!loading else loadingSpinner"
@@ -121,14 +123,23 @@
           </ng-template>
 
           <div
-            class="net-balance"
+            class="net-balance h-87"
             fxLayout="column"
-            fxLayoutAlign="start center"
+            fxLayoutAlign="space-evenly center"
           >
-            <h2>Net Balance</h2>
-            <h3 style="text-align: center;">
-              {{ netBalance | currency: '₺ ' }}
-            </h3>
+            <div>
+              <h2>Balance</h2>
+              <h3 style="text-align: center;">
+                {{ netBalance | currency: '₺ ' }}
+              </h3>
+            </div>
+
+            <div>
+              <h2 class="mt-2">Debt</h2>
+              <h3 style="text-align: center;">
+                {{ user.debt | currency: '₺ ' }}
+              </h3>
+            </div>
           </div>
         </div>
       </section>

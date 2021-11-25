@@ -91,12 +91,12 @@ export class MainPageContentComponent {
         this.loading = false;
       });
 
-    this.barchartWidth = (window.innerWidth * 40) / 100;
+    this.barchartWidth = (window.innerWidth * 35) / 100;
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(_event: any) {
-    this.barchartWidth = (window.innerWidth * 40) / 100;
+    this.barchartWidth = (window.innerWidth * 35) / 100;
   }
 
   /**
