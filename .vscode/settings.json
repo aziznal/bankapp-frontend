@@ -2,8 +2,5 @@
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
 
-  "cSpell.ignoreWords": [
-    "bankapp",
-    "aziznal"
-  ]
+  "cSpell.words": ["bankapp", "aziznal", "fullname"]
 }
