@@ -98,7 +98,11 @@ export class AuthService {
   }
 
   private removeAccessTokenCookie(): void {
-    this.cookieService.delete(environment.accessTokenCookieName);
+    this.cookieService.delete(
+      environment.accessTokenCookieName,
+      '/',
+      environment.accessTokenCookieDomain
+    );
   }
 
   getUser(): UserFromToken | null {
