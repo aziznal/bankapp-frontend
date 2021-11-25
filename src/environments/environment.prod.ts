@@ -6,9 +6,10 @@ export const environment = {
   baseApiUrl: BASE_API_URL,
 
   accessTokenCookieName: 'super_secret_cookie',
+  accessTokenCookieDomain: 'bankapp.aziznal.com',
 
   API: {
-    REGISTER: BASE_API_URL + '/register',
+    REGISTER: BASE_API_URL + '/auth/register',
     LOGIN: BASE_API_URL + '/auth/login',
     VERIFY_TOKEN: BASE_API_URL + '/auth/verify',
 

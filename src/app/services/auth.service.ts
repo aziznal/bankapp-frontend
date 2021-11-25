@@ -93,7 +93,7 @@ export class AuthService {
       this.accessToken!,
       decodedToken.exp,
       '/',
-      'localhost'
+      environment.accessTokenCookieDomain
     );
 
     this.user.next(this.getUser());
