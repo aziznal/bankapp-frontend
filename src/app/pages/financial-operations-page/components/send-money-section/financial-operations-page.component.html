@@ -1,10 +1,11 @@
 <div
   class="fill-page-height"
-  fxLayout="column"
+  fxLayout="row"
   fxLayoutAlign="center center"
+  fxLayoutGap="3rem"
 >
   <form
-    class="send-money-form w-50"
+    class="send-money-form w-30"
     fxLayout="column"
     fxLayoutAlign="start start"
     [formGroup]="sendMoneyForm"
@@ -90,6 +91,78 @@
         Send
         <mat-icon>attach_money</mat-icon>
         <mat-icon>send</mat-icon>
+      </button>
+    </div>
+  </form>
+
+  <form
+    class="send-money-form w-30"
+    fxLayout="column"
+    fxLayoutAlign="start start"
+    [formGroup]="borrowMoneyForm"
+  >
+    <h2>Debt Incursion</h2>
+    <h3>current debt: {{ user.debt | currency: '₺' }}</h3>
+
+    <h3>
+      Borrow money from the benevolent bank and never worry about anything
+      anymore!
+    </h3>
+
+    <h4>
+      It's okay! everyone does it, so why shouldn't you?
+    </h4>
+
+    <div
+      fxLayout="column"
+      fxLayoutAlign="start"
+    >
+      <mat-form-field
+        class="w-100"
+        appearance="outline"
+      >
+        <mat-label>Choose which account to receive the money</mat-label>
+        <mat-select formControlName="borrowingAccountLabel">
+          <mat-option
+            *ngFor="let account of user.accounts"
+            [value]="account.label"
+          >
+            {{ account.label }} - balance: {{ account.balance }} ₺
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        floatLabel="always"
+        fxLayout="row"
+      >
+        <mat-label>Amount</mat-label>
+        <input
+          type="number"
+          matInput
+          min="1"
+          autocomplete="none"
+          formControlName="amount"
+          style="text-align: right;"
+        >
+        <span matPrefix>₺</span>
+      </mat-form-field>
+    </div>
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign="end center"
+      fxFlexOffset="10rem"
+    >
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="borrowMoney($event)"
+        [disabled]="disableSendButton"
+      >
+        Borrow
+        <mat-icon>attach_money</mat-icon>
       </button>
     </div>
   </form>

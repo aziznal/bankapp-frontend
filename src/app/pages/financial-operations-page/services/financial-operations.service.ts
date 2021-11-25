@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class SendMoneyService {
+export class FinancialOperationsService {
   constructor(private http: HttpClient) {}
 
   /**
@@ -27,6 +27,21 @@ export class SendMoneyService {
       sendingAccountLabel,
       receiverEmail,
       receivingAccountLabel,
+      amount,
+    });
+  }
+
+  /**
+   * Allows user to make bad life decisions and go into crippling debt
+   *
+   * @param {string} borrowingAccountLabel
+   * @param {number} amount
+   * @return {*}  {Observable<any>}
+   * @memberof FinancialOperationsService
+   */
+  borrowMoney(borrowingAccountLabel: string, amount: number): Observable<any> {
+    return this.http.post(environment.API.USERS.BORROW_MONEY, {
+      borrowingAccountLabel,
       amount,
     });
   }
