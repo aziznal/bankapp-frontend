@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BankingAccount } from 'src/app/interfaces/banking-account.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class CreateBankingAccountService {
+export class MainPageService {
   constructor(private http: HttpClient) {}
 
   /**

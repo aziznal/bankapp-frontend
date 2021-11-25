@@ -8,6 +8,12 @@ import { UsersService } from 'src/app/services/users.service';
 import { User } from 'src/app/interfaces/user.interface';
 import { BankingAccount } from 'src/app/interfaces/banking-account.interface';
 import { Transaction } from 'src/app/interfaces/transaction.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { NewBankingAccountDialogComponent } from '../new-banking-account-dialog/new-banking-account-dialog.component';
+import { ToastrService } from 'ngx-toastr';
+import { MainPageService } from '../services/main-page.service';
+import { concatMap } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * an object that extends transaction but also has a field for the account
@@ -72,7 +78,10 @@ export class MainPageContentComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private usersService: UsersService
+    private toastrService: ToastrService,
+    private usersService: UsersService,
+    private mainPageService: MainPageService,
+    private dialog: MatDialog
   ) {
     this.loading = true;
 
@@ -238,5 +247,64 @@ export class MainPageContentComponent {
       `${appendedTransaction.account.label}`,
       `${appendedTransaction.transaction._id}`,
     ]);
+  }
+
+  createNewBankingAccount() {
+    const dialogRef = this.dialog.open(NewBankingAccountDialogComponent, {
+      width: '400px',
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe((newAccountLabel: string) => {
+        if (!newAccountLabel) {
+          this.toastrService.error(
+            'Must provide new label in order to create account',
+            'Account not created'
+          );
+
+          return;
+        }
+
+        // Confirm label is not already taken
+        if (
+          this.user.accounts?.some(
+            (account) => account.label === newAccountLabel
+          )
+        ) {
+          this.toastrService.error(
+            'This label is already in use by another account',
+            'Label already in use'
+          );
+
+          return;
+        }
+
+        this.mainPageService
+          .createBankingAccount(newAccountLabel)
+          .pipe(
+            untilDestroyed(this),
+            concatMap(() => {
+              return this.usersService.getBankingAccounts();
+            })
+          )
+          .subscribe({
+            next: (newAccounts) => {
+              this.user.accounts = newAccounts;
+
+              this.toastrService.success(
+                'Successfully deleted account',
+                'Success'
+              );
+            },
+            error: (error: HttpErrorResponse) => {
+              this.toastrService.error(
+                `Something went wrong. ${error.message}`,
+                error.name
+              );
+            },
+          });
+      });
   }
 }

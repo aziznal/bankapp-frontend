@@ -67,6 +67,24 @@
               </mat-card-content>
             </mat-card>
 
+            <mat-card
+              class="banking-accounts-item"
+              fxLayout="column"
+              style="background-color: white;"
+              (click)="createNewBankingAccount()"
+            >
+              <mat-card-content
+                class="h-100"
+                fxLayout="column"
+                fxLayoutAlign="center center"
+              >
+                <h3>Create New Account</h3>
+                <mat-icon
+                  color="primary"
+                  style="font-size: 3rem; width: fit-content; height: fit-content"
+                >add</mat-icon>
+              </mat-card-content>
+            </mat-card>
           </div>
 
           <mat-icon
