@@ -147,14 +147,14 @@
           >
             <div>
               <h2>Balance</h2>
-              <h3 style="text-align: center;">
+              <h3 style="text-align: center; color: green;">
                 {{ netBalance | currency: '₺ ' }}
               </h3>
             </div>
 
             <div>
               <h2 class="mt-2">Debt</h2>
-              <h3 style="text-align: center;">
+              <h3 style="text-align: center; color: red;">
                 {{ user.debt | currency: '₺ ' }}
               </h3>
             </div>

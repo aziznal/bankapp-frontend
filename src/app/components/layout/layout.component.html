@@ -12,7 +12,15 @@
   <mat-sidenav-content>
     <app-navbar [sidenav]='sidenav'></app-navbar>
     <app-back-button></app-back-button>
-    <router-outlet></router-outlet>
+
+    <div>
+      <router-outlet></router-outlet>
+
+      <ng-container *ngIf="loading">
+        <app-loading-screen></app-loading-screen>
+      </ng-container>
+    </div>
+
   </mat-sidenav-content>
 
 </mat-sidenav-container>
