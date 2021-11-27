@@ -1,0 +1,54 @@
+<section
+  class="settings-form w-100 fill-page-height"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+>
+  <h1>Manage your bank accounts</h1>
+
+  <div
+    class="user-accounts-list w-100"
+    fxLayout="column"
+    fxLayoutAlign="start start"
+    fxLayoutGap="2rem"
+  >
+    <mat-card
+      class="user-account min-w-30 my-1"
+      fxLayout="column"
+      *ngFor="let account of user.accounts"
+    >
+      <mat-card-title style="font-size: 2rem;">
+        <strong>{{ account.label }}</strong>
+      </mat-card-title>
+
+      <mat-card-content
+        fxLayout="column"
+        fxLayoutAlign="center start"
+        fxFlexOffset="3%"
+        style="font-size: 1.25rem;"
+      >
+        <h3 style="margin: 0;">Balance</h3>
+        <p>{{ account.balance | currency: '₺ '}}</p>
+      </mat-card-content>
+
+      <mat-card-actions fxFlex="row" fxLayoutGap="1rem">
+        <button
+          mat-flat-button
+          (click)="editBankingAccount(account)"
+          color="primary"
+        >
+          <mat-icon>edit</mat-icon>
+          Change Label
+        </button>
+
+        <button
+          mat-flat-button
+          (click)="deleteBankingAccount(account)"
+          color="warn"
+        >
+          <mat-icon>delete</mat-icon>
+          Delete Account
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</section>

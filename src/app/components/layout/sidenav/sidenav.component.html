@@ -58,6 +58,17 @@
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{exact: true}"
       >
+        <a [routerLink]="'manage-accounts'">
+          <mat-icon>dynamic_feed</mat-icon>
+          Manage Accounts
+        </a>
+      </li>
+
+      <li
+        class="nav-link"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{exact: true}"
+      >
         <a [routerLink]="'account-settings'">
           <mat-icon>settings</mat-icon>
           Account Settings

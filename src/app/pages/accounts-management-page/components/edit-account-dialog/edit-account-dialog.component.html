@@ -1,18 +1,18 @@
-<h2 mat-dialog-title>Confirm and specify receiving account</h2>
+<h2 mat-dialog-title>Change account label</h2>
 
 <mat-dialog-content align="center">
-    Are you sure you want to delete the account labeled <strong>{{
-        deletedAccountLabel }}</strong> ?
+    You're changing the name of the account <strong>{{
+        editedAccountLabel}}</strong>
 </mat-dialog-content>
 
 <mat-form-field class="w-100 mt-5">
     <mat-label>
-        Specify account to transfer remaining funds
+        Specify new account label
     </mat-label>
 
     <input
         matInput
-        #receivingAccountLabelInput
+        #newAccountLabelInput
     >
 </mat-form-field>
 
@@ -33,6 +33,6 @@
         data-cy="confirm-button"
         (click)="close()"
     >
-        Delete
+        Update
     </button>
 </mat-dialog-actions>

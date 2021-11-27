@@ -21,13 +21,14 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./delete-account-dialog.component.scss'],
 })
 export class DeleteAccountDialogComponent implements OnInit, OnDestroy {
-  @ViewChild('receivingAccountLabelInput')
-  receivingAccountLabelInput!: ElementRef<HTMLInputElement>;
-
   /** Keyboard shortcuts subscription */
   subscription!: Subscription;
 
   deletedAccountLabel: string;
+
+  userAccountLabels: string[];
+
+  receivingAccountLabel: string = '';
 
   /**
    * Creates an instance of DeleteAccountDialogComponent.
@@ -37,13 +38,11 @@ export class DeleteAccountDialogComponent implements OnInit, OnDestroy {
    */
   constructor(
     private dialog: MatDialogRef<DeleteAccountDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: { deletedAccountLabel: string }
+    @Inject(MAT_DIALOG_DATA)
+    private data: { deletedAccountLabel: string; userAccountLabels: string[] }
   ) {
     this.deletedAccountLabel = this.data.deletedAccountLabel;
-  }
-
-  get receivingAccountLabel(): string {
-    return this.receivingAccountLabelInput.nativeElement.value;
+    this.userAccountLabels = data.userAccountLabels;
   }
 
   /**

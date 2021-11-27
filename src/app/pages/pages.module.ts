@@ -11,6 +11,7 @@ import { AccountSettingsPageModule } from './account-settings-page/account-setti
 import { SingleBankAccountPageModule } from './single-bank-account-page/single-bank-account-page.module';
 import { SingleTransactionPageModule } from './single-transaction-page/single-transaction-page.module';
 import { FinancialOperationsPageModule } from './financial-operations-page/financial-operations-page.module';
+import { AccountsManagementPageModule } from './accounts-management-page/accounts-management.module';
 
 @NgModule({
   declarations: [],
@@ -27,6 +28,7 @@ import { FinancialOperationsPageModule } from './financial-operations-page/finan
     FinancialOperationsPageModule,
     SingleBankAccountPageModule,
     SingleTransactionPageModule,
+    AccountsManagementPageModule,
   ],
 
   providers: [],
