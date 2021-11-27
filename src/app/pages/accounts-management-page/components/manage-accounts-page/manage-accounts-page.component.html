@@ -10,6 +10,7 @@
     fxLayout="column"
     fxLayoutAlign="start start"
     fxLayoutGap="2rem"
+    *ngIf="user.accounts!.length > 0 else noAccounts"
   >
     <mat-card
       class="user-account min-w-30 my-1"
@@ -30,7 +31,10 @@
         <p>{{ account.balance | currency: '₺ '}}</p>
       </mat-card-content>
 
-      <mat-card-actions fxFlex="row" fxLayoutGap="1rem">
+      <mat-card-actions
+        fxFlex="row"
+        fxLayoutGap="1rem"
+      >
         <button
           mat-flat-button
           (click)="editBankingAccount(account)"
@@ -51,4 +55,13 @@
       </mat-card-actions>
     </mat-card>
   </div>
+
+  <ng-template #noAccounts>
+    <h3
+      class="user-accounts-list"
+      style="text-align: center; color: gray;"
+    >
+      You currently have no banking accounts. Create a banking account from the main dashboard
+    </h3>
+  </ng-template>
 </section>
