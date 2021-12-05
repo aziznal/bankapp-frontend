@@ -67,6 +67,24 @@
               </mat-card-content>
             </mat-card>
 
+            <mat-card
+              class="banking-accounts-item"
+              fxLayout="column"
+              style="background-color: white;"
+              (click)="createNewBankingAccount()"
+            >
+              <mat-card-content
+                class="h-100"
+                fxLayout="column"
+                fxLayoutAlign="center center"
+              >
+                <h3>Create New Account</h3>
+                <mat-icon
+                  color="primary"
+                  style="font-size: 3rem; width: fit-content; height: fit-content"
+                >add</mat-icon>
+              </mat-card-content>
+            </mat-card>
           </div>
 
           <mat-icon
@@ -95,6 +113,8 @@
         >
           <div
             class="assets-barchart"
+            fxLayout="row"
+            fxLayoutAlign="start start"
             fxFlexOffset="1.125rem"
             fxFlex
             *ngIf="!loading else loadingSpinner"
@@ -121,14 +141,23 @@
           </ng-template>
 
           <div
-            class="net-balance"
+            class="net-balance h-87"
             fxLayout="column"
-            fxLayoutAlign="start center"
+            fxLayoutAlign="space-evenly center"
           >
-            <h2>Net Balance</h2>
-            <h3 style="text-align: center;">
-              {{ netBalance | currency: '₺ ' }}
-            </h3>
+            <div>
+              <h2>Balance</h2>
+              <h3 style="text-align: center; color: green;">
+                {{ netBalance | currency: '₺ ' }}
+              </h3>
+            </div>
+
+            <div>
+              <h2 class="mt-2">Debt</h2>
+              <h3 style="text-align: center; color: red;">
+                {{ user.debt | currency: '₺ ' }}
+              </h3>
+            </div>
           </div>
         </div>
       </section>

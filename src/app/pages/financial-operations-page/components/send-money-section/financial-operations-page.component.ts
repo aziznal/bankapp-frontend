@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -7,7 +7,7 @@ import { catchError, concatMap } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 import { UsersService } from 'src/app/services/users.service';
-import { SendMoneyService } from '../../services/send-money.service';
+import { FinancialOperationsService } from '../../services/financial-operations.service';
 
 import { User } from 'src/app/interfaces/user.interface';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -20,15 +20,17 @@ import { HttpErrorResponse } from '@angular/common/http';
  */
 @UntilDestroy()
 @Component({
-  templateUrl: './send-money-page.component.html',
-  styleUrls: ['./send-money-page.component.scss'],
+  templateUrl: './financial-operations-page.component.html',
+  styleUrls: ['./financial-operations-page.component.scss'],
 })
-export class SendMoneyPageComponent {
+export class FinancialOperationsPageComponent {
   /** Current user */
   user!: User;
 
   /** Form for sending money */
-  sendMoneyForm!: FormGroup;
+  sendMoneyForm: FormGroup;
+
+  borrowMoneyForm: FormGroup;
 
   disableSendButton: boolean = false;
 
@@ -44,11 +46,12 @@ export class SendMoneyPageComponent {
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
     private route: ActivatedRoute,
-    private sendMoneyService: SendMoneyService,
+    private financialOperationsService: FinancialOperationsService,
     private usersService: UsersService
   ) {
     this.user = this.route.snapshot.data.user;
-    this.sendMoneyForm = this.createFormGroup();
+    this.sendMoneyForm = this.createSendMoneyFormGroup();
+    this.borrowMoneyForm = this.createBorrowMoneyFormGroup();
   }
 
   /**
@@ -57,11 +60,18 @@ export class SendMoneyPageComponent {
    * @return {*}  {FormGroup}
    * @memberof SendMoneyPageComponent
    */
-  createFormGroup(): FormGroup {
+  createSendMoneyFormGroup(): FormGroup {
     return this.formBuilder.group({
       sendingAccountLabel: ['', Validators.required],
       receiverEmail: ['', [Validators.email, Validators.required]],
       receivingAccountLabel: ['', Validators.required],
+      amount: [1, [Validators.min(1), Validators.required]],
+    });
+  }
+
+  createBorrowMoneyFormGroup(): FormGroup {
+    return this.formBuilder.group({
+      borrowingAccountLabel: ['', Validators.required],
       amount: [1, [Validators.min(1), Validators.required]],
     });
   }
@@ -107,7 +117,7 @@ export class SendMoneyPageComponent {
     // Disable the send button to prevent issues
     this.disableSendButton = true;
 
-    this.sendMoneyService
+    this.financialOperationsService
       .sendMoney(
         this.sendMoneyForm.controls.sendingAccountLabel.value,
         this.sendMoneyForm.controls.receiverEmail.value,
@@ -140,6 +150,61 @@ export class SendMoneyPageComponent {
 
         // re-enable button if everything is good
         this.disableSendButton = false;
+      });
+  }
+
+  borrowMoney(event: Event): void {
+    event.preventDefault();
+
+    // Confirm form is valid
+    if (!this.borrowMoneyForm.valid) {
+      this.borrowMoneyForm.markAllAsTouched();
+
+      this.toastrService.error(
+        'Unable to borrow money. Check that all fields have valid values.',
+        'Failed to borrow money'
+      );
+
+      return;
+    }
+
+    // confirm borrowing account label actually exists for user
+    if (
+      !this.user.accounts?.some(
+        (account) =>
+          account.label ===
+          this.borrowMoneyForm.controls.borrowingAccountLabel.value
+      )
+    ) {
+      this.toastrService.error(
+        'Given account does not seem to exist for current user',
+        'Account does not exist'
+      );
+
+      return;
+    }
+
+    this.financialOperationsService
+      .borrowMoney(
+        this.borrowMoneyForm.controls.borrowingAccountLabel.value,
+        this.borrowMoneyForm.controls.amount.value
+      )
+      .pipe(
+        untilDestroyed(this),
+        concatMap(() => this.usersService.getAllUserData())
+      )
+      .subscribe({
+        next: (newUser) => {
+          this.user = newUser;
+
+          this.toastrService.success('Successfully went into debt', 'Great!');
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastrService.error(
+            'Something went wrong. ' + error.message,
+            error.name
+          );
+        },
       });
   }
 }

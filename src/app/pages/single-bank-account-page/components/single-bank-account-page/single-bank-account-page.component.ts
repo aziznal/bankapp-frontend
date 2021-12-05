@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ToastrService } from 'ngx-toastr';
@@ -27,6 +27,8 @@ export class SingleBankAccountPageComponent {
   /** The current selected account */
   currentAccount!: BankingAccount;
 
+  barchartWidth: number;
+
   /**
    * Creates an instance of SingleBankAccountPageComponent. Handles errors if
    * bad account id is given
@@ -44,6 +46,13 @@ export class SingleBankAccountPageComponent {
   ) {
     this.user = this.route.snapshot.data.user;
     this.getAccountInfoFromUrl();
+
+    this.barchartWidth = (window.innerWidth * 35) / 100;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(_event: any) {
+    this.barchartWidth = (window.innerWidth * 35) / 100;
   }
 
   /**
@@ -67,5 +76,13 @@ export class SingleBankAccountPageComponent {
         );
       }
     });
+  }
+
+  navigateToTransactionPage(transactionId: string): void {
+    this.router.navigate([
+      'transaction',
+      this.currentAccount.label,
+      transactionId,
+    ]);
   }
 }

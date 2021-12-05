@@ -9,12 +9,12 @@ import { LoginFormComponent } from './login-page/components/login-form/login-for
 import { SignUpFormComponent } from './signup-page/components/sign-up-form.component';
 import { DebugSetupComponent } from './debug-page/components/debug-setup/debug-setup.component';
 import { MainPageContentComponent } from './main-page/components/main-page-content/main-page-content.component';
-import { AccountSettingsPageComponent } from './account-settings-page/components/account-settings-page/account-settings-page.component';
-import { CreateBankingAccountPageComponent } from './create-banking-account-page/components/create-banking-account-page/create-banking-account-page.component';
-import { SendMoneyPageComponent } from './send-money-page/components/send-money-page/send-money-page.component';
 import { SingleBankAccountPageComponent } from './single-bank-account-page/components/single-bank-account-page/single-bank-account-page.component';
 import { SingleTransactionPageComponent } from './single-transaction-page/components/single-transaction-page/single-transaction-page.component';
 import { UserResolver } from '../resolvers/user.resolver';
+import { FinancialOperationsPageComponent } from './financial-operations-page/components/send-money-section/financial-operations-page.component';
+import { ManageAccountsPageComponent } from './accounts-management-page/components/manage-accounts-page/manage-accounts-page.component';
+import { AccountSettingsPageComponent } from './account-settings-page/components/account-settings-page/account-settings-page.component';
 
 const routes: Routes = [
   {
@@ -35,20 +35,20 @@ const routes: Routes = [
         component: MainPageContentComponent,
       },
       {
-        path: 'create-banking-account',
+        path: 'financial-operations',
         canActivate: [AuthGuard],
         resolve: {
           user: UserResolver,
         },
-        component: CreateBankingAccountPageComponent,
+        component: FinancialOperationsPageComponent,
       },
       {
-        path: 'send-money',
+        path: 'manage-accounts',
         canActivate: [AuthGuard],
         resolve: {
           user: UserResolver,
         },
-        component: SendMoneyPageComponent,
+        component: ManageAccountsPageComponent,
       },
       {
         path: 'account-settings',

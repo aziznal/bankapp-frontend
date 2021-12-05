@@ -1,4 +1,14 @@
 {
   "editor.tabSize": 2,
-  "editor.insertSpaces": true
+  "editor.insertSpaces": true,
+
+  "cSpell.words": [
+    "aziznal",
+    "bankapp",
+    "barchart",
+    "devkit",
+    "fullname",
+    "ngneat",
+    "toastr"
+  ]
 }

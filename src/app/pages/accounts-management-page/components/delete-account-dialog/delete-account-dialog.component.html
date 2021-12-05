@@ -10,10 +10,14 @@
         Specify account to transfer remaining funds
     </mat-label>
 
-    <input
-        matInput
-        #receivingAccountLabelInput
-    >
+    <mat-select [(value)]="receivingAccountLabel">
+        <mat-option
+            *ngFor="let accountLabel of userAccountLabels"
+            [value]="accountLabel"
+        >
+            {{ accountLabel }}
+        </mat-option>
+    </mat-select>
 </mat-form-field>
 
 <mat-dialog-actions align="center">

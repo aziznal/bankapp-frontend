@@ -209,7 +209,7 @@ export class BarchartComponent implements AfterViewInit {
       .join('rect')
       .attr('x', (d: any) => Axis(d[this.x].toString().substring(0, 15)) || '')
       .attr('width', Axis.bandwidth())
-      .attr('fill', (d) => (d.amount > 0 ? '#3F51B5' : '#FF4081'))
+      .attr('fill', (d) => (d.amount > 0 ? '#673ab7' : '#fbc02d'))
       .attr(this.x, (d) => d[this.x])
       .attr(this.y, (d) => Math.abs(d[this.y]))
       // no bar at the beginning thus:

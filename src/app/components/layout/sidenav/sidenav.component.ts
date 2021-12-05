@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { User } from 'src/app/interfaces/user.interface';
+import { AuthService } from 'src/app/services/auth.service';
 
 /**
  * Sidenav component displayed on the left-side of the page
@@ -24,7 +25,7 @@ export class SidenavComponent {
    * @type {User}
    * @memberof SidenavComponent
    */
-  user!: User;
+  userName: string;
 
   /**
    * Creates an instance of SidenavComponent.
@@ -32,7 +33,7 @@ export class SidenavComponent {
    * @param {AuthService} authService
    * @memberof SidenavComponent
    */
-  constructor(private route: ActivatedRoute) {
-    this.user = this.route.snapshot.data.user;
+  constructor(private authService: AuthService) {
+    this.userName = this.authService.getUser()?.fullname || 'Unknown';
   }
 }

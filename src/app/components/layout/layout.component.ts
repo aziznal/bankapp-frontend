@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { AppSettingsService } from 'src/app/services/app-settings.service';
 
 /**
  * Component to define the basic layout of the site and place main components /
@@ -20,6 +21,22 @@ export class LayoutComponent {
    * @memberof LayoutComponent
    */
   @ViewChild('sidenav') sidenav!: MatSidenav;
+
+  /**
+   * Creates an instance of LayoutComponent.
+   *
+   * @param {AppSettingsService} appSettingsService
+   * @memberof LayoutComponent
+   */
+  constructor(private appSettingsService: AppSettingsService) {}
+
+  get loading(): boolean {
+    return this.appSettingsService.settings.showLoadingScreen;
+  }
+
+  set loading(val: boolean) {
+    this.appSettingsService.settings.showLoadingScreen = val;
+  }
 
   /**
    * causes sidenav to toggle between displayed / hidden

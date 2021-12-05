@@ -8,8 +8,8 @@
     routerLink=""
     class="nav-logo"
   >
-    <mat-icon>savings</mat-icon>
-    Verpara
+    <mat-icon>account_balance</mat-icon>
+    FakeBank
   </a>
 
   <div
@@ -18,7 +18,7 @@
     class="p-3"
     style="color: black;"
   >
-    <h3>Welcome, {{ user.fullname }}</h3>
+    <h3>Welcome, {{ userName }}</h3>
   </div>
 
   <nav
@@ -47,9 +47,9 @@
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{exact: true}"
       >
-        <a [routerLink]="'create-banking-account'">
-          <mat-icon>add</mat-icon>
-          Create New Banking Account
+        <a [routerLink]="'financial-operations'">
+          <mat-icon>attach_money</mat-icon>
+          Financial Operations
         </a>
       </li>
 
@@ -58,9 +58,9 @@
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{exact: true}"
       >
-        <a [routerLink]="'send-money'">
-          <mat-icon>send</mat-icon>
-          Send Money
+        <a [routerLink]="'manage-accounts'">
+          <mat-icon>dynamic_feed</mat-icon>
+          Manage Accounts
         </a>
       </li>
 

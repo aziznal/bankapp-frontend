@@ -8,10 +8,10 @@ import { MainPageModule } from './main-page/main-page.module';
 import { SharedModule } from '../shared/shared.module';
 
 import { AccountSettingsPageModule } from './account-settings-page/account-settings-page.module';
-import { CreateBankingAccountPageModule } from './create-banking-account-page/create-banking-account-page.module';
-import { SendMoneyPageModule } from './send-money-page/send-money-page.module';
 import { SingleBankAccountPageModule } from './single-bank-account-page/single-bank-account-page.module';
 import { SingleTransactionPageModule } from './single-transaction-page/single-transaction-page.module';
+import { FinancialOperationsPageModule } from './financial-operations-page/financial-operations-page.module';
+import { AccountsManagementPageModule } from './accounts-management-page/accounts-management.module';
 
 @NgModule({
   declarations: [],
@@ -25,10 +25,10 @@ import { SingleTransactionPageModule } from './single-transaction-page/single-tr
     SharedModule,
 
     AccountSettingsPageModule,
-    CreateBankingAccountPageModule,
-    SendMoneyPageModule,
+    FinancialOperationsPageModule,
     SingleBankAccountPageModule,
     SingleTransactionPageModule,
+    AccountsManagementPageModule,
   ],
 
   providers: [],
